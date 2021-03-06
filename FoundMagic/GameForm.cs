@@ -19,7 +19,7 @@ namespace FoundMagic
 			InitializeComponent();
 		}
 
-		private static readonly Brush fogBrush = new SolidBrush(Color.FromArgb(16, 16, 16));
+		private static readonly Brush fogBrush = new SolidBrush(Color.FromArgb(128, 16, 16, 16));
 
 		private void GameForm_Paint(object sender, PaintEventArgs e)
 		{
@@ -43,11 +43,12 @@ namespace FoundMagic
 					Tile tile = floor.Tiles[x, y];
 					if (tile.IsExplored)
 					{
+						// draw tile
 						g.DrawString(tile.Glyph.ToString(), font, new SolidBrush(tile.Color), p);
 					}
-					else
+					if (!tile.IsInFov)
 					{
-						// not explored, just draw some fog
+						// draw some translucent fog
 						g.FillRectangle(fogBrush, p.X, p.Y, glyphSize, glyphSize);
 					}
 				}

@@ -43,6 +43,8 @@ namespace FoundMagic
 
 			var newtile = floor.Find(this);
 			var fovData = FieldOfView.ComputeFov(newtile.X, newtile.Y, Vision, true);
+			foreach (var tile in floor.Tiles)
+				floor.Tiles[tile.X, tile.Y] = floor.Tiles[tile.X, tile.Y].WithInvisible();
 			foreach (var fovCell in fovData)
 				floor.Tiles[fovCell.X, fovCell.Y] = floor.Tiles[fovCell.X, fovCell.Y].WithVisible();
 		}
