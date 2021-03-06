@@ -45,6 +45,7 @@ namespace FoundMagic
 			var walkableTiles = CurrentFloor.Tiles.Cast<Tile>().Where(q => q.IsWalkable);
 			var startTile = Rng.Pick(walkableTiles);
 			startTile.Creature = Hero.Instance;
+			Hero.Instance.UpdateFov();
 		}
 
 		/// <summary>

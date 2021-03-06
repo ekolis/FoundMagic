@@ -104,6 +104,10 @@ namespace FoundMagic
 			oldtile.Creature = null;
 			newtile.Creature = creature;
 
+			// update FOV
+			if (creature.FieldOfView is null)
+				creature.FieldOfView = new FieldOfView(this);
+
 			// success!
 			return true;
 		}

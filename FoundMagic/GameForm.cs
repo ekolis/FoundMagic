@@ -19,10 +19,13 @@ namespace FoundMagic
 			InitializeComponent();
 		}
 
+		private static readonly Brush fogBrush = new SolidBrush(Color.FromArgb(16, 16, 16));
+
 		private void GameForm_Paint(object sender, PaintEventArgs e)
 		{
-			// get our floor
-			Floor floor = World.Instance.CurrentFloor;
+			// get some globals
+			Floor floor = Floor.Current;
+			Hero hero = Hero.Instance;
 
 			// find out how big our glyphs are going to be
 			int glyphSize = Math.Min(Width / (floor.Width + 1), Height / (floor.Height + 1));
@@ -38,7 +41,15 @@ namespace FoundMagic
 				{
 					Point p = new(x * glyphSize, y * glyphSize);
 					Tile tile = floor.Tiles[x, y];
-					g.DrawString(tile.Glyph.ToString(), font, new SolidBrush(tile.Color), p);
+					if (tile.IsExplored)
+					{
+						g.DrawString(tile.Glyph.ToString(), font, new SolidBrush(tile.Color), p);
+					}
+					else
+					{
+						// not explored, just draw some fog
+						g.FillRectangle(fogBrush, p.X, p.Y, glyphSize, glyphSize);
+					}
 				}
 			}
 		}
@@ -54,6 +65,10 @@ namespace FoundMagic
 			if (Floor.Current is null)
 				return; // nothing to do
 
+			// get globals
+			Floor floor = Floor.Current;
+			Hero hero = Hero.Instance;
+
 			// movement keys
 			var dir = e.KeyCode switch
 			{
@@ -65,7 +80,10 @@ namespace FoundMagic
 			};
 
 			// move hero
-			Floor.Current.Move(Hero.Instance, dir);
+			floor.Move(hero, dir);
+
+			// update the hero's field of view
+			hero.UpdateFov();
 
 			// redraw map
 			Invalidate();

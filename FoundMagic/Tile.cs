@@ -14,20 +14,43 @@ namespace FoundMagic
 	public class Tile
 		: Cell
 	{
-		public Tile(int x, int y, Terrain terrain)
-			: base(x, y, terrain.IsTransparent, terrain.IsWalkable, false, false)
+		/// <summary>
+		/// Creates a tile.
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="terrain"></param>
+		/// <param name="isInFov"></param>
+		/// <param name="isExplored"></param>
+		public Tile(int x, int y, Terrain terrain, bool isInFov = false, bool isExplored = false)
+			: base(x, y, terrain.IsTransparent, terrain.IsWalkable, isInFov, isExplored)
 		{
 			Terrain = terrain;
+			Creature = null;
 		}
 		
 		/// <summary>
 		/// Copies an <see cref="ICell"/> into a tile and picks an appropriate terrain.
 		/// </summary>
 		/// <param name="cell"></param>
-		public Tile(ICell cell)
-			: base(cell.X, cell.Y, cell.IsTransparent, cell.IsWalkable, false, false)
+		public Tile(ICell cell, bool isInFov = false, bool isExplored = false)
+			: base(cell.X, cell.Y, cell.IsTransparent, cell.IsWalkable, isInFov, isExplored)
 		{
 			Terrain = World.Instance.Rng.Pick(Terrain.All.Where(q => q.IsTransparent == IsTransparent && q.IsWalkable == IsWalkable));
+			Creature = null;
+		}
+
+		/// <summary>
+		/// Copies from another tile.
+		/// </summary>
+		/// <param name="tile"></param>
+		/// <param name="isInFov"></param>
+		/// <param name="isExplored"></param>
+		public Tile(Tile tile, bool isInFov = false, bool isExplored = false)
+			: base(tile.X, tile.Y, tile.IsTransparent, tile.IsWalkable, isInFov, isExplored)
+		{
+			Terrain = tile.Terrain;
+			Creature = tile.Creature;
 		}
 
 		/// <summary>
@@ -51,5 +74,26 @@ namespace FoundMagic
 		/// </summary>
 		public Color Color
 			=> Creature?.Color ?? Terrain.Color;
+
+		/// <summary>
+		/// Creates a tile like this one but it is in FOV and explored.
+		/// </summary>
+		/// <returns></returns>
+		public Tile WithVisible()
+			=> new Tile(this, true, true);
+
+		/// <summary>
+		/// Creates a tile like this one but it is out of FOV.
+		/// </summary>
+		/// <returns></returns>
+		public Tile WithInvisible()
+			=> new Tile(this, false, IsExplored);
+
+		/// <summary>
+		/// Creates a tile like this one but it is explored.
+		/// </summary>
+		/// <returns></returns>
+		public Tile WithExplored()
+			=> new Tile(this, IsInFov, true);
 	}
 }

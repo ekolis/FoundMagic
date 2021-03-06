@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RogueSharp;
 
 namespace FoundMagic
 {
@@ -28,5 +29,24 @@ namespace FoundMagic
 		public char Glyph { get; } = '@';
 
 		public Color Color { get; } = Color.Blue;
+
+		public FieldOfView FieldOfView { get; set; }
+
+		public void UpdateFov()
+		{
+			var floor = Floor.Current;
+			if (floor is null)
+				return;
+
+			if (FieldOfView is null)
+				FieldOfView = new FieldOfView(floor);
+
+			var newtile = floor.Find(this);
+			var fovData = FieldOfView.ComputeFov(newtile.X, newtile.Y, Vision, true);
+			foreach (var fovCell in fovData)
+				floor.Tiles[fovCell.X, fovCell.Y] = floor.Tiles[fovCell.X, fovCell.Y].WithVisible();
+		}
+
+		public int Vision { get; } = 3;
 	}
 }
