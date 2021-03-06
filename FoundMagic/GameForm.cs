@@ -30,7 +30,6 @@ namespace FoundMagic
 			// get our graphics context etc
 			Graphics g = e.Graphics;
 			Font font = new Font("Consolas", glyphSize / 2);
-			Brush brush = Brushes.White;
 
 			// draw on it
 			for (int x = 0; x < floor.Width; x++)
@@ -38,17 +37,8 @@ namespace FoundMagic
 				for (int y = 0; y < floor.Height; y++)
 				{
 					Point p = new(x * glyphSize, y * glyphSize);
-					ICell cell = floor.GetCell(x, y);
-					char glyph;
-					if (cell.IsWalkable && cell.IsTransparent)
-						glyph = '.';
-					else if (cell.IsWalkable)
-						glyph = '+';
-					else if (cell.IsTransparent)
-						glyph = '~';
-					else
-						glyph = '#';
-					g.DrawString(glyph.ToString(), font, brush, p);
+					Tile tile = floor.Tiles[x, y];
+					g.DrawString(tile.Terrain.Glyph.ToString(), font, new SolidBrush(tile.Terrain.Color), p);
 				}
 			}
 		}

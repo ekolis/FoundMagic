@@ -32,18 +32,26 @@ namespace FoundMagic
 		private World(int seed)
 		{
 			Rng = new DotNetRandom(seed);
+		}
+
+		/// <summary>
+		/// Sets up the world.
+		/// </summary>
+		public void Setup()
+		{
 			var mapper = new RandomRoomsMapCreationStrategy<Floor>(80, 45, 32, 12, 4, Rng);
 			CurrentFloor = mapper.CreateMap();
+			CurrentFloor.Setup();
 		}
 
 		/// <summary>
 		/// A random number generator used by this world.
 		/// </summary>
-		public IRandom Rng { get; }
+		public IRandom Rng { get; private set; }
 
 		/// <summary>
 		/// The floor that the player character is currently located on.
 		/// </summary>
-		public Floor CurrentFloor { get; }
+		public Floor? CurrentFloor { get; private set; }
 	}
 }
