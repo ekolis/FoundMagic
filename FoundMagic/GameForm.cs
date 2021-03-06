@@ -38,7 +38,7 @@ namespace FoundMagic
 				{
 					Point p = new(x * glyphSize, y * glyphSize);
 					Tile tile = floor.Tiles[x, y];
-					g.DrawString(tile.Terrain.Glyph.ToString(), font, new SolidBrush(tile.Terrain.Color), p);
+					g.DrawString(tile.Glyph.ToString(), font, new SolidBrush(tile.Color), p);
 				}
 			}
 		}
@@ -46,6 +46,28 @@ namespace FoundMagic
 		private void GameForm_SizeChanged(object sender, EventArgs e)
 		{
 			// repaint the form
+			Invalidate();
+		}
+
+		private void GameForm_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (Floor.Current is null)
+				return; // nothing to do
+
+			// movement keys
+			var dir = e.KeyCode switch
+			{
+				Keys.Up or Keys.D8 or Keys.W => Direction.North,
+				Keys.Down or Keys.D2 or Keys.S => Direction.South,
+				Keys.Left or Keys.D4 or Keys.A => Direction.West,
+				Keys.Right or Keys.D6 or Keys.D => Direction.East,
+				_ => Direction.Stationary
+			};
+
+			// move hero
+			Floor.Current.Move(Hero.Instance, dir);
+
+			// redraw map
 			Invalidate();
 		}
 	}

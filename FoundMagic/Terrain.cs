@@ -14,6 +14,6 @@ namespace FoundMagic
 		public static readonly Terrain Tree = new("tree", '+', Color.Green, false, true);
 		public static readonly Terrain Wall = new("wall", '#', Color.White, false, false);
 
-		public static readonly IEnumerable<Terrain> All = new Terrain[] { Floor, Water, Tree, Wall };
+		public static IEnumerable<Terrain> All { get; } = new Terrain[] { Floor, Water, Tree, Wall };
 	}
 }

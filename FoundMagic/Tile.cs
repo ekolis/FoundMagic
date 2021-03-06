@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +30,26 @@ namespace FoundMagic
 			Terrain = World.Instance.Rng.Pick(Terrain.All.Where(q => q.IsTransparent == IsTransparent && q.IsWalkable == IsWalkable));
 		}
 
+		/// <summary>
+		/// The terrain of this tile.
+		/// </summary>
 		public Terrain Terrain { get; }
+
+		/// <summary>
+		/// The creature which is currently located at this tile (null if there is none).
+		/// </summary>
+		public ICreature? Creature { get; set; }
+
+		/// <summary>
+		/// If there is a creature here, its glyph will be used; otherwise the terrain's glyph will be used.
+		/// </summary>
+		public char Glyph
+			=> Creature?.Glyph ?? Terrain.Glyph;
+
+		/// <summary>
+		/// If there is a creature here, its color will be used; otherwise the terrain's color will be used.
+		/// </summary>
+		public Color Color
+			=> Creature?.Color ?? Terrain.Color;
 	}
 }

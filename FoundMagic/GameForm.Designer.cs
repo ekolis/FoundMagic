@@ -43,6 +43,7 @@ namespace FoundMagic
 			this.Text = "Found Magic 🧙🏼‍";
 			this.SizeChanged += new System.EventHandler(this.GameForm_SizeChanged);
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.GameForm_Paint);
+			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GameForm_KeyDown);
 			this.ResumeLayout(false);
 
 		}

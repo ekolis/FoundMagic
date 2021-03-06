@@ -42,6 +42,9 @@ namespace FoundMagic
 			var mapper = new RandomRoomsMapCreationStrategy<Floor>(80, 45, 32, 12, 4, Rng);
 			CurrentFloor = mapper.CreateMap();
 			CurrentFloor.Setup();
+			var walkableTiles = CurrentFloor.Tiles.Cast<Tile>().Where(q => q.IsWalkable);
+			var startTile = Rng.Pick(walkableTiles);
+			startTile.Creature = Hero.Instance;
 		}
 
 		/// <summary>
@@ -50,7 +53,7 @@ namespace FoundMagic
 		public IRandom Rng { get; private set; }
 
 		/// <summary>
-		/// The floor that the player character is currently located on.
+		/// The floor that the hero is currently located on.
 		/// </summary>
 		public Floor? CurrentFloor { get; private set; }
 	}
