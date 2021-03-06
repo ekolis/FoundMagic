@@ -1,7 +1,7 @@
 ﻿
 namespace FoundMagic
 {
-	partial class Form1
+	partial class GameForm
 	{
 		/// <summary>
 		///  Required designer variable.
@@ -29,10 +29,22 @@ namespace FoundMagic
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
+			this.SuspendLayout();
+			// 
+			// GameForm
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 30F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(800, 450);
-			this.Text = "Form1";
+			this.BackColor = System.Drawing.Color.Black;
+			this.ClientSize = new System.Drawing.Size(1256, 656);
+			this.DoubleBuffered = true;
+			this.ForeColor = System.Drawing.Color.White;
+			this.Name = "GameForm";
+			this.Text = "Found Magic 🧙🏼‍";
+			this.SizeChanged += new System.EventHandler(this.GameForm_SizeChanged);
+			this.Paint += new System.Windows.Forms.PaintEventHandler(this.GameForm_Paint);
+			this.ResumeLayout(false);
+
 		}
 
 		#endregion
