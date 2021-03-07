@@ -50,5 +50,7 @@ namespace FoundMagic
 		}
 
 		public int Vision { get; } = 3;
+
+		public double Speed { get; } = 1;
 	}
 }

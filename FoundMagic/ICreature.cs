@@ -37,5 +37,10 @@ namespace FoundMagic
 		/// The vision radius of this creature.
 		/// </summary>
 		int Vision { get; }
+
+		/// <summary>
+		/// The speed of this creature.
+		/// </summary>
+		double Speed { get; }
 	}
 }
