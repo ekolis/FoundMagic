@@ -28,8 +28,12 @@ namespace FoundMagic
 			Tiles = new Tile[Width, Height];
 		}
 
+		/// <summary>
+		/// Prepares a floor for playing the game.
+		/// </summary>
 		public void Setup()
 		{
+			// create tiles
 			Tiles = new Tile[Width, Height];
 			for (int x = 0; x < Width; x++)
 			{
@@ -37,6 +41,20 @@ namespace FoundMagic
 				{
 					Tiles[x, y] = new Tile(GetCell(x, y));
 				}
+			}
+
+			// create monsters
+			var places = Tiles.Cast<Tile>().Where(q => q.IsWalkable && q.Creature is null).ToList();
+			const int monsterRarity = 10;
+			var numMonsters = places.Count() / monsterRarity;
+			for (int i = 0; i < numMonsters; i++)
+			{
+				if (!places.Any())
+					break; // nowhere to place a monster
+
+				var place = World.Instance.Rng.Pick(places);
+				var monsterType = World.Instance.Rng.Pick(MonsterType.All);
+				place.Creature = new Monster(monsterType);
 			}
 		}
 

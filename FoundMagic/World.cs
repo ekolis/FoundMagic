@@ -42,8 +42,8 @@ namespace FoundMagic
 			var mapper = new RandomRoomsMapCreationStrategy<Floor>(80, 45, 32, 12, 4, Rng);
 			CurrentFloor = mapper.CreateMap();
 			CurrentFloor.Setup();
-			var walkableTiles = CurrentFloor.Tiles.Cast<Tile>().Where(q => q.IsWalkable);
-			var startTile = Rng.Pick(walkableTiles);
+			var emptyTiles = CurrentFloor.Tiles.Cast<Tile>().Where(q => q.IsWalkable && q.Creature is null);
+			var startTile = Rng.Pick(emptyTiles);
 			startTile.Creature = Hero.Instance;
 			Hero.Instance.UpdateFov();
 		}
