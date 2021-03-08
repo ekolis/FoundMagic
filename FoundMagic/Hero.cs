@@ -112,5 +112,15 @@ namespace FoundMagic
 
 		public override string ToString()
 			=> Name;
+
+		/// <summary>
+		/// When did the hero die? Or null if he didn't.
+		/// </summary>
+		public DateTime? DeathTimestamp { get; set; }
+
+		/// <summary>
+		/// How long should the screen take to fade when the hero dies?
+		/// </summary>
+		public TimeSpan DeathFadeTime { get; } = new TimeSpan(0, 0, 5);
 	}
 }

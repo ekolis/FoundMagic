@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -77,6 +78,30 @@ namespace FoundMagic
 				// draw it
 				g.DrawString(entry.Message, font, new SolidBrush(Color.FromArgb(alpha, entry.Color)), 0f, (float)howHigh);
 			}
+
+			// draw the DEATH DEATH DEATH DEATH DEATH 💀💀💀
+			if (Hero.Instance.DeathTimestamp != null)
+			{
+				var howLongAgo = now - Hero.Instance.DeathTimestamp.Value;
+				Color deathColor;
+				var ageRatio = (double)howLongAgo.Ticks / (double)Hero.Instance.DeathFadeTime.Ticks;
+				int alphaRed = (int)(255 * ageRatio);
+				int alphaBlack = (int)(255 * (ageRatio - 1));
+				if (ageRatio < 1)
+				{
+					deathColor = Color.FromArgb(alphaRed, Color.Red);
+				}
+				else if (ageRatio < 2)
+				{
+					deathColor = Color.FromArgb(255, 255 - alphaBlack, 0, 0);
+				}
+				else
+				{
+					deathColor = Color.Black;
+				}
+				g.FillRectangle(new SolidBrush(deathColor), 0, 0, Width, Height);
+			}
+			
 		}
 		private void GameForm_SizeChanged(object sender, EventArgs e)
 		{

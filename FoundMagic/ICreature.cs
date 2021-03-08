@@ -117,8 +117,10 @@ namespace FoundMagic
 		public static void Kill(this ICreature decedent)
 		{
 			decedent.Hitpoints = 0;
-			Logger.LogDeath(decedent);
 			Floor.Current.Find(decedent).Creature = null;
+			Logger.LogDeath(decedent);
+			if (decedent is Hero h)
+				h.DeathTimestamp = DateTime.Now;
 		}
 	}
 }
