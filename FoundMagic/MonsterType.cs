@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace FoundMagic
 {
-	public record MonsterType(char Glyph, Color Color, int Vision, double Speed)
+	public record MonsterType(string Name, char Glyph, Color Color, int Vision, double Speed, int Strength, int MaxHitpoints)
 	{
 		// TODO: put these in a JSON file or something
-		public static readonly MonsterType Slime = new('s', Color.Blue, 2, 1);
+		public static readonly MonsterType Slime = new("slime", 's', Color.Blue, 2, 1, 1, 3);
 
 		public static readonly IEnumerable<MonsterType> All = new MonsterType[] { Slime };
 	}

@@ -12,7 +12,7 @@ namespace FoundMagic
 	/// <summary>
 	/// Our intrepid hero, exploring the world... 🧙🏼‍
 	/// </summary>
-	public class Hero 
+	public class Hero
 		: ICreature
 	{
 		/// <summary>
@@ -20,12 +20,16 @@ namespace FoundMagic
 		/// </summary>
 		private Hero()
 		{
+			Hitpoints = MaxHitpoints;
 		}
 
 		/// <summary>
 		/// The singleton instance of the hero.
 		/// </summary>
 		public static Hero Instance { get; } = new Hero();
+
+		public string Name
+			=> "you";
 
 		public char Glyph { get; } = '@';
 
@@ -84,6 +88,8 @@ namespace FoundMagic
 					// update the hero's field of view
 					UpdateFov();
 
+					// TODO: maybe log any spotted monsters so the player knows what they are? maybe even the direction in which they are spottted?
+
 					// spend time
 					return 1.0 / Speed;
 				}
@@ -97,5 +103,14 @@ namespace FoundMagic
 		public double Speed { get; } = 1;
 
 		public double Timer { get; set; }
+
+		public int Strength { get; } = 1;
+
+		public int MaxHitpoints { get; } = 10;
+
+		public int Hitpoints { get; set; }
+
+		public override string ToString()
+			=> Name;
 	}
 }

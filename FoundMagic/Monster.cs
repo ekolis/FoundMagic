@@ -18,10 +18,12 @@ namespace FoundMagic
 		{
 			Type = type;
 			VisibleTiles = Enumerable.Empty<Tile>();
+			Hitpoints = MaxHitpoints;
 		}
 
 		public MonsterType Type { get; }
 
+		public string Name => $"the {Type.Name}";
 		public char Glyph => Type.Glyph;
 		public Color Color => Type.Color;
 		public FieldOfView FieldOfView { get; set; }
@@ -75,9 +77,18 @@ namespace FoundMagic
 				// for now let's just sit still
 				// TODO: pursue last known location of hero? wander in a direction until we hit a wall, then turn?
 			}
-			
+
 			// didn't do anything? just pass a turn
 			return 1.0 / Speed;
 		}
+
+		public int Strength => Type.Strength;
+
+		public int MaxHitpoints => Type.MaxHitpoints;
+
+		public int Hitpoints { get; set; }
+
+		public override string ToString()
+			=> Name;
 	}
 }

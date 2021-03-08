@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using RogueSharp;
@@ -13,6 +14,11 @@ namespace FoundMagic
 	/// </summary>
 	public interface ICreature
 	{
+		/// <summary>
+		/// The name of this creature.
+		/// </summary>
+		string Name { get; }
+
 		/// <summary>
 		/// A textual glyph used to represent the creature.
 		/// </summary>
@@ -63,6 +69,21 @@ namespace FoundMagic
 		/// </summary>
 		/// <returns>The amount of time spent.</returns>
 		double Act();
+
+		/// <summary>
+		/// Number of HP of damage inflicted by this creature's attack.
+		/// </summary>
+		int Strength { get; }
+
+		/// <summary>
+		/// Maximum number of HP that this creature can have.
+		/// </summary>
+		int MaxHitpoints { get; }
+
+		/// <summary>
+		/// Number of HP of health that this creature has left.
+		/// </summary>
+		int Hitpoints { get; set; }
 	}
 
 	public static class CreatureExtensions
@@ -72,5 +93,21 @@ namespace FoundMagic
 		/// </summary>
 		public static double GetActionTime(this ICreature q)
 			=> 1.0 / q.Speed;
+
+		/// <summary>
+		/// Allows one creature to attack another.
+		/// </summary>
+		/// <param name="attacker">The creature performing the attack.</param>
+		/// <param name="target">The creature being attacked.</param>
+		/// <returns>The amount of damage inflicted.</returns>
+		public static int Attack(this ICreature attacker, ICreature target)
+		{
+			int dmg = Math.Min(attacker.Strength, target.Hitpoints);
+			target.Hitpoints -= dmg;
+			Logger.LogAttack(attacker, target, dmg);
+			if (target.Hitpoints <= 0)
+				Logger.LogDeath(target);
+			return dmg;
+		}
 	}
 }

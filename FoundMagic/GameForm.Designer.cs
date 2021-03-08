@@ -29,7 +29,15 @@ namespace FoundMagic
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
+			this.logTimer = new System.Windows.Forms.Timer(this.components);
 			this.SuspendLayout();
+			// 
+			// logTimer
+			// 
+			this.logTimer.Enabled = true;
+			this.logTimer.Interval = 10;
+			this.logTimer.Tick += new System.EventHandler(this.logTimer_Tick);
 			// 
 			// GameForm
 			// 
@@ -50,6 +58,8 @@ namespace FoundMagic
 		}
 
 		#endregion
+
+		private System.Windows.Forms.Timer logTimer;
 	}
 }
 

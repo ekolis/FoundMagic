@@ -97,7 +97,7 @@ namespace FoundMagic
 			=> Tiles.Cast<Tile>().Single(q => q.Creature == creature);
 
 		/// <summary>
-		/// Tries to move a creature.
+		/// Tries to move a creature, or attack an enemy.
 		/// </summary>
 		/// <param name="creature">The creature to move.</param>
 		/// <param name="direction">The direction in which to move the creature.</param>
@@ -110,7 +110,7 @@ namespace FoundMagic
 		}
 
 		/// <summary>
-		/// Tries to move a creature.
+		/// Tries to move a creature, or attack an enemy.
 		/// </summary>
 		/// <param name="oldtile">The location of the creature to move.</param>
 		/// <param name="newtile">The tile to which the creature will be moved.</param>
@@ -133,9 +133,18 @@ namespace FoundMagic
 			if (creature is null)
 				return false; // nothing to move
 
-			// do the move
-			oldtile.Creature = null;
-			newtile.Creature = creature;
+			// do the move/attack
+			if (newtile.Creature is null)
+			{
+				// move
+				oldtile.Creature = null;
+				newtile.Creature = creature;
+			}
+			else
+			{
+				// attack
+				oldtile.Creature.Attack(newtile.Creature);
+			}
 
 			// update FOV
 			if (creature.FieldOfView is null)
