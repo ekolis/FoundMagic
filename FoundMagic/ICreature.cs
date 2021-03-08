@@ -106,8 +106,19 @@ namespace FoundMagic
 			target.Hitpoints -= dmg;
 			Logger.LogAttack(attacker, target, dmg);
 			if (target.Hitpoints <= 0)
-				Logger.LogDeath(target);
+				target.Kill();
 			return dmg;
+		}
+
+		/// <summary>
+		/// Kills a creature, removing it from the game.
+		/// </summary>
+		/// <param name="decedent">The creature to kill.</param>
+		public static void Kill(this ICreature decedent)
+		{
+			decedent.Hitpoints = 0;
+			Logger.LogDeath(decedent);
+			Floor.Current.Find(decedent).Creature = null;
 		}
 	}
 }
