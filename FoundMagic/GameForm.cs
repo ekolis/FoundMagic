@@ -71,8 +71,11 @@ namespace FoundMagic
 					howHigh = lastHowHigh + glyphSize;
 				lastHowHigh = howHigh;
 
+				// also need an alpha value
+				int alpha = 255 - (int)(255 * ageRatio);
+
 				// draw it
-				g.DrawString(entry.Message, font, new SolidBrush(entry.Color), 0f, (float)howHigh);
+				g.DrawString(entry.Message, font, new SolidBrush(Color.FromArgb(alpha, entry.Color)), 0f, (float)howHigh);
 			}
 		}
 		private void GameForm_SizeChanged(object sender, EventArgs e)
