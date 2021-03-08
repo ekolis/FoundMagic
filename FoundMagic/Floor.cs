@@ -105,10 +105,21 @@ namespace FoundMagic
 		public bool Move(ICreature creature, Direction direction)
 		{
 			var oldtile = Find(creature);
+			var newtile = GetNeighbor(oldtile, direction);
+			return Move(oldtile, newtile);
+		}
+
+		/// <summary>
+		/// Tries to move a creature.
+		/// </summary>
+		/// <param name="oldtile">The location of the creature to move.</param>
+		/// <param name="newtile">The tile to which the creature will be moved.</param>
+		/// <returns>true if successful, otherwise false</returns>
+		public bool Move(Tile? oldtile, Tile? newtile)
+		{
 			if (oldtile is null)
 				return false; // creature is not on this floor
 
-			var newtile = GetNeighbor(oldtile, direction);
 			if (newtile is null)
 				return false; // moving out of bounds
 
@@ -116,7 +127,11 @@ namespace FoundMagic
 				return true; // already at destination
 
 			if (!newtile.IsWalkable)
-				return false; // can't walk through walls
+				return false; // can't walk through walls or other creatures
+
+			ICreature? creature = oldtile.Creature;
+			if (creature is null)
+				return false; // nothing to move
 
 			// do the move
 			oldtile.Creature = null;
@@ -129,5 +144,52 @@ namespace FoundMagic
 			// success!
 			return true;
 		}
+
+		/// <summary>
+		/// Processes actions.
+		/// </summary>
+		/// <param name="time">The amount of time to process.</param>
+		/// <returns>The amount of time actually spent.</returns>
+		public double ProcessTime(double time)
+		{
+			double timeSpent = 0;
+
+			// pass time until at least one creature is ready to act
+			var minTime = Creatures.Min(q => q.Timer);
+			foreach (ICreature creature in Creatures)
+				creature.Timer -= minTime;
+			timeSpent += minTime;
+
+			// find any creatures who are ready to act
+			var readyCreatures = Creatures.Where(q => q.Timer <= 0);
+
+			// let them act "simultaneously"
+			double creatureTime = 0;
+			foreach (var creature in readyCreatures)
+				creatureTime = Math.Max(creatureTime, creature.Act());
+
+			// tally up any time spent
+			timeSpent += creatureTime;
+
+			// all done, return time spent
+			return timeSpent;
+		}
+
+		/// <summary>
+		/// Creature which has priority to move first because it took a zero time action.
+		/// </summary>
+		private ICreature? PriorityCreature { get; set; }
+
+		/// <summary>
+		/// Any creatures on this floor.
+		/// </summary>
+		public IEnumerable<ICreature> Creatures
+			=> Tiles.Cast<Tile>().Select(q => q.Creature).OfType<ICreature>();
+
+		/// <summary>
+		/// Any monsters on this floor.
+		/// </summary>
+		public IEnumerable<Monster> Monsters
+			=> Creatures.OfType<Monster>();
 	}
 }

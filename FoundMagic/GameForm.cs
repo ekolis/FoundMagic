@@ -16,6 +16,7 @@ namespace FoundMagic
 	{
 		public GameForm()
 		{
+			Instance = this;
 			InitializeComponent();
 		}
 
@@ -54,7 +55,6 @@ namespace FoundMagic
 				}
 			}
 		}
-
 		private void GameForm_SizeChanged(object sender, EventArgs e)
 		{
 			// repaint the form
@@ -63,31 +63,21 @@ namespace FoundMagic
 
 		private void GameForm_KeyDown(object sender, KeyEventArgs e)
 		{
-			if (Floor.Current is null)
-				return; // nothing to do
+			// note a key press
+			Keyboard.Press(e.KeyCode);
 
-			// get globals
-			Floor floor = Floor.Current;
-			Hero hero = Hero.Instance;
+			// let the hero move once, and monsters during that duration
+			Floor.Current.ProcessTime(Hero.Instance.Timer + Hero.Instance.GetActionTime());
 
-			// movement keys
-			var dir = e.KeyCode switch
-			{
-				Keys.Up or Keys.D8 or Keys.W => Direction.North,
-				Keys.Down or Keys.D2 or Keys.S => Direction.South,
-				Keys.Left or Keys.D4 or Keys.A => Direction.West,
-				Keys.Right or Keys.D6 or Keys.D => Direction.East,
-				_ => Direction.Stationary
-			};
-
-			// move hero
-			floor.Move(hero, dir);
-
-			// update the hero's field of view
-			hero.UpdateFov();
-
-			// redraw map
 			Invalidate();
 		}
+
+		private void GameForm_KeyUp(object sender, KeyEventArgs e)
+		{
+			// note a key release
+			Keyboard.Release(e.KeyCode);
+		}
+
+		public static GameForm? Instance { get; private set; }
 	}
 }

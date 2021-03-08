@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using RogueSharp;
 
 namespace FoundMagic
@@ -49,8 +50,52 @@ namespace FoundMagic
 				floor.Tiles[fovCell.X, fovCell.Y] = floor.Tiles[fovCell.X, fovCell.Y].WithVisible();
 		}
 
+		public double Act()
+		{
+			if (Floor.Current is null)
+				return 0; // nothing to do
+
+			// get globals
+			Floor floor = Floor.Current;
+
+			// movement keys
+			Direction? dir = null;
+			if (Keyboard.IsAnyKeyPressed(Keys.Up, Keys.D8, Keys.W))
+				dir = Direction.North;
+			else if (Keyboard.IsAnyKeyPressed(Keys.Down, Keys.D2, Keys.S))
+				dir = Direction.South;
+			else if (Keyboard.IsAnyKeyPressed(Keys.Left, Keys.D4, Keys.A))
+				dir = Direction.West;
+			else if (Keyboard.IsAnyKeyPressed(Keys.Right, Keys.D6, Keys.D))
+				dir = Direction.East;
+			else if (Keyboard.IsAnyKeyPressed(Keys.OemPeriod, Keys.D5, Keys.LShiftKey))
+				dir = Direction.Stationary;
+
+			// HACK: why is this necessary?
+			Keyboard.Reset();
+
+			if (dir is not null)
+			{
+				// move hero
+				bool success = floor.Move(this, dir);
+
+				if (success)
+				{
+					// update the hero's field of view
+					UpdateFov();
+
+					// spend time
+					return 1.0 / Speed;
+				}
+			}
+
+			return 0;
+		}
+
 		public int Vision { get; } = 3;
 
 		public double Speed { get; } = 1;
+
+		public double Timer { get; set; }
 	}
 }
