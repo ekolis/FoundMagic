@@ -64,7 +64,8 @@ namespace FoundMagic
 			{
 				// monster can see hero, pursue him
 				Path path = new PathFinder(floor).ShortestPath(tile, heroTile);
-				Tile nextTile = floor.Tiles[path.CurrentStep.X, path.CurrentStep.Y];
+				var step = path.StepForward();
+				Tile nextTile = floor.Tiles[step.X, step.Y];
 				if (floor.Move(tile, nextTile))
 					return 1.0 / Speed;
 			}
