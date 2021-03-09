@@ -209,5 +209,22 @@ namespace FoundMagic
 		/// <returns>true if the creature has the status effect, otherwise false.</returns>
 		public static bool HasStatusEffect(this ICreature creature, StatusEffect fx)
 			=> creature.StatusEffects.ContainsKey(fx) && creature.StatusEffects[fx] > 0;
+
+		/// <summary>
+		/// Drains mana from one creature and gives it to another.
+		/// </summary>
+		/// <param name="caster">The creature performing the drain.</param>
+		/// <param name="target">The creature being drained.</param>
+		/// <param name="drain">The amount of mana to drain.</param>
+		/// <returns>The amount of mana drained.</returns>
+		public static int DrainManaFrom(this ICreature caster, ICreature target, int drain)
+		{
+			drain = Math.Min(target.Mana, drain);
+			target.Mana -= drain;
+			caster.Mana += drain;
+			if (caster.Mana > caster.MaxMana)
+				caster.Mana = caster.MaxMana;
+			return drain;
+		}
 	}
 }

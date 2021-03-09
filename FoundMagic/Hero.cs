@@ -138,6 +138,7 @@ namespace FoundMagic
 			new Fire(),
 			new Earth(),
 			new Air(),
+			new Water(),
 		};
 
 		/// <summary>

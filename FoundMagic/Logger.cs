@@ -122,6 +122,14 @@ namespace FoundMagic
 			}
 		}
 
+		public static void LogManaDrain(ICreature caster, ICreature target, Element element, int drain)
+		{
+			if (caster is Hero)
+				Log($"{caster.Capitalize()} drain {drain} mana from {target}.", element.Color);
+			else
+				Log($"{caster.Capitalize()} drains {drain} mana from {target}.", element.Color);
+		}
+
 		/// <summary>
 		/// Gets a list of all unexpired entries.
 		/// </summary>
