@@ -46,6 +46,7 @@ namespace FoundMagic
 				g.DrawMap(floor, font, glyphSize, fogBrush);
 				g.DrawLog(font, glyphSize, Height);
 				g.DrawBars(hero, font, glyphSize);
+				// TODO: render current status effects and their durations?
 				g.DrawDeath(Width, Height);
 			}			
 		}

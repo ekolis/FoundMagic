@@ -9,31 +9,31 @@ using System.Threading.Tasks;
 namespace FoundMagic.Magic
 {
 	/// <summary>
-	/// Casting a fire spell costs 1 mana and causes a single target to lose 3 hit points.
+	/// Casting an earth spell costs 1 mana and causes a single target to be reduced to half speed for 8 turns.
 	/// </summary>
-	public class Fire
+	public class Earth
 		: Element
 	{
 		protected override IEnumerable<string> Words { get; } = new string[]
 		{
-			"fire",
-			"frizz",
-			"burn",
-			"singe",
+			"earth",
+			"terra",
+			"rock",
+			"ground",
 		};
 
 		public override IEnumerable<Tile> Cast(ICreature caster, Direction direction, double power, double accuracy)
 		{
 			return CastSingleTargetProjectile(caster, direction, power, accuracy, creature =>
 			{
-				// inflict some damage
-				var dmg = (int)Math.Round(3 * power);
-				Logger.LogSpellDamage(creature, this, dmg);
-				creature.TakeDamage(dmg);
+				// slow the target
+				var duration = Math.Round(8 * power);
+				duration = creature.ApplyStatusEffect(StatusEffect.Slow, duration);
+				Logger.LogStatusEffectStart(creature, this, StatusEffect.Slow, duration);
 			});
 		}
 
-		public override Color Color => Color.Orange;
+		public override Color Color => Color.Brown;
 
 		public override double BaseManaCost { get; } = 1;
 	}

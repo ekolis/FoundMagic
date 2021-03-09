@@ -31,7 +31,8 @@ namespace FoundMagic
 		public FieldOfView FieldOfView { get; set; }
 		public int Vision => Type.Vision;
 
-		public double Speed => Type.Speed;
+		public double Speed
+			=> Type.Speed / (this.HasStatusEffect(StatusEffect.Slow) ? 2 : 1);
 
 		public double Timer { get; set; }
 
@@ -98,5 +99,7 @@ namespace FoundMagic
 		public int Mana { get; set; }
 
 		public IEnumerable<Element> Elements { get; } = Enumerable.Empty<Element>();
+
+		public IDictionary<StatusEffect, double> StatusEffects { get; } = new Dictionary<StatusEffect, double>();
 	}
 }

@@ -100,7 +100,8 @@ namespace FoundMagic
 
 		public int Vision { get; } = 3;
 
-		public double Speed { get; } = 1;
+		public double Speed
+			=> 1d / (this.HasStatusEffect(StatusEffect.Slow) ? 2 : 1);
 
 		public double Timer { get; set; }
 
@@ -132,7 +133,11 @@ namespace FoundMagic
 		/// </summary>
 		public bool IsCasting { get; set; } = false;
 
-		public IEnumerable<Element> Elements { get; } = new Element[] { new Fire() };
+		public IEnumerable<Element> Elements { get; } = new Element[]
+		{
+			new Fire(),
+			new Earth(),
+		};
 
 		/// <summary>
 		/// The magic word currently being typed/cast.
@@ -154,5 +159,7 @@ namespace FoundMagic
 		/// When did the player start typing the magic words to cast a spell?
 		/// </summary>
 		public DateTime? SpellTimestamp { get; set; }
+
+		public IDictionary<StatusEffect, double> StatusEffects { get; } = new Dictionary<StatusEffect, double>();
 	}
 }

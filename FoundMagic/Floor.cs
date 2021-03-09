@@ -166,7 +166,7 @@ namespace FoundMagic
 			// pass time until at least one creature is ready to act
 			var minTime = Creatures.Min(q => q.Timer);
 			foreach (ICreature creature in Creatures)
-				creature.Timer -= minTime;
+				creature.ProcessTime(minTime);
 			timeSpent += minTime;
 
 			// find any creatures who are ready to act

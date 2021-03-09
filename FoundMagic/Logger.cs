@@ -83,6 +83,16 @@ namespace FoundMagic
 			Log($"{caster.Capitalize()} {(caster is Hero ? "try" : "tries")} to cast a spell, but it fizzles.", Color.White);
 		}
 
+		public static void LogStatusEffectStart(ICreature creature, Element element, StatusEffect fx, double duration)
+		{
+			var desc = fx switch
+			{
+				StatusEffect.Slow => "slowed",
+				_ => "afflicted with a bizarre, never before seen status effect (did someone forget to write a description?)"
+			};
+			Log($"{creature.Capitalize()} {(creature is Hero ? "are" : "is")} {desc} for {Math.Round(duration)} turn(s).", element.Color);
+		}
+
 		/// <summary>
 		/// Gets a list of all unexpired entries.
 		/// </summary>

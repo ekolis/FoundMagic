@@ -100,6 +100,11 @@ namespace FoundMagic
 		/// Elements known for spellcasting.
 		/// </summary>
 		IEnumerable<Element> Elements { get; }
+
+		/// <summary>
+		/// Any status effects applied to this creature, and their remaining durations.
+		/// </summary>
+		IDictionary<StatusEffect, double> StatusEffects { get; }
 	}
 
 	public static class CreatureExtensions
@@ -152,5 +157,57 @@ namespace FoundMagic
 			if (decedent is Hero h)
 				h.DeathTimestamp = DateTime.Now;
 		}
+
+		/// <summary>
+		/// Perfomms bookkeeping related to the passing of time, such as updating the action timer and expiring status effects.
+		/// </summary>
+		/// <param name="creature">The creature to process.</param>
+		/// <param name="time">The amount of time passing.</param>
+		public static void ProcessTime(this ICreature creature, double time)
+		{
+			creature.Timer -= time;
+			foreach (var kvp in creature.StatusEffects.ToArray())
+			{
+				creature.StatusEffects[kvp.Key] -= time;
+				if (creature.StatusEffects[kvp.Key] <= 0)
+					creature.StatusEffects.Remove(kvp.Key);
+			}
+		}
+
+		/// <summary>
+		/// Applies a status effect to a creature. Durations don't stack linearly, to make things fairer.
+		/// </summary>
+		/// <param name="creature">The creature to apply the status effect to.</param>
+		/// <param name="fx">The status effect to apply.</param>
+		/// <param name="duration">How long should the effect last? Reduced if the creature already has the effect.</param>
+		public static double ApplyStatusEffect(this ICreature creature, StatusEffect fx, double duration)
+		{
+			// find existing duration
+			double existingDuration = 0;
+			if (creature.StatusEffects.ContainsKey(fx))
+				existingDuration = creature.StatusEffects[fx];
+
+			// compute additional duration
+			var addedDuration = MathX.Pythagoras(existingDuration, duration);
+			if (duration < 0)
+				addedDuration *= -1;
+
+			// set status effect duration
+			creature.StatusEffects[fx] = existingDuration + addedDuration;
+			if (creature.StatusEffects[fx] <= 0)
+				creature.StatusEffects.Remove(fx);
+
+			// retunr additional duration
+			return addedDuration;
+		}
+
+		/// <summary>
+		/// Does this creature have a particular status effect?
+		/// </summary>
+		/// <param name="creature">The creature to check.</param>
+		/// <param name="fx">The status effect to check for.</param>
+		/// <returns>true if the creature has the status effect, otherwise false.</returns>
+		public static bool HasStatusEffect(this ICreature creature, StatusEffect fx)
+			=> creature.StatusEffects.ContainsKey(fx) && creature.StatusEffects[fx] > 0;
 	}
 }

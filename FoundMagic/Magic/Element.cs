@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -103,5 +104,46 @@ namespace FoundMagic.Magic
 		/// The basic mana cost of the spell, with 100% accuracy.
 		/// </summary>
 		public abstract double BaseManaCost { get; }
+
+		protected IEnumerable<Tile> CastSingleTargetProjectile(ICreature caster, Direction direction, double power, double accuracy, Action<ICreature> effect)
+		{
+			var manaCost = GetManaCost(accuracy);
+
+			if (manaCost > caster.Mana)
+			{
+				// not enough mana, spell fizzles
+				Logger.LogSpellFizzle(caster);
+				return Enumerable.Empty<Tile>();
+			}
+			else if (manaCost < 0)
+			{
+				// REALLY inaccurate spell caused integer overflow? just let it fizzle.
+				Logger.LogSpellFizzle(caster);
+				return Enumerable.Empty<Tile>();
+			}
+			else
+			{
+				// consume mana
+				caster.Mana -= manaCost;
+
+				// determine targets of spell
+				var tiles = GetTargets(caster, direction, false).ToImmutableList();
+				var creatures = tiles.Select(q => q.Creature).OfType<ICreature>();
+
+				// log cast
+				Logger.LogSpellCast(caster, power, accuracy, this);
+
+				// do spell effects
+				if (creatures.Any())
+				{
+					foreach (var creature in creatures)
+					{
+						effect(creature);
+					}
+				}
+
+				return tiles;
+			}
+		}
 	}
 }
