@@ -19,6 +19,7 @@ namespace FoundMagic
 			Type = type;
 			VisibleTiles = Enumerable.Empty<Tile>();
 			Hitpoints = MaxHitpoints;
+			Mana = MaxMana;
 		}
 
 		public MonsterType Type { get; }
@@ -90,5 +91,9 @@ namespace FoundMagic
 
 		public override string ToString()
 			=> Name;
+
+		public int MaxMana => Type.MaxMana;
+
+		public int Mana { get; set; }
 	}
 }

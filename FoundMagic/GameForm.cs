@@ -79,6 +79,13 @@ namespace FoundMagic
 				g.DrawString(entry.Message, font, new SolidBrush(Color.FromArgb(alpha, entry.Color)), 0f, (float)howHigh);
 			}
 
+			// draw the HP/MP
+			g.FillRectangle(Brushes.Black, 0, 0, 10 * glyphSize, 4 * glyphSize);
+			g.DrawString($"H: {hero.Hitpoints} / {hero.MaxHitpoints}", font, Brushes.Red, 0, 0 * glyphSize);
+			g.DrawLogarithmicBar(hero.Hitpoints, hero.MaxHitpoints, Brushes.Red, 0, 1 * glyphSize, glyphSize);
+			g.DrawString($"M: {hero.Mana} / {hero.MaxMana}", font, Brushes.Blue, 0, 2 * glyphSize);
+			g.DrawLogarithmicBar(hero.Mana, hero.MaxMana, Brushes.Blue, 0, 3 * glyphSize, glyphSize);
+
 			// draw the DEATH DEATH DEATH DEATH DEATH 💀💀💀
 			if (Hero.Instance.DeathTimestamp != null)
 			{

@@ -84,6 +84,16 @@ namespace FoundMagic
 		/// Number of HP of health that this creature has left.
 		/// </summary>
 		int Hitpoints { get; set; }
+
+		/// <summary>
+		/// Maximum amount of mana that this creature can have.
+		/// </summary>
+		int MaxMana { get; }
+
+		/// <summary>
+		/// Amount of mana that this creature has left.
+		/// </summary>
+		int Mana { get; set; }
 	}
 
 	public static class CreatureExtensions

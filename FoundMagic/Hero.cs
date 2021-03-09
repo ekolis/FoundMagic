@@ -21,6 +21,7 @@ namespace FoundMagic
 		private Hero()
 		{
 			Hitpoints = MaxHitpoints;
+			Mana = MaxMana;
 		}
 
 		/// <summary>
@@ -109,6 +110,10 @@ namespace FoundMagic
 		public int MaxHitpoints { get; } = 10;
 
 		public int Hitpoints { get; set; }
+
+		public int MaxMana { get; } = 10;
+
+		public int Mana { get; set; }
 
 		public override string ToString()
 			=> Name;
