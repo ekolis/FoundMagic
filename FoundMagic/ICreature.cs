@@ -112,11 +112,25 @@ namespace FoundMagic
 		/// <returns>The amount of damage inflicted.</returns>
 		public static int Attack(this ICreature attacker, ICreature target)
 		{
-			int dmg = Math.Min(attacker.Strength, target.Hitpoints);
+			Logger.LogAttack(attacker, target, attacker.Strength);
+			return target.TakeDamage(attacker.Strength);
+		}
+
+		/// <summary>
+		/// Allows a creature to take damage.
+		/// </summary>
+		/// <param name="target">The creature taking damage.</param>
+		/// <param name="dmg">The amount of damage to inflict.</param>
+		/// <returns>The amount of damage taken.</returns>
+		public static int TakeDamage(this ICreature target, int dmg)
+		{
 			target.Hitpoints -= dmg;
-			Logger.LogAttack(attacker, target, dmg);
 			if (target.Hitpoints <= 0)
+			{
+				dmg += target.Hitpoints; // overkill, report smaller number of HP lost
+				target.Hitpoints = 0;
 				target.Kill();
+			}
 			return dmg;
 		}
 

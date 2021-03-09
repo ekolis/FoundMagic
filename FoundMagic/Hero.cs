@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FoundMagic.Magic;
 using RogueSharp;
 
 namespace FoundMagic
@@ -63,26 +64,33 @@ namespace FoundMagic
 			// get globals
 			Floor floor = Floor.Current;
 
-			// movement keys
-			Direction? dir = null;
-			if (Keyboard.IsAnyKeyPressed(Keys.Up, Keys.D8, Keys.W))
-				dir = Direction.North;
-			else if (Keyboard.IsAnyKeyPressed(Keys.Down, Keys.D2, Keys.S))
-				dir = Direction.South;
-			else if (Keyboard.IsAnyKeyPressed(Keys.Left, Keys.D4, Keys.A))
-				dir = Direction.West;
-			else if (Keyboard.IsAnyKeyPressed(Keys.Right, Keys.D6, Keys.D))
-				dir = Direction.East;
-			else if (Keyboard.IsAnyKeyPressed(Keys.OemPeriod, Keys.D5, Keys.LShiftKey))
-				dir = Direction.Stationary;
+			// which way are we moving/casting?
+			var dir = Keyboard.ActionDirection;
+
+			// are we casting a spell?
+			Spell? spell = null;
+			if (Keyboard.IsKeyPressed(Keys.ControlKey))
+			{
+				spell = new Spell(this, dir, new Fire(), 1, 1);
+			}
 
 			// HACK: why is this necessary?
 			Keyboard.Reset();
 
 			if (dir is not null)
 			{
-				// move hero
-				bool success = floor.Move(this, dir);
+				bool success;
+				if (spell is not null)
+				{
+					// we are casting a spell
+					spell.Cast();
+					success = true;
+				}
+				else
+				{
+					// move hero
+					success = floor.Move(this, dir);
+				}
 
 				if (success)
 				{

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FoundMagic.Magic;
 using RogueSharp;
 using Point = System.Drawing.Point;
 
@@ -121,10 +122,13 @@ namespace FoundMagic
 			// note a key press
 			Keyboard.Press(e.KeyCode);
 
-			// let the hero move once, and monsters during that duration
-			Floor.Current.ProcessTime(Hero.Instance.Timer + Hero.Instance.GetActionTime());
+			if (Keyboard.ActionDirection is not null)
+			{
+				// let the hero act once, and monsters during that duration
+				Floor.Current.ProcessTime(Hero.Instance.Timer + Hero.Instance.GetActionTime());
 
-			Invalidate();
+				Invalidate();
+			}
 		}
 
 		private void GameForm_KeyUp(object sender, KeyEventArgs e)

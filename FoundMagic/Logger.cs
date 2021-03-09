@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FoundMagic.Magic;
 
 namespace FoundMagic
 {
@@ -47,6 +48,27 @@ namespace FoundMagic
 				Log($"{decedent.Capitalize()} die...", Color.Red);
 			else
 				Log($"{decedent.Capitalize()} dies.", Color.Cyan);
+		}
+
+		public static void LogSpellCast(ICreature caster, params Element[] elements)
+		{
+			if (caster is Hero)
+				Log($"{caster.Capitalize()} cast a spell: {string.Join<Element>("/", elements)}.", elements.Last().Color);
+			else
+				Log($"{caster.Capitalize()} casts a spell: {string.Join<Element>("/", elements)}.", elements.Last().Color);
+		}
+
+		public static void LogSpellDamage(ICreature target, Element element, int dmg)
+		{
+			if (element is Fire)
+				Log($"{target.Capitalize()} {(target is Hero ? "are" : "is")} burned! ({dmg} dmg, {target.Hitpoints} HP left)", element.Color);
+			else
+				Log($"{target.Capitalize()} {(target is Hero ? "are" : "is")} hit with an unknown element! ({dmg} dmg, {target.Hitpoints} HP left)", element.Color);
+		}
+
+		public static void LogSpellFizzle(ICreature caster)
+		{
+			Log($"{caster.Capitalize()} {(caster is Hero ? "try" : "tries")} to cast a spell, but it fizzles.", Color.White);
 		}
 
 		/// <summary>
