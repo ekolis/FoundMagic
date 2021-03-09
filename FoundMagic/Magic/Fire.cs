@@ -42,7 +42,7 @@ namespace FoundMagic.Magic
 				var creatures = tiles.Select(q => q.Creature).OfType<ICreature>();
 
 				// log cast
-				Logger.LogSpellCast(caster, this);
+				Logger.LogSpellCast(caster, power, accuracy, this);
 
 				// do spell effects
 				if (creatures.Any())

@@ -57,16 +57,41 @@ namespace FoundMagic
 
 		private void GameForm_KeyDown(object sender, KeyEventArgs e)
 		{
+			// find hero
+			var h = Hero.Instance;
+
 			// note a key press
 			Keyboard.Press(e.KeyCode);
 
 			if (Keyboard.ActionDirection is not null)
 			{
-				// let the hero act once, and monsters during that duration
-				Floor.Current.ProcessTime(Hero.Instance.Timer + Hero.Instance.GetActionTime());
-
-				Invalidate();
+				if (!h.IsCasting)
+				{
+					if (Keyboard.IsKeyPressed(Keys.ControlKey))
+					{
+						// begin spellcasting
+						h.IsCasting = true;
+					}
+					else
+					{
+						// let the hero act once, and monsters during that duration
+						Floor.Current.ProcessTime(h.Timer + h.GetActionTime());
+					}
+				}
 			}
+
+			if (h.Spell is not null)
+			{
+				// cast the spell and exit casting mode
+				h.Spell.Cast();
+				h.IsCasting = false;
+				h.Spell = null;
+				h.SpellWord = "";
+				h.IsCasting = false;
+				h.SpellTimestamp = null;
+			}
+
+			Invalidate();
 		}
 
 		private void GameForm_KeyUp(object sender, KeyEventArgs e)

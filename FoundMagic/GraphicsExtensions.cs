@@ -26,7 +26,14 @@ namespace FoundMagic
 
 		public static void DrawSpellcastingInterface(this Graphics g, Floor floor, Hero hero, Font font, int glyphSize)
 		{
-			// TODO: draw spellcasting interface
+			int line = 0;
+			g.DrawString("You know the following magic words:", font, Brushes.White, 0, line++ * glyphSize);
+			foreach (var element in hero.Elements)
+			{
+				g.DrawString($"{element.GetType().Name}: {element.Word}", font, new SolidBrush(element.Color), 0, line++ * glyphSize);
+			}
+			g.DrawString("Start typing a magic word to cast a spell!", font, Brushes.White, 0, line++ * glyphSize);
+			g.DrawString("Quick typing makes the spell more powerful, while accuracy reduces the mana cost!", font, Brushes.White, 0, line++ * glyphSize);
 		}
 
 		public static void DrawMap(this Graphics g, Floor floor, Font font, int glyphSize, Brush fogBrush)
@@ -47,6 +54,7 @@ namespace FoundMagic
 						// draw some translucent fog
 						g.FillRectangle(fogBrush, p.X, p.Y, glyphSize, glyphSize);
 					}
+					// TODO: draw tiles affected by spells
 				}
 			}
 		}

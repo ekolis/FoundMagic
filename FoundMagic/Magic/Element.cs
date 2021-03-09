@@ -14,7 +14,10 @@ namespace FoundMagic.Magic
 	{
 		protected Element()
 		{
-			Word = World.Instance.Rng.Pick(Words);
+			var t = GetType();
+			if (!AllWords.ContainsKey(t))
+				AllWords[t] = World.Instance.Rng.Pick(Words);
+			Word = AllWords[t];
 		}
 
 		/// <summary>
@@ -91,5 +94,10 @@ namespace FoundMagic.Magic
 		/// The color used to represent this element.
 		/// </summary>
 		public abstract Color Color { get; }
+
+		/// <summary>
+		/// The magic word which represents each element in the current game.
+		/// </summary>
+		private static IDictionary<Type, string> AllWords { get; } = new Dictionary<Type, string>();
 	}
 }

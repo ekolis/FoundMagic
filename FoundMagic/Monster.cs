@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FoundMagic.Magic;
 using RogueSharp;
 
 namespace FoundMagic
@@ -95,5 +96,7 @@ namespace FoundMagic
 		public int MaxMana => Type.MaxMana;
 
 		public int Mana { get; set; }
+
+		public IEnumerable<Element> Elements { get; } = Enumerable.Empty<Element>();
 	}
 }

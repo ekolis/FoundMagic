@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using FoundMagic.Magic;
 using RogueSharp;
 
 namespace FoundMagic
@@ -94,6 +95,11 @@ namespace FoundMagic
 		/// Amount of mana that this creature has left.
 		/// </summary>
 		int Mana { get; set; }
+
+		/// <summary>
+		/// Elements known for spellcasting.
+		/// </summary>
+		IEnumerable<Element> Elements { get; }
 	}
 
 	public static class CreatureExtensions

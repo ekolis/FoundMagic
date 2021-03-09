@@ -67,23 +67,16 @@ namespace FoundMagic
 			// which way are we moving/casting?
 			var dir = Keyboard.ActionDirection;
 
-			// are we casting a spell?
-			Spell? spell = null;
-			if (Keyboard.IsKeyPressed(Keys.ControlKey))
-			{
-				spell = new Spell(this, dir, new Fire(), 1, 1);
-			}
-
 			// HACK: why is this necessary?
 			Keyboard.Reset();
 
 			if (dir is not null)
 			{
 				bool success;
-				if (spell is not null)
+				if (Spell is not null)
 				{
 					// we are casting a spell
-					spell.Cast();
+					Spell.Cast();
 					success = true;
 				}
 				else
@@ -140,5 +133,28 @@ namespace FoundMagic
 		/// Is the spellcasting interface open?
 		/// </summary>
 		public bool IsCasting { get; set; } = false;
+
+		public IEnumerable<Element> Elements { get; } = new Element[] { new Fire() };
+
+		/// <summary>
+		/// The magic word currently being typed/cast.
+		/// </summary>
+		public string SpellWord { get; set; } = "";
+
+		/// <summary>
+		/// The spell that the hero is casting.
+		/// </summary>
+		public Spell? Spell { get; set; }
+
+		/// <summary>
+		/// How long did it take the player to type the magic words to cast a spell?
+		/// </summary>
+		public TimeSpan? SpellDuration
+			=> DateTime.Now - SpellTimestamp;
+
+		/// <summary>
+		/// When did the player start typing the magic words to cast a spell?
+		/// </summary>
+		public DateTime? SpellTimestamp { get; set; }
 	}
 }

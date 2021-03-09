@@ -50,12 +50,24 @@ namespace FoundMagic
 				Log($"{decedent.Capitalize()} dies.", Color.Cyan);
 		}
 
-		public static void LogSpellCast(ICreature caster, params Element[] elements)
+		public static void LogSpellCast(ICreature caster, double power, double accuracy, params Element[] elements)
 		{
+			string powerStr = "", accuracyStr = "";
+			var thresholdLow = 1.0 / 3.0;
+			var thresholdHigh = 2.0 / 3.0;
+			if (power >= thresholdHigh)
+				powerStr = "powerful";
+			else if (power <= thresholdLow)
+				powerStr = "weak";
+			if (accuracy >= thresholdHigh)
+				accuracyStr = "keen";
+			if (accuracy <= thresholdLow)
+				accuracyStr = "blunt";
+			var desc = string.Join(" ", new string[] { powerStr, accuracyStr }).Trim();
 			if (caster is Hero)
-				Log($"{caster.Capitalize()} cast a spell: {string.Join<Element>("/", elements)}.", elements.Last().Color);
+				Log($"{caster.Capitalize()} cast a {desc} spell: {string.Join<Element>("/", elements)}.", elements.Last().Color);
 			else
-				Log($"{caster.Capitalize()} casts a spell: {string.Join<Element>("/", elements)}.", elements.Last().Color);
+				Log($"{caster.Capitalize()} casts a {desc} spell: {string.Join<Element>("/", elements)}.", elements.Last().Color);
 		}
 
 		public static void LogSpellDamage(ICreature target, Element element, int dmg)

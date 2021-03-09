@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FoundMagic.Magic;
 
 namespace FoundMagic
 {
@@ -19,7 +20,31 @@ namespace FoundMagic
 			=> keys.Any(key => IsKeyPressed(key));
 
 		public static bool Press(Keys key)
-			=> PressedKeys.Add(key);
+		{ 
+			var result = PressedKeys.Add(key);
+			var h = Hero.Instance;
+			if (h.IsCasting)
+			{
+				if (key >= Keys.A && key <= Keys.Z)
+				{
+					// start or continue the spell
+					if (h.SpellTimestamp is null)
+						h.SpellTimestamp = DateTime.Now;
+					h.SpellWord += key.ToString();
+				}
+				else if (key == Keys.Enter)
+				{
+					// finish the spell
+					h.Spell = Spell.FromWord(h, LastActionDirection, h.SpellWord, h.SpellDuration.Value);
+				}
+			}
+			else
+			{
+				if (ActionDirection is not null)
+					LastActionDirection = ActionDirection;
+			}
+			return result;
+		}
 
 		public static bool Release(Keys key)
 			=> PressedKeys.Remove(key);
@@ -49,5 +74,7 @@ namespace FoundMagic
 				return null;
 			}
 		}
+
+		public static Direction? LastActionDirection { get; private set; }
 	}
 }
