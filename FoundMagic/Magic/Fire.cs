@@ -22,9 +22,9 @@ namespace FoundMagic.Magic
 			"singe",
 		};
 
-		public override IEnumerable<Tile> Cast(ICreature caster, Direction direction, double power, double accuracy)
+		public override IEnumerable<Tile> Cast(ICreature caster, Direction direction, double power, double efficiency)
 		{
-			return CastSingleTargetProjectile(caster, direction, power, accuracy, creature =>
+			return CastSingleTargetProjectile(caster, direction, power, efficiency, creature =>
 			{
 				// inflict some damage
 				var dmg = (int)Math.Round(3 * power);

@@ -9,11 +9,11 @@ namespace FoundMagic.Magic
 	/// <summary>
 	/// A magic spell.
 	/// </summary>
-	public record Spell(ICreature Caster, Direction Direction, Element Element, double Power, double Accuracy)
+	public record Spell(ICreature Caster, Direction Direction, Element Element, double Power, double Efficiency)
 	{
 		public void Cast()
 		{
-			Element.Cast(Caster, Direction, Power, Accuracy);
+			Element.Cast(Caster, Direction, Power, Efficiency);
 		}
 
 		public static Spell FromWord(ICreature caster, Direction direction, string s, TimeSpan duration)
@@ -23,18 +23,18 @@ namespace FoundMagic.Magic
 			foreach (var element in caster.Elements)
 			{
 				var distance = element.Word.ToLower().Distance(s.ToLower());
-				var accy = 1.0 - (1.0 / element.Word.Length * distance); // so a four letter word would lose 25% accuracy from each letter of distance
+				var accy = 1.0 - (1.0 / element.Word.Length * distance); // so a four letter word would lose 25% power from each letter of distance
 				dict[element] = accy;
 			}
 			var bestElement = dict.OrderByDescending(q => q.Value).First().Key;
-			var bestAccuracy = dict[bestElement];
+			var bestPower = dict[bestElement];
 
-			// find spell power based on duration
+			// find spell efficiency based on duration
 			// logarithmic so instantaneous is 100%, one second is 50%, two seconds is 25%, etc...
-			var power = 1.0 / Math.Log2(duration.TotalSeconds + 2);
+			var efficiency = 1.0 / Math.Log2(duration.TotalSeconds + 2);
 
 			// create the spell
-			return new Spell(caster, direction, bestElement, power, bestAccuracy);
+			return new Spell(caster, direction, bestElement, bestPower, efficiency);
 		}
 	}
 }

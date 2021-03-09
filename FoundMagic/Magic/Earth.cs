@@ -22,9 +22,9 @@ namespace FoundMagic.Magic
 			"ground",
 		};
 
-		public override IEnumerable<Tile> Cast(ICreature caster, Direction direction, double power, double accuracy)
+		public override IEnumerable<Tile> Cast(ICreature caster, Direction direction, double power, double efficiency)
 		{
-			return CastSingleTargetProjectile(caster, direction, power, accuracy, creature =>
+			return CastSingleTargetProjectile(caster, direction, power, efficiency, creature =>
 			{
 				// slow the target
 				var duration = Math.Round(8 * power);

@@ -33,7 +33,7 @@ namespace FoundMagic
 				g.DrawString($"{element.GetType().Name}: {element.Word}", font, new SolidBrush(element.Color), 0, line++ * glyphSize);
 			}
 			g.DrawString("Start typing a magic word to cast a spell!", font, Brushes.White, 0, line++ * glyphSize);
-			g.DrawString("Quick typing makes the spell more powerful, while accuracy reduces the mana cost!", font, Brushes.White, 0, line++ * glyphSize);
+			g.DrawString("Accurate typing makes the spell more powerful, but slow typing increases the mana cost!", font, Brushes.White, 0, line++ * glyphSize);
 		}
 
 		public static void DrawMap(this Graphics g, Floor floor, Font font, int glyphSize, Brush fogBrush)

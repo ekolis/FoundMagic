@@ -27,9 +27,9 @@ namespace FoundMagic.Magic
 		/// <param name="caster">The creature casting the spell.</param>
 		/// <param name="direction">The direction in which the spell is being cast.</param>
 		/// <param name="power">How powerful was the spell? Where 0 = not powerful at all and 1 = full power.</param>
-		/// <param name="accuracy">How accurate was the spell? Where 0 = not accurate at all and 1 = full accuracy</param>
+		/// <param name="efficiency">How efficient was the spell? Where 0 = not efficient at all and 1 = full efficiency</param>
 		/// <returns>The tiles affected by the spell (i.e. it travels over and/or hits those tiles).</returns>
-		public abstract IEnumerable<Tile> Cast(ICreature caster, Direction direction, double power, double accuracy);
+		public abstract IEnumerable<Tile> Cast(ICreature caster, Direction direction, double power, double efficiency);
 
 		/// <summary>
 		/// Gets a spell target in line of sight of the specified creature.
@@ -82,10 +82,10 @@ namespace FoundMagic.Magic
 		/// <summary>
 		/// Gets the mana cost of a spell.
 		/// </summary>
-		/// <param name="accuracy">How accurate was the spell? Where 0 = not accurate at all and 1 = full accuracy</param>
+		/// <param name="efficiency">How efficient was the spell? Where 0 = not efficient at all and 1 = full efficiency</param>
 		/// <returns></returns>
-		public int GetManaCost(double accuracy)
-			=> (int)Math.Round(BaseManaCost / accuracy);
+		public int GetManaCost(double efficiency)
+			=> (int)Math.Round(BaseManaCost / efficiency);
 
 		public override string ToString()
 			=> GetType().Name;
@@ -101,13 +101,13 @@ namespace FoundMagic.Magic
 		private static IDictionary<Type, string> AllWords { get; } = new Dictionary<Type, string>();
 
 		/// <summary>
-		/// The basic mana cost of the spell, with 100% accuracy.
+		/// The basic mana cost of the spell, with 100% efficiency.
 		/// </summary>
 		public abstract double BaseManaCost { get; }
 
-		protected IEnumerable<Tile> CastSingleTargetProjectile(ICreature caster, Direction direction, double power, double accuracy, Action<ICreature> effect)
+		protected IEnumerable<Tile> CastSingleTargetProjectile(ICreature caster, Direction direction, double power, double efficiency, Action<ICreature> effect)
 		{
-			var manaCost = GetManaCost(accuracy);
+			var manaCost = GetManaCost(efficiency);
 
 			if (manaCost > caster.Mana)
 			{
@@ -131,7 +131,7 @@ namespace FoundMagic.Magic
 				var creatures = tiles.Select(q => q.Creature).OfType<ICreature>();
 
 				// log cast
-				Logger.LogSpellCast(caster, power, accuracy, this);
+				Logger.LogSpellCast(caster, power, efficiency, this);
 
 				// do spell effects
 				if (creatures.Any())
