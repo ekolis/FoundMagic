@@ -65,9 +65,9 @@ namespace FoundMagic
 				accuracyStr = "blunt";
 			var desc = string.Join(" ", new string[] { powerStr, accuracyStr }).Trim();
 			if (caster is Hero)
-				Log($"{caster.Capitalize()} cast a {desc} spell: {string.Join<Element>("/", elements)}.", elements.Last().Color);
+				Log($"{caster.Capitalize()} cast a {desc} spell: {string.Join<Element>("/", elements)} ({elements.Last().GetManaCost(accuracy)} MP).", elements.Last().Color);
 			else
-				Log($"{caster.Capitalize()} casts a {desc} spell: {string.Join<Element>("/", elements)}.", elements.Last().Color);
+				Log($"{caster.Capitalize()} casts a {desc} spell: {string.Join<Element>("/", elements)} ({elements.Last().GetManaCost(accuracy)} MP).", elements.Last().Color);
 		}
 
 		public static void LogSpellDamage(ICreature target, Element element, int dmg)

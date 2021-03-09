@@ -81,11 +81,10 @@ namespace FoundMagic.Magic
 		/// <summary>
 		/// Gets the mana cost of a spell.
 		/// </summary>
-		/// <param name="baseCost">The base mana cost of the spell.</param>
 		/// <param name="accuracy">How accurate was the spell? Where 0 = not accurate at all and 1 = full accuracy</param>
 		/// <returns></returns>
-		public int GetManaCost(int baseCost, double accuracy)
-			=> (int)Math.Round(baseCost / accuracy);
+		public int GetManaCost(double accuracy)
+			=> (int)Math.Round(BaseManaCost / accuracy);
 
 		public override string ToString()
 			=> GetType().Name;
@@ -99,5 +98,10 @@ namespace FoundMagic.Magic
 		/// The magic word which represents each element in the current game.
 		/// </summary>
 		private static IDictionary<Type, string> AllWords { get; } = new Dictionary<Type, string>();
+
+		/// <summary>
+		/// The basic mana cost of the spell, with 100% accuracy.
+		/// </summary>
+		public abstract double BaseManaCost { get; }
 	}
 }

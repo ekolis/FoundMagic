@@ -24,7 +24,7 @@ namespace FoundMagic.Magic
 
 		public override IEnumerable<Tile> Cast(ICreature caster, Direction direction, double power, double accuracy)
 		{
-			var manaCost = GetManaCost(1, accuracy);
+			var manaCost = GetManaCost(accuracy);
 
 			if (manaCost > caster.Mana)
 			{
@@ -60,5 +60,7 @@ namespace FoundMagic.Magic
 		}
 
 		public override Color Color => Color.Orange;
+
+		public override double BaseManaCost { get; } = 1;
 	}
 }
