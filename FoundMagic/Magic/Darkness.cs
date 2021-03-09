@@ -36,5 +36,7 @@ namespace FoundMagic.Magic
 		public override Color Color => Color.Purple;
 
 		public override double BaseManaCost { get; } = 2;
+
+		public override string EffectDescription => "Drains 2 HP from the target.";
 	}
 }

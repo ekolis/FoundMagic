@@ -43,5 +43,7 @@ namespace FoundMagic.Magic
 		public override Color Color => Color.Pink;
 
 		public override double BaseManaCost { get; } = 1;
+
+		public override string EffectDescription => "Heals the target 3 HP. If cast on an enemy, also stuns it for 3 turns.";
 	}
 }

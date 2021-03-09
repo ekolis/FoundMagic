@@ -36,5 +36,7 @@ namespace FoundMagic.Magic
 		public override Color Color => Color.Cyan;
 
 		public override double BaseManaCost { get; } = 1;
+
+		public override string EffectDescription => "Pushes the target back 2 spaces, unless there's something behind it.";
 	}
 }

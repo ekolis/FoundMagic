@@ -30,7 +30,9 @@ namespace FoundMagic
 			g.DrawString("You know the following magic words:", font, Brushes.White, 0, line++ * glyphSize);
 			foreach (var element in hero.Elements)
 			{
-				g.DrawString($"{element.GetType().Name}: {element.Word}", font, new SolidBrush(element.Color), 0, line++ * glyphSize);
+				var brush = new SolidBrush(element.Color);
+				g.DrawString($"{element.GetType().Name} ", font, brush , 0, line++ * glyphSize);
+				g.DrawString($"  {element.Word}: {element.EffectDescription} ({element.BaseManaCost} MP)", font, brush, 0, line++ * glyphSize);
 			}
 			g.DrawString("Start typing a magic word to cast a spell!", font, Brushes.White, 0, line++ * glyphSize);
 			g.DrawString("Accurate typing makes the spell more powerful, but slow typing increases the mana cost!", font, Brushes.White, 0, line++ * glyphSize);

@@ -36,5 +36,7 @@ namespace FoundMagic.Magic
 		public override Color Color => Color.Orange;
 
 		public override double BaseManaCost { get; } = 1;
+
+		public override string EffectDescription => "Inflicts 3 points of damage.";
 	}
 }

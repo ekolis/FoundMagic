@@ -145,5 +145,10 @@ namespace FoundMagic.Magic
 				return tiles;
 			}
 		}
+
+		/// <summary>
+		/// A brief description of the effect of an element's spell.
+		/// </summary>
+		public abstract string EffectDescription { get; }
 	}
 }

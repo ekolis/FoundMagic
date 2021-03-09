@@ -36,5 +36,7 @@ namespace FoundMagic.Magic
 		public override Color Color => Color.Blue;
 
 		public override double BaseManaCost { get; } = 1;
+
+		public override string EffectDescription => "Drains 3 MP from the target.";
 	}
 }

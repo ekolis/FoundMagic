@@ -36,5 +36,7 @@ namespace FoundMagic.Magic
 		public override Color Color => Color.Brown;
 
 		public override double BaseManaCost { get; } = 1;
+
+		public override string EffectDescription => "Slows the target (to half speed) for 8 turns.";
 	}
 }
