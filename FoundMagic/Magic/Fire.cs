@@ -32,6 +32,12 @@ namespace FoundMagic.Magic
 				Logger.LogSpellFizzle(caster);
 				return Enumerable.Empty<Tile>();
 			}
+			else if (manaCost < 0)
+			{
+				// REALLY inaccurate spell caused integer overflow? just let it fizzle.
+				Logger.LogSpellFizzle(caster);
+				return Enumerable.Empty<Tile>();
+			}
 			else
 			{
 				// consume mana
