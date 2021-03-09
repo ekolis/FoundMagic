@@ -188,7 +188,7 @@ namespace FoundMagic
 				existingDuration = creature.StatusEffects[fx];
 
 			// compute additional duration
-			var addedDuration = MathX.Pythagoras(existingDuration, duration);
+			var addedDuration = MathX.Pythagoras(existingDuration, duration) - existingDuration;
 			if (duration < 0)
 				addedDuration *= -1;
 
@@ -225,6 +225,33 @@ namespace FoundMagic
 			if (caster.Mana > caster.MaxMana)
 				caster.Mana = caster.MaxMana;
 			return drain;
+		}
+
+		/// <summary>
+		/// Heals a creature.
+		/// </summary>
+		/// <param name="creature">The creature to heal.</param>
+		/// <param name="heal">How many HP to heal.</param>
+		/// <returns>HP healed.</returns>
+		public static int Heal(this ICreature creature, int heal)
+		{
+			var actualHeal = Math.Min(heal, creature.MaxHitpoints - creature.Hitpoints);
+			creature.Hitpoints += actualHeal;
+			return actualHeal;
+		}
+
+		/// <summary>
+		/// Stuns a creature, preventing it from acting temporarily.
+		/// Stunning is less effective if the creature is already stunned.
+		/// </summary>
+		/// <param name="creature">The creature to stun.</param>
+		/// <param name="stun">How long to stun.</param>
+		/// <returns>How long the creature was stunned./returns>
+		public static double Stun(this ICreature creature, int stun)
+		{
+			var actualStun = MathX.Pythagoras(creature.Timer, stun) - creature.Timer;
+			creature.Timer += actualStun;
+			return actualStun;
 		}
 	}
 }

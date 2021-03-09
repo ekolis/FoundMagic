@@ -130,6 +130,22 @@ namespace FoundMagic
 				Log($"{caster.Capitalize()} drains {drain} mana from {target}.", element.Color);
 		}
 
+		public static void LogHealing(ICreature creature, Element element, int healing)
+		{
+			if (creature is Hero)
+				Log($"{creature.Capitalize()} are healed ({healing} HP).", element.Color);
+			else
+				Log($"{creature.Capitalize()} is healed ({healing} HP).", element.Color);
+		}
+
+		public static void LogStun(ICreature creature, Element element, double stun)
+		{
+			if (creature is Hero)
+				Log($"{creature.Capitalize()} are stunned for {stun} turns!", element.Color);
+			else
+				Log($"{creature.Capitalize()} is stunned for {stun} turns.", element.Color);
+		}
+
 		/// <summary>
 		/// Gets a list of all unexpired entries.
 		/// </summary>
