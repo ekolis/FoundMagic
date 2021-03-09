@@ -135,5 +135,10 @@ namespace FoundMagic
 		/// How long should the screen take to fade when the hero dies?
 		/// </summary>
 		public TimeSpan DeathFadeTime { get; } = new TimeSpan(0, 0, 5);
+
+		/// <summary>
+		/// Is the spellcasting interface open?
+		/// </summary>
+		public bool IsCasting { get; set; } = false;
 	}
 }
