@@ -81,7 +81,7 @@ namespace FoundMagic
 			else if (dir is not null)
 			{
 				// move hero
-				success = floor.Move(this, dir);
+				success = floor.Move(this, dir, true) > 0;
 			}
 
 			if (success)
@@ -137,6 +137,7 @@ namespace FoundMagic
 		{
 			new Fire(),
 			new Earth(),
+			new Air(),
 		};
 
 		/// <summary>

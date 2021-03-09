@@ -23,7 +23,7 @@ namespace FoundMagic
 		{
 			Entries.Add(new(message, DateTime.Now, color));
 		}
-		
+
 		/// <summary>
 		/// Logs an attack.
 		/// </summary>
@@ -93,6 +93,33 @@ namespace FoundMagic
 				_ => "afflicted with a bizarre, never before seen status effect (did someone forget to write a description?)"
 			};
 			Log($"{creature.Capitalize()} {(creature is Hero ? "are" : "is")} {desc} for {Math.Round(duration)} turn(s).", element.Color);
+		}
+
+		// TODO: LogStatusEffectEnd
+
+		public static void LogKnockback(ICreature creature, Element element, Direction direction, int distance)
+		{
+			if (direction == Direction.Stationary)
+			{
+				if (creature is Hero)
+					Log($"{creature.Capitalize()} twirl about...", element.Color);
+				else // monster
+					Log($"{creature.Capitalize()} twirls about...", element.Color);
+			}
+			else if (distance == 0)
+			{
+				if (creature is Hero)
+					Log($"{creature.Capitalize()} lean slightly to the {direction.Lowercase()}...", element.Color);
+				else // monster
+					Log($"{creature.Capitalize()} leans sligihtly to the {direction.Lowercase()}...", element.Color);
+			}
+			else
+			{
+				if (creature is Hero)
+					Log($"{creature.Capitalize()} were knocked back ({distance} to the {direction.Lowercase()}).", element.Color);
+				else // monster
+					Log($"{creature.Capitalize()} was knocked back ({distance} to the {direction.Lowercase()}).", element.Color);
+			}
 		}
 
 		/// <summary>

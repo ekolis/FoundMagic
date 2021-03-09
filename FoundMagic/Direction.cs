@@ -15,5 +15,8 @@ namespace FoundMagic
 		public static readonly Direction East = new("east", 1, 0);
 
 		public static IEnumerable<Direction> All { get; } = new Direction[] { Stationary, North, South, West, East };
+
+		public override string ToString()
+			=> Name;
 	}
 }

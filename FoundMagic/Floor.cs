@@ -101,12 +101,37 @@ namespace FoundMagic
 		/// </summary>
 		/// <param name="creature">The creature to move.</param>
 		/// <param name="direction">The direction in which to move the creature.</param>
-		/// <returns>true if successful, otherwise false</returns>
-		public bool Move(ICreature creature, Direction direction)
+		/// <param name="allowAttack">Can the move be an attack?</param>
+		/// <param name="distance">The distance to move the creature.</param>
+		/// <returns>The number of spaces moved.</returns>
+		public int Move(ICreature creature, Direction direction, bool allowAttack, int distance = 1)
 		{
+			int actualDistance = 0;
 			var oldtile = Find(creature);
-			var newtile = GetNeighbor(oldtile, direction);
-			return Move(oldtile, newtile);
+
+			for (var i = 0; i < distance; i++)
+			{
+				// find next step
+				var newtile = GetNeighbor(oldtile, direction);
+
+				// can't move off the map
+				if (newtile is null)
+					break;
+
+				// if bumping into a creature when attacking is not allowed, stop
+				if (!allowAttack && newtile.Creature is not null)
+					break;
+
+				// try to move
+				if (Move(oldtile, newtile))
+				{
+					oldtile = newtile;
+					actualDistance++;
+				}
+				else
+					break; // failed to move, stop
+			}
+			return actualDistance;
 		}
 
 		/// <summary>
