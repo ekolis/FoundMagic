@@ -120,5 +120,8 @@ namespace FoundMagic
 				g.FillRectangle(new SolidBrush(deathColor), 0, 0, gfxWidth, gfxHeight);
 			}
 		}
+
+		public static Color Average(this IEnumerable<Color> colors)
+			=> Color.FromArgb((int)colors.Average(q => q.A), (int)colors.Average(q => q.R), (int)colors.Average(q => q.G), (int)colors.Average(q => q.B));
 	}
 }

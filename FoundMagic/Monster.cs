@@ -27,7 +27,7 @@ namespace FoundMagic
 
 		public string Name => $"the {Type.Name}";
 		public char Glyph => Type.Glyph;
-		public Color Color => Type.Color;
+		public Color Color => Elements.Select(q => q.Color).Average();
 		public FieldOfView FieldOfView { get; set; }
 		public int Vision => Type.Vision;
 
@@ -98,7 +98,7 @@ namespace FoundMagic
 
 		public int Mana { get; set; }
 
-		public IEnumerable<Element> Elements { get; } = Enumerable.Empty<Element>();
+		public IEnumerable<Element> Elements => Type.Elements;
 
 		public IDictionary<StatusEffect, double> StatusEffects { get; } = new Dictionary<StatusEffect, double>();
 	}

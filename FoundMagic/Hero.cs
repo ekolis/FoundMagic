@@ -35,7 +35,7 @@ namespace FoundMagic
 
 		public char Glyph { get; } = '@';
 
-		public Color Color { get; } = Color.Blue;
+		public Color Color => Elements.Select(q => q.Color).Average();
 
 		public FieldOfView FieldOfView { get; set; }
 
