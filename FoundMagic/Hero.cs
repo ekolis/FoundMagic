@@ -140,6 +140,7 @@ namespace FoundMagic
 			new Air(),
 			new Water(),
 			new Light(),
+			new Darkness(),
 		};
 
 		/// <summary>

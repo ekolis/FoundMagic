@@ -253,5 +253,24 @@ namespace FoundMagic
 			creature.Timer += actualStun;
 			return actualStun;
 		}
+
+		/// <summary>
+		/// Drains HP from one creature and gives it to another.
+		/// </summary>
+		/// <param name="caster">The creature performing the drain.</param>
+		/// <param name="target">The creature being drained.</param>
+		/// <param name="drain">The number of HP to drain.</param>
+		/// <returns>The number of HP drained.</returns>
+		public static int DrainHPFrom(this ICreature caster, ICreature target, int drain)
+		{
+			drain = Math.Min(target.Hitpoints, drain);
+			target.Hitpoints -= drain;
+			if (target.Hitpoints <= 0)
+				target.Kill();
+			caster.Hitpoints += drain;
+			if (caster.Hitpoints > caster.MaxHitpoints)
+				caster.Hitpoints = caster.MaxHitpoints;
+			return drain;
+		}
 	}
 }

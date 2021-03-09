@@ -146,6 +146,14 @@ namespace FoundMagic
 				Log($"{creature.Capitalize()} is stunned for {stun} turns.", element.Color);
 		}
 
+		public static void LogHPDrain(ICreature caster, ICreature target, Element element, int drain)
+		{
+			if (caster is Hero)
+				Log($"{caster.Capitalize()} drain {drain} HP from {target}.", element.Color);
+			else
+				Log($"{caster.Capitalize()} drains {drain} HP from {target}.", element.Color);
+		}
+
 		/// <summary>
 		/// Gets a list of all unexpired entries.
 		/// </summary>
