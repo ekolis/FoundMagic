@@ -64,6 +64,8 @@ namespace FoundMagic
 			if (efficiency <= thresholdLow)
 				efficencyStr = "blunt";
 			var desc = string.Join(" ", new string[] { powerStr, efficencyStr }).Trim();
+			if (desc == "")
+				desc = "standard";
 			if (caster is Hero)
 				Log($"{caster.Capitalize()} cast a {desc} spell: {string.Join<Element>("/", elements)} ({elements.Last().GetManaCost(efficiency)} MP).", elements.Last().Color);
 			else
