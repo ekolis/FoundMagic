@@ -83,7 +83,7 @@ namespace FoundMagic
 			if (h.Spell is not null)
 			{
 				// cast the spell and exit casting mode
-				h.Spell.Cast();
+				Floor.Current.ProcessTime(h.Timer + h.GetActionTime());
 				h.IsCasting = false;
 				h.Spell = null;
 				h.SpellWord = "";

@@ -70,31 +70,29 @@ namespace FoundMagic
 			// HACK: why is this necessary?
 			Keyboard.Reset();
 
-			if (dir is not null)
+			bool success = false;
+
+			if (Spell is not null)
 			{
-				bool success;
-				if (Spell is not null)
-				{
-					// we are casting a spell
-					Spell.Cast();
-					success = true;
-				}
-				else
-				{
-					// move hero
-					success = floor.Move(this, dir);
-				}
+				// we are casting a spell
+				Spell.Cast();
+				success = true;
+			}
+			else if (dir is not null)
+			{
+				// move hero
+				success = floor.Move(this, dir);
+			}
 
-				if (success)
-				{
-					// update the hero's field of view
-					UpdateFov();
+			if (success)
+			{
+				// update the hero's field of view
+				UpdateFov();
 
-					// TODO: maybe log any spotted monsters so the player knows what they are? maybe even the direction in which they are spottted?
+				// TODO: maybe log any spotted monsters so the player knows what they are? maybe even the direction in which they are spottted?
 
-					// spend time
-					return 1.0 / Speed;
-				}
+				// spend time
+				return 1.0 / Speed;
 			}
 
 			return 0;
