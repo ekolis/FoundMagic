@@ -173,12 +173,8 @@ namespace FoundMagic
 			var readyCreatures = Creatures.Where(q => q.Timer <= 0);
 
 			// let them act "simultaneously"
-			double creatureTime = 0;
 			foreach (var creature in readyCreatures)
-				creatureTime = Math.Max(creatureTime, creature.Act());
-
-			// tally up any time spent
-			timeSpent += creatureTime;
+				creature.Timer += creature.Act();
 
 			// all done, return time spent
 			return timeSpent;
