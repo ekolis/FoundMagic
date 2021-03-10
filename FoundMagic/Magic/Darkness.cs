@@ -22,15 +22,12 @@ namespace FoundMagic.Magic
 			"death",
 		};
 
-		public override IEnumerable<Tile> Cast(ICreature caster, Direction direction, double power, double efficiency)
+		public override void ApplyEffect(ICreature caster, Direction direction, double power, double efficiency, ICreature target)
 		{
-			return CastSingleTargetProjectile(caster, direction, power, efficiency, creature =>
-			{
-				// drain some HP
-				var drain = (int)Math.Round(2 * power);
-				drain = caster.DrainHPFrom(creature, drain);
-				Logger.LogHPDrain(caster, creature, this, drain);
-			});
+			// drain some HP
+			var drain = (int)Math.Round(2 * power);
+			drain = caster.DrainHPFrom(target, drain);
+			Logger.LogHPDrain(caster, target, this, drain);
 		}
 
 		public override Color Color => Color.Purple;

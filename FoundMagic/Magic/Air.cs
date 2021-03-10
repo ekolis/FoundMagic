@@ -22,15 +22,12 @@ namespace FoundMagic.Magic
 			"blow",
 		};
 
-		public override IEnumerable<Tile> Cast(ICreature caster, Direction direction, double power, double efficiency)
+		public override void ApplyEffect(ICreature caster, Direction direction, double power, double efficiency, ICreature target)
 		{
-			return CastSingleTargetProjectile(caster, direction, power, efficiency, creature =>
-			{
-				// push target back
-				var dist = (int)Math.Round(2 * power);
-				dist = Floor.Current.Move(creature, direction, false, dist);
-				Logger.LogKnockback(creature, this, direction, dist);
-			});
+			// push target back
+			var dist = (int)Math.Round(2 * power);
+			dist = Floor.Current.Move(target, direction, false, dist);
+			Logger.LogKnockback(target, this, direction, dist);
 		}
 
 		public override Color Color => Color.Cyan;

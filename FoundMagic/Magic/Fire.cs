@@ -22,15 +22,12 @@ namespace FoundMagic.Magic
 			"singe",
 		};
 
-		public override IEnumerable<Tile> Cast(ICreature caster, Direction direction, double power, double efficiency)
+		public override void ApplyEffect(ICreature caster, Direction direction, double power, double efficiency, ICreature target)
 		{
-			return CastSingleTargetProjectile(caster, direction, power, efficiency, creature =>
-			{
-				// inflict some damage
-				var dmg = (int)Math.Round(3 * power);
-				Logger.LogSpellDamage(creature, this, dmg);
-				creature.TakeDamage(dmg);
-			});
+			// inflict some damage
+			var dmg = (int)Math.Round(3 * power);
+			Logger.LogSpellDamage(target, this, dmg);
+			target.TakeDamage(dmg);
 		}
 
 		public override Color Color => Color.Orange;

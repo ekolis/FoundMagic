@@ -22,15 +22,12 @@ namespace FoundMagic.Magic
 			"swim",
 		};
 
-		public override IEnumerable<Tile> Cast(ICreature caster, Direction direction, double power, double efficiency)
+		public override void ApplyEffect(ICreature caster, Direction direction, double power, double efficiency, ICreature target)
 		{
-			return CastSingleTargetProjectile(caster, direction, power, efficiency, creature =>
-			{
-				// drain some mana
-				var drain = (int)Math.Round(3 * power);
-				drain = caster.DrainManaFrom(creature, drain);
-				Logger.LogManaDrain(caster, creature, this, drain);
-			});
+			// drain some mana
+			var drain = (int)Math.Round(3 * power);
+			drain = caster.DrainManaFrom(target, drain);
+			Logger.LogManaDrain(caster, target, this, drain);
 		}
 
 		public override Color Color => Color.Blue;

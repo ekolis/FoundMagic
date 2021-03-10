@@ -22,22 +22,19 @@ namespace FoundMagic.Magic
 			"holy",
 		};
 
-		public override IEnumerable<Tile> Cast(ICreature caster, Direction direction, double power, double efficiency)
+		public override void ApplyEffect(ICreature caster, Direction direction, double power, double efficiency, ICreature target)
 		{
-			return CastSingleTargetProjectile(caster, direction, power, efficiency, creature =>
-			{
-				// heal some HP
-				var amt = (int)Math.Round(3 * power);
-				var heal = creature.Heal(amt);
-				Logger.LogHealing(creature, this, heal);
+			// heal some HP
+			var amt = (int)Math.Round(3 * power);
+			var heal = target.Heal(amt);
+			Logger.LogHealing(target, this, heal);
 
-				// stun enemies
-				if (caster is Hero && creature is Monster || caster is Monster && creature is Hero)
-				{
-					var stun = creature.Stun(amt);
-					Logger.LogStun(creature, this, stun);
-				}
-			});
+			// stun enemies
+			if (caster is Hero && target is Monster || caster is Monster && target is Hero)
+			{
+				var stun = target.Stun(amt);
+				Logger.LogStun(target, this, stun);
+			}
 		}
 
 		public override Color Color => Color.Pink;

@@ -22,15 +22,12 @@ namespace FoundMagic.Magic
 			"ground",
 		};
 
-		public override IEnumerable<Tile> Cast(ICreature caster, Direction direction, double power, double efficiency)
+		public override void ApplyEffect(ICreature caster, Direction direction, double power, double efficiency, ICreature target)
 		{
-			return CastSingleTargetProjectile(caster, direction, power, efficiency, creature =>
-			{
-				// slow the target
-				var duration = Math.Round(8 * power);
-				duration = creature.ApplyStatusEffect(StatusEffect.Slow, duration);
-				Logger.LogStatusEffectStart(creature, this, StatusEffect.Slow, duration);
-			});
+			// slow the target
+			var duration = Math.Round(8 * power);
+			duration = target.ApplyStatusEffect(StatusEffect.Slow, duration);
+			Logger.LogStatusEffectStart(target, this, StatusEffect.Slow, duration);
 		}
 
 		public override Color Color => Color.Brown;

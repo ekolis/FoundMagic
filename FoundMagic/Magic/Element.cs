@@ -28,8 +28,23 @@ namespace FoundMagic.Magic
 		/// <param name="direction">The direction in which the spell is being cast.</param>
 		/// <param name="power">How powerful was the spell? Where 0 = not powerful at all and 1 = full power.</param>
 		/// <param name="efficiency">How efficient was the spell? Where 0 = not efficient at all and 1 = full efficiency</param>
+		/// <param name="modifierElement">Optional element used to modify the spell.</param>
 		/// <returns>The tiles affected by the spell (i.e. it travels over and/or hits those tiles).</returns>
-		public abstract IEnumerable<Tile> Cast(ICreature caster, Direction direction, double power, double efficiency);
+		public IEnumerable<Tile> Cast(ICreature caster, Direction direction, double power, double efficiency, Element? modifierElement = null)
+		{
+			if (modifierElement is null)
+			{
+				return CastSingleTargetProjectile(caster, direction, power, efficiency, creature =>
+					ApplyEffect(caster, direction, power, efficiency, creature));
+			}
+			else
+			{
+				// TODO: two-word spells
+				/*return modifierElement.ApplyModifierEffect(caster, this, direction, power, efficiency, creature =>
+					ApplyEffect(caster, direction, power, efficiency, creature));*/
+				return Enumerable.Empty<Tile>();
+			}
+		}
 
 		/// <summary>
 		/// Gets a spell target in line of sight of the specified creature.
@@ -147,8 +162,35 @@ namespace FoundMagic.Magic
 		}
 
 		/// <summary>
-		/// A brief description of the effect of an element's spell.
+		/// A brief description of the effect of an element's effect.
 		/// </summary>
 		public abstract string EffectDescription { get; }
+
+		/// <summary>
+		/// A brief description of the effect of an element's modifier effect.
+		/// </summary>
+		//public abstract string ModifierEffectDescription { get; }
+
+		/// <summary>
+		/// Applies the effect of the spell to a single creature.
+		/// </summary>
+		/// <param name="caster"></param>
+		/// <param name="direction"></param>
+		/// <param name="power"></param>
+		/// <param name="efficiency"></param>
+		/// <param name="target"></param>
+		public abstract void ApplyEffect(ICreature caster, Direction direction, double power, double efficiency, ICreature target);
+
+		/// <summary>
+		/// Applies the modifier effect of the spell.
+		/// </summary>
+		/// <param name="caster"></param>
+		/// <param name="baseElement"></param>
+		/// <param name="direction"></param>
+		/// <param name="power"></param>
+		/// <param name="efficiency"></param>
+		/// <param name="effect"></param>
+		/// <returns>Tiles affected.</returns>
+		//public abstract IEnumerable<Tile> ApplyModifierEffect(ICreature caster, Element baseElement, Direction direction, double power, double efficiency, Action<ICreature> effect);
 	}
 }
