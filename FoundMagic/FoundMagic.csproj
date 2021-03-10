@@ -12,4 +12,10 @@
     <PackageReference Include="RogueSharp" Version="4.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="MonsterTypes.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

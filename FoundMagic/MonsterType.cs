@@ -1,18 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using FoundMagic.Magic;
 
 namespace FoundMagic
 {
-	public record MonsterType(string Name, char Glyph, IEnumerable<Element> Elements, int Vision, double Speed, int Strength, int MaxHitpoints, int MaxMana)
+	public record MonsterType(string Name, char Glyph, IEnumerable<string> ElementNames, int Vision, double Speed, int Strength, int MaxHitpoints, int MaxMana, int Rarity)
 	{
-		// TODO: put these in a JSON file or something
-		public static readonly MonsterType Slime = new("slime", 's', new[] { new Water() }, 2, 1, 1, 3, 3);
+		public static IEnumerable<MonsterType> All { get; }
+			= JsonSerializer.Deserialize<IEnumerable<MonsterType>>(File.ReadAllText("MonsterTypes.json")) ?? Enumerable.Empty<MonsterType>();
 
-		public static readonly IEnumerable<MonsterType> All = new MonsterType[] { Slime };
+		public IEnumerable<Element> Elements { get; }
+			= ElementNames.Select(Element.Create).ToImmutableList();
 	}
 }

@@ -13,6 +13,20 @@ namespace FoundMagic.Magic
 	/// </summary>
 	public abstract class Element
 	{
+		public static Element Create(string name)
+		{
+			return name.ToLower() switch
+			{
+				"fire" => new Fire(),
+				"earth" => new Earth(),
+				"air" => new Air(),
+				"water" => new Water(),
+				"light" => new Light(),
+				"darkness" => new Darkness(),
+				_ => throw new ArgumentException($"Invalid element name: {name}.", nameof(name))
+			};
+		}
+
 		protected Element()
 		{
 			var t = GetType();

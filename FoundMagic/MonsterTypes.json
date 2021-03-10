@@ -1,0 +1,13 @@
+﻿[
+	{
+		"Name": "slime",
+		"Glyph": "s",
+		"ElementNames": [ "water" ],
+		"Vision": 2,
+		"Speed": 1,
+		"Strength": 1,
+		"MaxHitpoints": 3,
+		"MaxMana": 3,
+		"Rarity": 1
+	}
+]
