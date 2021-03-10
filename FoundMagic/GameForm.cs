@@ -76,7 +76,10 @@ namespace FoundMagic
 					else
 					{
 						// let the hero act once, and monsters during that duration
-						Floor.Current.ProcessTime(h.Timer + h.GetActionTime());
+						Floor.Current.ProcessTime(h.Timer + h.GetActionTime(), false);
+
+						// let the monsters act until the hero is ready again
+						Floor.Current.ProcessTime(h.Timer, true);
 					}
 				}
 			}
@@ -84,12 +87,15 @@ namespace FoundMagic
 			if (h.Spell is not null)
 			{
 				// cast the spell and exit casting mode
-				Floor.Current.ProcessTime(h.Timer + h.GetActionTime());
+				Floor.Current.ProcessTime(h.Timer + h.GetActionTime(), false);
 				h.IsCasting = false;
 				h.Spell = null;
 				h.SpellWord = "";
 				h.IsCasting = false;
 				h.SpellTimestamp = null;
+
+				// let the monsters act until the hero is ready again
+				Floor.Current.ProcessTime(h.Timer, true);
 			}
 
 			Invalidate();

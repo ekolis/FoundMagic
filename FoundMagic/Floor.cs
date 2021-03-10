@@ -184,8 +184,9 @@ namespace FoundMagic
 		/// Processes actions.
 		/// </summary>
 		/// <param name="time">The amount of time to process.</param>
+		/// <param name="waitForHero">Should we stop once it's the hero's turn?</param>
 		/// <returns>The amount of time actually spent.</returns>
-		public double ProcessTime(double time)
+		public double ProcessTime(double time, bool waitForHero)
 		{
 			double timeSpent = 0;
 
@@ -197,6 +198,10 @@ namespace FoundMagic
 
 			// find any creatures who are ready to act
 			var readyCreatures = Creatures.Where(q => q.Timer <= 0);
+
+			// see if we need to stop early
+			if (waitForHero && Hero.Instance.Timer <= 0)
+				return timeSpent;
 
 			// let them act "simultaneously"
 			foreach (var creature in readyCreatures)
