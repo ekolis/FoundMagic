@@ -26,8 +26,8 @@ namespace FoundMagic.Magic
 		{
 			// inflict some damage
 			var dmg = (int)Math.Round(3 * power);
-			Logger.LogSpellDamage(target, this, dmg);
 			target.TakeDamage(dmg);
+			Logger.LogSpellDamage(target, this, dmg);
 		}
 
 		public override Color Color => Color.Orange;
