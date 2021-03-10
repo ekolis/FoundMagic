@@ -9,5 +9,60 @@
 		"MaxHitpoints": 3,
 		"MaxMana": 3,
 		"Rarity": 1
+	},
+	{
+		"Name": "skeleton",
+		"Glyph": "S",
+		"ElementNames": [ "darkness" ],
+		"Vision": 4,
+		"Speed": 1,
+		"Strength": 2,
+		"MaxHitpoints": 5,
+		"MaxMana": 1,
+		"Rarity": 2
+	},
+	{
+		"Name": "dervish",
+		"Glyph": "&",
+		"ElementNames": [ "air" ],
+		"Vision": 4,
+		"Speed": 1.5,
+		"Strength": 1,
+		"MaxHitpoints": 1,
+		"MaxMana": 10,
+		"Rarity": 2
+	},
+	{
+		"Name": "golem",
+		"Glyph": "G",
+		"ElementNames": [ "earth" ],
+		"Vision": 1,
+		"Speed": 0.5,
+		"Strength": 4,
+		"MaxHitpoints": 10,
+		"MaxMana": 2,
+		"Rarity": 4
+	},
+	{
+		"Name": "spitfire",
+		"Glyph": "F",
+		"ElementNames": [ "fire" ],
+		"Vision": 4,
+		"Speed": 1.25,
+		"Strength": 3,
+		"MaxHitpoints": 5,
+		"MaxMana": 5,
+		"Rarity": 4
+	},
+	{
+		"Name": "celestrian",
+		"Glyph": "A",
+		"ElementNames": [ "light" ],
+		"Vision": 4,
+		"Speed": 1.5,
+		"Strength": 4,
+		"MaxHitpoints": 8,
+		"MaxMana": 10,
+		"Rarity": 8
 	}
 ]

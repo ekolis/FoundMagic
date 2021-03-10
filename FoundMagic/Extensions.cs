@@ -42,8 +42,8 @@ namespace FoundMagic
 				cumulativeWeight += weight;
 				list.Add((item, weight, cumulativeWeight));
 			}
-			var num = random.Next(0, list.Last().CumulativeWeight);
-			var match = list.Last(q => q.CumulativeWeight > num);
+			var num = random.Next(list.Last().CumulativeWeight);
+			var match = list.First(q => q.CumulativeWeight >= num);
 			return match.Item;
 
 		}
