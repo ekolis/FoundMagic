@@ -141,9 +141,9 @@ namespace FoundMagic
 		public static void LogStun(ICreature creature, Element element, double stun)
 		{
 			if (creature is Hero)
-				Log($"{creature.Capitalize()} are stunned for {stun} turns!", element.Color);
+				Log($"{creature.Capitalize()} are stunned for {Math.Round(stun)} turns!", element.Color);
 			else
-				Log($"{creature.Capitalize()} is stunned for {stun} turns.", element.Color);
+				Log($"{creature.Capitalize()} is stunned for {Math.Round(stun)} turns.", element.Color);
 		}
 
 		public static void LogHPDrain(ICreature caster, ICreature target, Element element, int drain)
