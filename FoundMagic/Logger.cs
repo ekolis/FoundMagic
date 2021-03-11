@@ -9,7 +9,7 @@ using FoundMagic.Magic;
 using FoundMagic.Mapping;
 using FoundMagic.Creatures;
 
-namespace FoundMagic.UI
+namespace FoundMagic
 {
 	/// <summary>
 	/// Logs things for the player to read.
