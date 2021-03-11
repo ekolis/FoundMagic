@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FoundMagic.Mapping;
+using FoundMagic.UI;
 
 namespace FoundMagic
 {

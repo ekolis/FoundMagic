@@ -1,5 +1,5 @@
 ﻿
-namespace FoundMagic
+namespace FoundMagic.UI
 {
 	partial class GameForm
 	{

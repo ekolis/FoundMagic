@@ -14,7 +14,7 @@ using Point = System.Drawing.Point;
 using FoundMagic.Mapping;
 using FoundMagic.Creatures;
 
-namespace FoundMagic
+namespace FoundMagic.UI
 {
 	public partial class GameForm : Form
 	{
