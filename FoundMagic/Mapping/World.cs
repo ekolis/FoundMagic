@@ -25,7 +25,12 @@ namespace FoundMagic.Mapping
 		/// <remarks>
 		/// He's got the whole world in his hands...
 		/// </remarks>
-		public static World Instance { get; } = new World(42);
+		public static World Instance { get; private set; }
+
+		public static void Setup(int seed)
+		{
+			Instance = new World(seed);
+		}
 
 		/// <summary>
 		/// Creates a whole new world. A wondrous *ducks*
