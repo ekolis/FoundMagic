@@ -82,9 +82,18 @@ namespace FoundMagic.Creatures
 
 			if (Spell is not null)
 			{
-				// we are casting a spell
-				Spell.Cast();
-				success = true;
+				if (Spell.CanCast)
+				{
+					// we are casting a spell
+					Spell.Cast();
+					success = true;
+				}
+				else
+				{
+					// not enough attunement from essences
+					Logger.LogSpellFizzle(this);
+					success = false;
+				}
 			}
 			else if (dir is not null)
 			{
@@ -158,15 +167,32 @@ namespace FoundMagic.Creatures
 		/// </summary>
 		public bool IsCasting { get; set; } = false;
 
-		public IEnumerable<Element> Elements { get; }
-			= new[]
-			{
-				// you get one attack spell
-				World.Instance.Rng.Pick(new Element[] {	new Fire(Element.EssencesForStandardAttunement), new Darkness(Element.EssencesForStandardAttunement) }),
+		private Element[]? elements;
 
-				// and one utility spell
-				World.Instance.Rng.Pick(new Element[] { new Air(Element.EssencesForStandardAttunement), new Earth(Element.EssencesForStandardAttunement), new Water(Element.EssencesForStandardAttunement), new Light(Element.EssencesForStandardAttunement) })
-			};
+		public IEnumerable<Element> Elements
+		{
+			get
+			{
+				if (elements is null)
+				{
+					// you get one attack spell
+					var fire = new Fire(0);
+					var darkness = new Darkness(0);
+					World.Instance.Rng.Pick(new Element[] { fire, darkness }).Essences = Element.EssencesForStandardAttunement;
+
+					// and one utility spell
+					var air = new Air(0);
+					var earth = new Earth(0);
+					var water = new Water(0);
+					var light = new Light(0);
+					World.Instance.Rng.Pick(new Element[] { air, earth, water, light }).Essences = Element.EssencesForStandardAttunement;
+
+					// set up elements list
+					elements = new Element[] { fire, earth, air, water, light, darkness };
+				}
+				return elements;
+			}
+		}
 
 	/// <summary>
 	/// The magic word currently being typed/cast.

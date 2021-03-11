@@ -49,6 +49,9 @@ namespace FoundMagic.Magic
 		/// <returns>The tiles affected by the spell (i.e. it travels over and/or hits those tiles).</returns>
 		public IEnumerable<Tile> Cast(ICreature caster, Direction direction, double power, double efficiency, Element? modifierElement = null)
 		{
+			if (Attunement <= 0)
+				return Enumerable.Empty<Tile>();
+
 			if (modifierElement is null)
 			{
 				return CastSingleTargetProjectile(caster, direction, power, efficiency, creature =>
@@ -250,5 +253,10 @@ namespace FoundMagic.Magic
 		/// The effect amount of the spell, accounting for attunement (but not spell power).
 		/// </summary>
 		public int EffectAmount => (int)Math.Round(BaseEffectAmount * Attunement);
+
+		/// <summary>
+		/// Can this spell be cast yet?
+		/// </summary>
+		public bool CanBeCast => Attunement > 0;
 	}
 }

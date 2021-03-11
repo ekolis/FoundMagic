@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FoundMagic.Mapping;
 using FoundMagic.Creatures;
+using FoundMagic.Magic;
 
 namespace FoundMagic.UI
 {
@@ -33,11 +34,17 @@ namespace FoundMagic.UI
 			foreach (var element in hero.Elements)
 			{
 				var brush = new SolidBrush(element.Color);
-				g.DrawString($"{element.GetType().Name} ", font, brush , 0, line++ * glyphSize);
-				g.DrawString($"  {element.Word}: {element.EffectDescription} ({element.BaseManaCost} MP)", font, brush, 0, line++ * glyphSize);
+				g.DrawString($"{element.GetType().Name} at {Math.Round(element.Attunement * 100)}% attunement", font, brush, 0, line++ * glyphSize);
+				if (element.CanBeCast)
+					g.DrawString($"  {element.Word}: {element.EffectDescription} ({element.BaseManaCost} MP)", font, brush, 0, line++ * glyphSize);
+				else
+					g.DrawString($"  {Element.MinEssencesToCast - element.Essences} more essences required to cast", font, brush, 0, line++ * glyphSize);
+				line++;
 			}
+			line++;
 			g.DrawString("Start typing a magic word to cast a spell!", font, Brushes.White, 0, line++ * glyphSize);
 			g.DrawString("Accurate typing makes the spell more powerful, but slow typing increases the mana cost!", font, Brushes.White, 0, line++ * glyphSize);
+			g.DrawString("Or, kill a bunch of monsters of the appropriate element to power up your elemental attunement!", font, Brushes.White, 0, line++ * glyphSize);
 		}
 
 		public static void DrawMap(this Graphics g, Floor floor, Font font, int glyphSize, Brush fogBrush)
@@ -98,7 +105,7 @@ namespace FoundMagic.UI
 			g.DrawLogarithmicBar(hero.Mana, hero.MaxMana, Brushes.Blue, 0, 3 * glyphSize, glyphSize);
 		}
 
-		public static void DrawDeath(this Graphics g,  int gfxWidth, int gfxHeight)
+		public static void DrawDeath(this Graphics g, int gfxWidth, int gfxHeight)
 		{
 			if (Hero.Instance.DeathTimestamp != null)
 			{

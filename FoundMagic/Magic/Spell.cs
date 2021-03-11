@@ -38,5 +38,7 @@ namespace FoundMagic.Magic
 			// create the spell
 			return new Spell(caster, direction, bestElement, bestPower, efficiency);
 		}
+
+		public bool CanCast => Element.Attunement > 0; // TODO: multi element spells
 	}
 }
