@@ -8,7 +8,7 @@
 		"Strength": 1,
 		"MaxHitpoints": 3,
 		"MaxMana": 3,
-		"Rarity": 1
+		"Difficulty": 1
 	},
 	{
 		"Name": "skeleton",
@@ -19,7 +19,7 @@
 		"Strength": 2,
 		"MaxHitpoints": 5,
 		"MaxMana": 1,
-		"Rarity": 2
+		"Difficulty": 2
 	},
 	{
 		"Name": "dervish",
@@ -30,7 +30,7 @@
 		"Strength": 1,
 		"MaxHitpoints": 1,
 		"MaxMana": 10,
-		"Rarity": 2
+		"Difficulty": 2
 	},
 	{
 		"Name": "golem",
@@ -41,7 +41,7 @@
 		"Strength": 4,
 		"MaxHitpoints": 10,
 		"MaxMana": 2,
-		"Rarity": 4
+		"Difficulty": 4
 	},
 	{
 		"Name": "spitfire",
@@ -52,7 +52,7 @@
 		"Strength": 3,
 		"MaxHitpoints": 5,
 		"MaxMana": 5,
-		"Rarity": 4
+		"Difficulty": 4
 	},
 	{
 		"Name": "celestrian",
@@ -63,6 +63,6 @@
 		"Strength": 4,
 		"MaxHitpoints": 8,
 		"MaxMana": 10,
-		"Rarity": 8
+		"Difficulty": 8
 	}
 ]

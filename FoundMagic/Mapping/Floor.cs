@@ -52,14 +52,14 @@ namespace FoundMagic.Mapping
 			var places = Tiles.Cast<Tile>().Where(q => q.IsWalkable && q.Creature is null).ToList();
 			const int monsterRarity = 10;
 			var numMonsters = places.Count() / monsterRarity;
-			var maxRarity = MonsterType.All.Max(q => q.Rarity);
+			var maxMonsterDifficulty = MonsterType.All.Max(q => q.Difficulty);
 			for (int i = 0; i < numMonsters; i++)
 			{
 				if (!places.Any())
 					break; // nowhere to place a monster
 
 				var place = World.Instance.Rng.Pick(places);
-				var monsterType = World.Instance.Rng.PickWeighted(MonsterType.All, q => maxRarity / q.Rarity / CompareDifficulty(q.Rarity, Difficulty));
+				var monsterType = World.Instance.Rng.PickWeighted(MonsterType.All, q => maxMonsterDifficulty / q.Difficulty / CompareDifficulty(q.Difficulty, Difficulty));
 				place.Creature = new Monster(monsterType);
 			}
 		}

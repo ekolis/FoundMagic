@@ -11,7 +11,7 @@ using FoundMagic.Magic;
 
 namespace FoundMagic.Creatures
 {
-	public record MonsterType(string Name, char Glyph, IEnumerable<string> ElementNames, int Vision, double Speed, int Strength, int MaxHitpoints, int MaxMana, int Rarity)
+	public record MonsterType(string Name, char Glyph, IEnumerable<string> ElementNames, int Vision, double Speed, int Strength, int MaxHitpoints, int MaxMana, int Difficulty)
 	{
 		public static IEnumerable<MonsterType> All { get; }
 			= JsonSerializer.Deserialize<IEnumerable<MonsterType>>(File.ReadAllText("Data/MonsterTypes.json")) ?? Enumerable.Empty<MonsterType>();
