@@ -8,7 +8,7 @@ using FoundMagic.Magic;
 using FoundMagic.Mapping;
 using FoundMagic.Creatures;
 
-namespace FoundMagic
+namespace FoundMagic.UI
 {
 	/// <summary>
 	/// Handles keyboard input.

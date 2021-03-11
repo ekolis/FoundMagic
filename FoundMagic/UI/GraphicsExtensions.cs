@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using FoundMagic.Mapping;
 using FoundMagic.Creatures;
 
-namespace FoundMagic
+namespace FoundMagic.UI
 {
 	/// <summary>
 	/// Extension methods for drawing graphics.
