@@ -16,6 +16,11 @@ namespace FoundMagic.Magic
 	public class Air
 		: Element
 	{
+		public Air(int essences)
+			: base(essences)
+		{ 
+		}
+
 		protected override IEnumerable<string> Words { get; } = new string[]
 		{
 			"aero",
@@ -27,7 +32,7 @@ namespace FoundMagic.Magic
 		public override void ApplyEffect(ICreature caster, Direction direction, double power, double efficiency, ICreature target)
 		{
 			// push target back
-			var dist = (int)Math.Round(2 * power);
+			var dist = (int)Math.Round(EffectAmount * power);
 			dist = Floor.Current.Move(target, direction, false, dist);
 			Logger.LogKnockback(target, this, direction, dist);
 		}
@@ -36,6 +41,8 @@ namespace FoundMagic.Magic
 
 		public override double BaseManaCost { get; } = 1;
 
-		public override string EffectDescription => "Pushes the target back 2 spaces, unless there's something behind it.";
+		public override string EffectDescription => $"Pushes the target back {EffectAmount} spaces, unless there's something behind it.";
+
+		public override int BaseEffectAmount { get; } = 2;
 	}
 }

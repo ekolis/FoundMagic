@@ -16,6 +16,11 @@ namespace FoundMagic.Magic
 	public class Light
 		: Element
 	{
+		public Light(int essences)
+			: base(essences)
+		{
+		}
+
 		protected override IEnumerable<string> Words { get; } = new string[]
 		{
 			"light",
@@ -43,6 +48,8 @@ namespace FoundMagic.Magic
 
 		public override double BaseManaCost { get; } = 1;
 
-		public override string EffectDescription => "Heals the target 3 HP. If cast on an enemy, also stuns it for 3 turns.";
+		public override string EffectDescription => $"Heals the target {EffectAmount} HP. If cast on an enemy, also stuns it for {EffectAmount} turns.";
+
+		public override int BaseEffectAmount { get; } = 3;
 	}
 }

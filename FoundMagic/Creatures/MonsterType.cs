@@ -17,7 +17,7 @@ namespace FoundMagic.Creatures
 			= JsonSerializer.Deserialize<IEnumerable<MonsterType>>(File.ReadAllText("Data/MonsterTypes.json")) ?? Enumerable.Empty<MonsterType>();
 
 		public IEnumerable<Element> Elements { get; }
-			= ElementNames.Select(Element.Create).ToImmutableList();
+			= ElementNames.Select(q => Element.Create(q, Element.EssencesForStandardAttunement)).ToImmutableList();
 
 		public MonsterFlags Flags { get; }
 			= FlagNames?.Select(q => Enum.Parse<MonsterFlags>(q, true)).Aggregate((a, b) => a | b) ?? MonsterFlags.None;

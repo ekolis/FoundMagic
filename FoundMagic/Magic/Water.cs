@@ -16,6 +16,11 @@ namespace FoundMagic.Magic
 	public class Water
 		: Element
 	{
+		public Water(int essences)
+			: base(essences)
+		{
+		}
+
 		protected override IEnumerable<string> Words { get; } = new string[]
 		{
 			"water",
@@ -36,6 +41,8 @@ namespace FoundMagic.Magic
 
 		public override double BaseManaCost { get; } = 1;
 
-		public override string EffectDescription => "Drains 3 MP from the target.";
+		public override string EffectDescription => $"Drains {EffectAmount} MP from the target.";
+
+		public override int BaseEffectAmount { get; } = 3;
 	}
 }

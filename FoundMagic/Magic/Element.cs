@@ -15,26 +15,27 @@ namespace FoundMagic.Magic
 	/// </summary>
 	public abstract class Element
 	{
-		public static Element Create(string name)
+		public static Element Create(string name, int essences)
 		{
 			return name.ToLower() switch
 			{
-				"fire" => new Fire(),
-				"earth" => new Earth(),
-				"air" => new Air(),
-				"water" => new Water(),
-				"light" => new Light(),
-				"darkness" => new Darkness(),
+				"fire" => new Fire(essences),
+				"earth" => new Earth(essences),
+				"air" => new Air(essences),
+				"water" => new Water(essences),
+				"light" => new Light(essences),
+				"darkness" => new Darkness(essences),
 				_ => throw new ArgumentException($"Invalid element name: {name}.", nameof(name))
 			};
 		}
 
-		protected Element()
+		protected Element(int essences)
 		{
 			var t = GetType();
 			if (!AllWords.ContainsKey(t))
 				AllWords[t] = World.Instance.Rng.Pick(Words);
 			Word = AllWords[t];
+			Essences = essences;
 		}
 
 		/// <summary>
@@ -83,7 +84,7 @@ namespace FoundMagic.Magic
 				// did we hit the edge of the map?
 				if (tile is null)
 					yield break;
-				
+
 				// this tile was affected
 				yield return tile;
 
@@ -99,7 +100,7 @@ namespace FoundMagic.Magic
 			// no creature found to target
 			yield break;
 		}
-		
+
 		/// <summary>
 		/// Pool of magic words which is randomly chosen from each game to represent this element.
 		/// </summary>
@@ -208,5 +209,46 @@ namespace FoundMagic.Magic
 		/// <param name="effect"></param>
 		/// <returns>Tiles affected.</returns>
 		//public abstract IEnumerable<Tile> ApplyModifierEffect(ICreature caster, Element baseElement, Direction direction, double power, double efficiency, Action<ICreature> effect);
+
+		/// <summary>
+		/// The number of essences required to cast a spell.
+		/// </summary>
+		public static int MinEssencesToCast { get; } = 10;
+
+		/// <summary>
+		/// The number of essences required to get standard spell attunement.
+		/// </summary>
+		public static int EssencesForStandardAttunement { get; } = 40;
+
+		/// <summary>
+		/// The number of elemental essences possessed.
+		/// </summary>
+		public int Essences { get; set; }
+
+		/// <summary>
+		/// The attunement of a creature to an element.
+		/// 0 is no attunement at all.
+		/// 1 is standard attunement.
+		/// The scale is logarithmic, so the higher your attunement gets, the more essences you'll need to raise it.
+		/// </summary>
+		public double Attunement
+		{
+			get
+			{
+				if (Essences < MinEssencesToCast)
+					return 0;
+				return Math.Log2((double)Essences / (double)EssencesForStandardAttunement) + 1;
+			}
+		}
+
+		/// <summary>
+		/// The base effect amount of the spell, at standard attunement.
+		/// </summary>
+		public abstract int BaseEffectAmount { get; }
+
+		/// <summary>
+		/// The effect amount of the spell, accounting for attunement (but not spell power).
+		/// </summary>
+		public int EffectAmount => (int)Math.Round(BaseEffectAmount * Attunement);
 	}
 }

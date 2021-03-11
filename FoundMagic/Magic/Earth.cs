@@ -16,6 +16,11 @@ namespace FoundMagic.Magic
 	public class Earth
 		: Element
 	{
+		public Earth(int essences)
+			: base(essences)
+		{
+		}
+
 		protected override IEnumerable<string> Words { get; } = new string[]
 		{
 			"earth",
@@ -36,6 +41,8 @@ namespace FoundMagic.Magic
 
 		public override double BaseManaCost { get; } = 1;
 
-		public override string EffectDescription => "Slows the target (to half speed) for 8 turns.";
+		public override string EffectDescription => $"Slows the target (to half speed) for {EffectAmount} turns.";
+
+		public override int BaseEffectAmount { get; } = 8;
 	}
 }

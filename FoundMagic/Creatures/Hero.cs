@@ -162,10 +162,10 @@ namespace FoundMagic.Creatures
 			= new[]
 			{
 				// you get one attack spell
-				World.Instance.Rng.Pick(new Element[] {	new Fire(), new Darkness() }),
+				World.Instance.Rng.Pick(new Element[] {	new Fire(Element.EssencesForStandardAttunement), new Darkness(Element.EssencesForStandardAttunement) }),
 
 				// and one utility spell
-				World.Instance.Rng.Pick(new Element[] { new Air(), new Earth(), new Water(), new Light() })
+				World.Instance.Rng.Pick(new Element[] { new Air(Element.EssencesForStandardAttunement), new Earth(Element.EssencesForStandardAttunement), new Water(Element.EssencesForStandardAttunement), new Light(Element.EssencesForStandardAttunement) })
 			};
 
 	/// <summary>

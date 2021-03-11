@@ -16,6 +16,11 @@ namespace FoundMagic.Magic
 	public class Darkness
 		: Element
 	{
+		public Darkness(int essences)
+			: base(essences)
+		{
+		}
+
 		protected override IEnumerable<string> Words { get; } = new string[]
 		{
 			"dark",
@@ -36,6 +41,8 @@ namespace FoundMagic.Magic
 
 		public override double BaseManaCost { get; } = 2;
 
-		public override string EffectDescription => "Drains 2 HP from the target.";
+		public override string EffectDescription => $"Drains {EffectAmount} HP from the target.";
+
+		public override int BaseEffectAmount { get; } = 2;
 	}
 }

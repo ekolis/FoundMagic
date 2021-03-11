@@ -16,6 +16,11 @@ namespace FoundMagic.Magic
 	public class Fire
 		: Element
 	{
+		public Fire(int essences)
+			: base(essences)
+		{
+		}
+
 		protected override IEnumerable<string> Words { get; } = new string[]
 		{
 			"fire",
@@ -36,6 +41,8 @@ namespace FoundMagic.Magic
 
 		public override double BaseManaCost { get; } = 1;
 
-		public override string EffectDescription => "Inflicts 3 points of damage.";
+		public override string EffectDescription => $"Inflicts {EffectAmount} points of damage.";
+
+		public override int BaseEffectAmount { get; } = 3;
 	}
 }
