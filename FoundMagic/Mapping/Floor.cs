@@ -34,6 +34,10 @@ namespace FoundMagic.Mapping
 		/// </summary>
 		public void Setup()
 		{
+			// set difficulty
+			Difficulty = PreviousDifficulty + 1;
+			PreviousDifficulty = Difficulty;
+
 			// create tiles
 			Tiles = new Tile[Width, Height];
 			for (int x = 0; x < Width; x++)
@@ -55,9 +59,19 @@ namespace FoundMagic.Mapping
 					break; // nowhere to place a monster
 
 				var place = World.Instance.Rng.Pick(places);
-				var monsterType = World.Instance.Rng.PickWeighted(MonsterType.All, q => maxRarity / q.Rarity);
+				var monsterType = World.Instance.Rng.PickWeighted(MonsterType.All, q => maxRarity / q.Rarity / CompareDifficulty(q.Rarity, Difficulty));
 				place.Creature = new Monster(monsterType);
 			}
+		}
+
+		private static int CompareDifficulty(int d1, int d2)
+		{
+			if (d1 > d2)
+				return d1 / d2;
+			else if (d2 > d1)
+				return d2 / d2;
+			else // equal
+				return 1;
 		}
 
 		/// <summary>
@@ -228,5 +242,9 @@ namespace FoundMagic.Mapping
 		/// </summary>
 		public IEnumerable<Monster> Monsters
 			=> Creatures.OfType<Monster>();
+
+		public int Difficulty { get; private set; }
+
+		public static int PreviousDifficulty { get; private set; } = 0;
 	}
 }
