@@ -125,5 +125,13 @@ namespace FoundMagic.UI
 
 		public static Color Average(this IEnumerable<Color> colors)
 			=> Color.FromArgb((int)colors.Average(q => q.A), (int)colors.Average(q => q.R), (int)colors.Average(q => q.G), (int)colors.Average(q => q.B));
+
+		/// <summary>
+		/// Gets the scale factor of a <see cref="Graphics"/> by comparing its DPI to the default value of 96.
+		/// </summary>
+		/// <param name="g"></param>
+		/// <returns></returns>
+		public static float ScaleFactor(this Graphics g)
+			=> Math.Max(g.DpiX, g.DpiY) / 96;
 	}
 }
