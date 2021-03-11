@@ -37,7 +37,10 @@ namespace FoundMagic.UI
 				else if (key == Keys.Enter)
 				{
 					// finish the spell
-					h.Spell = Spell.FromWord(h, LastActionDirection, h.SpellWord, h.SpellDuration.Value);
+					if (h.SpellDuration is null)
+						h.IsCasting = false; // attempt is aborted
+					else
+						h.Spell = Spell.FromWord(h, LastActionDirection, h.SpellWord, h.SpellDuration.Value);
 				}
 			}
 			else
