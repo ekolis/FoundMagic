@@ -9,7 +9,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using FoundMagic.Magic;
 
-namespace FoundMagic
+namespace FoundMagic.Creatures
 {
 	public record MonsterType(string Name, char Glyph, IEnumerable<string> ElementNames, int Vision, double Speed, int Strength, int MaxHitpoints, int MaxMana, int Rarity)
 	{

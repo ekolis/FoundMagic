@@ -9,7 +9,7 @@ using FoundMagic.Magic;
 using RogueSharp;
 using FoundMagic.Mapping;
 
-namespace FoundMagic
+namespace FoundMagic.Creatures
 {
 	/// <summary>
 	/// A creature which inhabits the game world. 🐍

@@ -8,7 +8,7 @@ using FoundMagic.Magic;
 using FoundMagic.Mapping;
 using RogueSharp;
 
-namespace FoundMagic
+namespace FoundMagic.Creatures
 {
 	/// <summary>
 	/// Rawr! It's out to kill you! 💀

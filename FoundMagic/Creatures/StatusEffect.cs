@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FoundMagic
+namespace FoundMagic.Creatures
 {
 	/// <summary>
 	/// Temporary status effects which can be applied to creatures.

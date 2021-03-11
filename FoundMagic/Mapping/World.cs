@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RogueSharp.MapCreation;
 using RogueSharp.Random;
+using FoundMagic.Creatures;
 
 namespace FoundMagic.Mapping
 {
