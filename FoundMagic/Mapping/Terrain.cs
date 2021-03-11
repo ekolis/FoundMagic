@@ -19,7 +19,7 @@ namespace FoundMagic.Mapping
 		/// <summary>
 		/// Basic terrains used in floor generation.
 		/// </summary>
-		public static IEnumerable<Terrain> Basic { get; } = new Terrain[] { Floor, Water, Tree, Wall , Stairs};
+		public static IEnumerable<Terrain> Basic { get; } = new Terrain[] { Floor, Water, Tree, Wall };
 
 		/// <summary>
 		/// Special terrains with distinct purposes.
