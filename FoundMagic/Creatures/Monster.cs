@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FoundMagic.Magic;
 using FoundMagic.Mapping;
+using FoundMagic.UI;
 using RogueSharp;
 
 namespace FoundMagic.Creatures

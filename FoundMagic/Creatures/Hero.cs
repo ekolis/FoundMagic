@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using FoundMagic.Magic;
 using RogueSharp;
 using FoundMagic.Mapping;
+using FoundMagic.UI;
 
 namespace FoundMagic.Creatures
 {
