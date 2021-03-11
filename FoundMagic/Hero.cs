@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FoundMagic.Magic;
 using RogueSharp;
+using FoundMagic.Mapping;
 
 namespace FoundMagic
 {

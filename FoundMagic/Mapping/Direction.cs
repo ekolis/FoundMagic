@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FoundMagic
+namespace FoundMagic.Mapping
 {
 	public record Direction(string Name, int DX, int DY)
 	{

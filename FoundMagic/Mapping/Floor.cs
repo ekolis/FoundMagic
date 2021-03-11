@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RogueSharp;
 
-namespace FoundMagic
+namespace FoundMagic.Mapping
 {
 	/// <summary>
 	/// A single floor.

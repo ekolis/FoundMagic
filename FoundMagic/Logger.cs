@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FoundMagic.Magic;
+using FoundMagic.Mapping;
 
 namespace FoundMagic
 {

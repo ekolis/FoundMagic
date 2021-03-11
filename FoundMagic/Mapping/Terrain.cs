@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FoundMagic
+namespace FoundMagic.Mapping
 {
 	public record Terrain(string Name, char Glyph, Color Color, bool IsTransparent, bool IsWalkable)
 	{

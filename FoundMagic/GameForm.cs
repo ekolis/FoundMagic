@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using FoundMagic.Magic;
 using RogueSharp;
 using Point = System.Drawing.Point;
+using FoundMagic.Mapping;
 
 namespace FoundMagic
 {

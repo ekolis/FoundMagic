@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using RogueSharp.MapCreation;
 using RogueSharp.Random;
 
-namespace FoundMagic
+namespace FoundMagic.Mapping
 {
 	/// <summary>
 	/// The game world. 🌎
