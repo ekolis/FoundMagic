@@ -125,23 +125,23 @@ namespace FoundMagic.Creatures
 		public static int Attack(this ICreature attacker, ICreature target)
 		{
 			Logger.LogAttack(attacker, target, attacker.Strength);
-			return target.TakeDamage(attacker.Strength);
+			return attacker.InflictDamage(target, attacker.Strength);
 		}
 
 		/// <summary>
 		/// Allows a creature to take damage.
 		/// </summary>
+		/// <param name="attacker">The creature inflicting damage.</param>
 		/// <param name="target">The creature taking damage.</param>
 		/// <param name="dmg">The amount of damage to inflict.</param>
 		/// <returns>The amount of damage taken.</returns>
-		public static int TakeDamage(this ICreature target, int dmg)
+		public static int InflictDamage(this ICreature attacker, ICreature target, int dmg)
 		{
 			target.Hitpoints -= dmg;
 			if (target.Hitpoints <= 0)
 			{
 				dmg += target.Hitpoints; // overkill, report smaller number of HP lost
-				target.Hitpoints = 0;
-				target.Kill();
+				attacker.Kill(target);
 			}
 			return dmg;
 		}
@@ -149,13 +149,15 @@ namespace FoundMagic.Creatures
 		/// <summary>
 		/// Kills a creature, removing it from the game.
 		/// </summary>
-		/// <param name="decedent">The creature to kill.</param>
-		public static void Kill(this ICreature decedent)
+		/// <param name="killer">The creature which performed the kill.</param>
+		/// <param name="victim">The creature to kill.</param>
+		public static void Kill(this ICreature killer, ICreature victim)
 		{
-			decedent.Hitpoints = 0;
-			Floor.Current.Find(decedent).Creature = null;
-			Logger.LogDeath(decedent);
-			if (decedent is Hero h)
+			victim.Hitpoints = 0;
+			killer.DrainEssencesFrom(victim);
+			Floor.Current.Find(victim).Creature = null;
+			Logger.LogDeath(victim);
+			if (victim is Hero h)
 				h.DeathTimestamp = DateTime.Now;
 		}
 
@@ -267,11 +269,49 @@ namespace FoundMagic.Creatures
 			drain = Math.Min(target.Hitpoints, drain);
 			target.Hitpoints -= drain;
 			if (target.Hitpoints <= 0)
-				target.Kill();
+				caster.Kill(target);
 			caster.Hitpoints += drain;
 			if (caster.Hitpoints > caster.MaxHitpoints)
 				caster.Hitpoints = caster.MaxHitpoints;
 			return drain;
+		}
+
+		/// <summary>
+		/// Drains essences from one creature and gives them to another.
+		/// </summary>
+		/// <param name="caster"></param>
+		/// <param name="target"></param>
+		/// <param name="drain"></param>
+		/// <returns>The total number of essences drained.</returns>
+		public static int DrainEssencesFrom(this ICreature caster, ICreature target, int? drain = null)
+		{
+			if (drain is null)
+			{
+				if (target is Hero)
+					drain = int.MaxValue; // who cares, he's dying anyway
+				else if (target is Monster m)
+				{
+					drain = m.Difficulty;
+					if (m.HasFlag(MonsterFlags.Unique))
+						drain *= 3; // a nice bonus for killing uniques!
+				}
+				else
+					drain = 0; // huh? what kind of creature is not a hero or a monster?
+			}
+			var totalDrain = 0;
+			foreach (var element in target.Elements)
+			{
+				var matchingElement = caster.Elements.FirstOrDefault(q => q.GetType() == element.GetType());
+				if (matchingElement is not null)
+				{
+					var thisDrain = Math.Min(drain.Value, element.Essences);
+					totalDrain += thisDrain;
+					element.Essences -= thisDrain;
+					matchingElement.Essences += thisDrain;
+					Logger.LogEssenceDrain(caster, target, matchingElement, element, thisDrain);
+				}
+			}
+			return totalDrain;
 		}
 	}
 }

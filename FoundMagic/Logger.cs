@@ -156,6 +156,26 @@ namespace FoundMagic
 				Log($"{caster.Capitalize()} drains {drain} HP from {target}.", element.Color);
 		}
 
+		public static void LogEssenceDrain(ICreature caster, ICreature target, Element casterElement, Element targetElement, int drain)
+		{
+			// TODO: special messages for hero or monster draining itself?
+			if (caster is Hero)
+			{
+				Log($"{caster.Capitalize()} drain {drain} {casterElement.GetType().Name} essences from {target}.", casterElement.Color);
+				Log($"Your {casterElement.GetType().Name} attunement increases to {Math.Round(casterElement.Attunement * 100)}%!", casterElement.Color);
+			}
+			else if (target is Hero)
+			{
+				Log($"{caster.Capitalize()} drains {drain} {targetElement.GetType().Name} essences from {target}!", targetElement.Color);
+				Log($"Your {targetElement.GetType().Name} attunement decreases to {Math.Round(targetElement.Attunement * 100)}%!", targetElement.Color);
+			}
+			else
+			{
+				// monster on monster action! don't show attunement
+				Log($"{caster.Capitalize()} drains {drain} {targetElement.GetType().Name} essences from {target}!", targetElement.Color);
+			}
+		}
+
 		/// <summary>
 		/// Gets a list of all unexpired entries.
 		/// </summary>

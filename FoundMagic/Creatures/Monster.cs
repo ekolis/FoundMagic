@@ -109,5 +109,7 @@ namespace FoundMagic.Creatures
 
 		public bool HasFlag(MonsterFlags f)
 			=> Type.HasFlag(f);
+
+		public int Difficulty => Type.Difficulty;
 	}
 }
