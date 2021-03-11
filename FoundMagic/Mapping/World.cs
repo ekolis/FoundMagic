@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using RogueSharp.MapCreation;
 using RogueSharp.Random;
 using FoundMagic.Creatures;
+using System.Drawing;
 
 namespace FoundMagic.Mapping
 {
@@ -36,9 +37,9 @@ namespace FoundMagic.Mapping
 		}
 
 		/// <summary>
-		/// Sets up the world.
+		/// Generates the next floor in the world.
 		/// </summary>
-		public void Setup()
+		public void GenerateNextFloor()
 		{
 			var mapper = new RandomRoomsMapCreationStrategy<Floor>(80, 45, 32, 12, 4, Rng);
 			CurrentFloor = mapper.CreateMap();
@@ -46,7 +47,9 @@ namespace FoundMagic.Mapping
 			var emptyTiles = CurrentFloor.Tiles.Cast<Tile>().Where(q => q.IsWalkable && q.Creature is null);
 			var startTile = Rng.Pick(emptyTiles);
 			startTile.Creature = Hero.Instance;
+			Hero.Instance.ResetFov();
 			Hero.Instance.UpdateFov();
+			Logger.Log($"Welcome to floor {CurrentFloor.Difficulty}!", Color.White);
 		}
 
 		/// <summary>

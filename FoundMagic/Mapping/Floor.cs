@@ -48,8 +48,12 @@ namespace FoundMagic.Mapping
 				}
 			}
 
-			// create monsters
+			// create stairs
 			var places = Tiles.Cast<Tile>().Where(q => q.IsWalkable && q.Creature is null).ToList();
+			var stairsPlace = World.Instance.Rng.Pick(places);
+			stairsPlace.Terrain = Terrain.Stairs;
+
+			// create monsters
 			const int monsterRarity = 10;
 			var numMonsters = places.Count() / monsterRarity;
 			var maxMonsterDifficulty = MonsterType.All.Max(q => q.Difficulty);
@@ -220,7 +224,15 @@ namespace FoundMagic.Mapping
 
 			// let them act "simultaneously"
 			foreach (var creature in readyCreatures)
+			{
+				// moving monsters when the hero has left the floor is counterproductive...
+				if (Hero.Instance.IsClimbing)
+				{
+					Hero.Instance.IsClimbing = false;
+					break;
+				}
 				creature.Timer += creature.Act();
+			}
 
 			// all done, return time spent
 			return timeSpent;

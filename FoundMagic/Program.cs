@@ -19,7 +19,7 @@ namespace FoundMagic
 			Application.SetHighDpiMode(HighDpiMode.SystemAware);
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			World.Instance.Setup();
+			World.Instance.GenerateNextFloor();
 			Application.Run(new GameForm());
 		}
 	}

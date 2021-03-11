@@ -39,7 +39,7 @@ namespace FoundMagic.Creatures
 
 		public Color Color => Elements.Select(q => q.Color).Average();
 
-		public FieldOfView FieldOfView { get; set; }
+		public FieldOfView? FieldOfView { get; set; }
 
 		public void UpdateFov()
 		{
@@ -58,6 +58,9 @@ namespace FoundMagic.Creatures
 				floor.Tiles[fovCell.X, fovCell.Y] = floor.Tiles[fovCell.X, fovCell.Y].WithVisible();
 		}
 
+		public void ResetFov()
+			=> FieldOfView = null;
+
 		public double Act()
 		{
 			if (Floor.Current is null)
@@ -68,6 +71,9 @@ namespace FoundMagic.Creatures
 
 			// which way are we moving/casting?
 			var dir = Keyboard.ActionDirection;
+
+			// shift is used for climbing stairs
+			bool shift = Keyboard.IsKeyPressed(Keys.ShiftKey);
 
 			// HACK: why is this necessary?
 			Keyboard.Reset();
@@ -82,8 +88,25 @@ namespace FoundMagic.Creatures
 			}
 			else if (dir is not null)
 			{
-				// move hero
-				success = floor.Move(this, dir, true) > 0;
+				if (shift)
+				{
+					if (dir == Direction.Stationary)
+					{
+						// holding shift while standing still climbs stairs
+						// because > is shift plus .
+						success = ClimbStairs();
+					}
+					else
+					{
+						// can't use shift with other directions besides stationary
+						success = false;
+					}
+				}
+				else
+				{
+					// move hero
+					success = floor.Move(this, dir, true) > 0;
+				}
 			}
 
 			if (success)
@@ -167,5 +190,30 @@ namespace FoundMagic.Creatures
 		public DateTime? SpellTimestamp { get; set; }
 
 		public IDictionary<StatusEffect, double> StatusEffects { get; } = new Dictionary<StatusEffect, double>();
+
+		/// <summary>
+		/// Attempts to climb stairs, if present.
+		/// </summary>
+		/// <returns>true if successful, otherwise false.</returns>
+		public bool ClimbStairs()
+		{
+			if (Floor.Current.Find(this).Terrain == Terrain.Stairs)
+			{
+				// there are stairs here, so let's generate a new floor!
+				World.Instance.GenerateNextFloor();
+				IsClimbing = true;
+				return true;
+			}
+			else
+			{
+				// no stairs here to climb.
+				return false;
+			}
+		}
+
+		/// <summary>
+		/// Are we currently climbing stairs? If so, let's not move any monsters on the old floor, that won't work...
+		/// </summary>
+		public bool IsClimbing { get; set; }
 	}
 }

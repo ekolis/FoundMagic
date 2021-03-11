@@ -37,7 +37,7 @@ namespace FoundMagic.UI
 
 			// get our graphics context etc
 			Graphics g = e.Graphics;
-			Font font = new Font("Consolas", glyphSize / 2);
+			Font font = new Font("Consolas", glyphSize / 2); // TODO: this 2 might have something to do with high DPI scaling, might want to test at 100%
 
 			if (hero.IsCasting)
 			{
