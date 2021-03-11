@@ -63,7 +63,7 @@ namespace FoundMagic.Mapping
 					break; // nowhere to place a monster
 
 				var place = World.Instance.Rng.Pick(places);
-				var monsterType = World.Instance.Rng.PickWeighted(MonsterType.All, q => maxMonsterDifficulty / q.Difficulty / CompareDifficulty(q.Difficulty, Difficulty));
+				var monsterType = World.Instance.Rng.PickWeighted(MonsterType.Spawnable, q => maxMonsterDifficulty / q.Difficulty / CompareDifficulty(q.Difficulty, Difficulty));
 				place.Creature = new Monster(monsterType);
 			}
 		}

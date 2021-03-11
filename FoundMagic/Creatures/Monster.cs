@@ -23,11 +23,12 @@ namespace FoundMagic.Creatures
 			VisibleTiles = Enumerable.Empty<Tile>();
 			Hitpoints = MaxHitpoints;
 			Mana = MaxMana;
+			type.NumberSpawned++;
 		}
 
 		public MonsterType Type { get; }
 
-		public string Name => $"the {Type.Name}";
+		public string Name => Type.HasFlag(MonsterFlags.Unique) ? Type.Name : $"the {Type.Name}";
 		public char Glyph => Type.Glyph;
 		public Color Color => Elements.Select(q => q.Color).Average();
 		public FieldOfView FieldOfView { get; set; }
@@ -103,5 +104,10 @@ namespace FoundMagic.Creatures
 		public IEnumerable<Element> Elements => Type.Elements;
 
 		public IDictionary<StatusEffect, double> StatusEffects { get; } = new Dictionary<StatusEffect, double>();
+
+		public MonsterFlags Flags => Type.Flags;
+
+		public bool HasFlag(MonsterFlags f)
+			=> Type.HasFlag(f);
 	}
 }

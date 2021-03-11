@@ -11,6 +11,18 @@
 		"Difficulty": 1
 	},
 	{
+		"Name": "El Slimador, the super slime",
+		"Glyph": "s",
+		"ElementNames": [ "water", "fire" ],
+		"Vision": 3,
+		"Speed": 1,
+		"Strength": 2,
+		"MaxHitpoints": 8,
+		"MaxMana": 8,
+		"Difficulty": 1,
+		"FlagNames": [ "unique" ]
+	},
+	{
 		"Name": "skeleton",
 		"Glyph": "S",
 		"ElementNames": [ "darkness" ],
@@ -20,6 +32,18 @@
 		"MaxHitpoints": 5,
 		"MaxMana": 1,
 		"Difficulty": 2
+	},
+	{
+		"Name": "Skellotron, the steamborg",
+		"Glyph": "S",
+		"ElementNames": [ "darkness", "light" ],
+		"Vision": 4,
+		"Speed": 1,
+		"Strength": 4,
+		"MaxHitpoints": 10,
+		"MaxMana": 2,
+		"Difficulty": 2,
+		"FlagNames": [ "unique" ]
 	},
 	{
 		"Name": "dervish",
@@ -33,6 +57,18 @@
 		"Difficulty": 2
 	},
 	{
+		"Name": "Nosyd, the dust devil",
+		"Glyph": "&",
+		"ElementNames": [ "air", "earth" ],
+		"Vision": 6,
+		"Speed": 2,
+		"Strength": 1,
+		"MaxHitpoints": 5,
+		"MaxMana": 15,
+		"Difficulty": 2,
+		"FlagNames": [ "unique" ]
+	},
+	{
 		"Name": "golem",
 		"Glyph": "G",
 		"ElementNames": [ "earth" ],
@@ -42,6 +78,18 @@
 		"MaxHitpoints": 10,
 		"MaxMana": 2,
 		"Difficulty": 4
+	},
+	{
+		"Name": "Giga Guy, the jumping mechaniloid",
+		"Glyph": "G",
+		"ElementNames": [ "earth", "air" ],
+		"Vision": 2,
+		"Speed": 1,
+		"Strength": 5,
+		"MaxHitpoints": 12,
+		"MaxMana": 3,
+		"Difficulty": 4,
+		"FlagNames": [ "unique" ]
 	},
 	{
 		"Name": "spitfire",
@@ -55,6 +103,18 @@
 		"Difficulty": 4
 	},
 	{
+		"Name": "Antipodus, the paradox",
+		"Glyph": "F",
+		"ElementNames": [ "fire", "water" ],
+		"Vision": 2,
+		"Speed": 0.75,
+		"Strength": 1,
+		"MaxHitpoints": 50,
+		"MaxMana": 5,
+		"Difficulty": 4,
+		"FlagNames": [ "unique" ]
+	},
+	{
 		"Name": "celestrian",
 		"Glyph": "A",
 		"ElementNames": [ "light" ],
@@ -64,5 +124,29 @@
 		"MaxHitpoints": 8,
 		"MaxMana": 10,
 		"Difficulty": 8
+	},
+	{
+		"Name": "Korvas, the fallen angel",
+		"Glyph": "A",
+		"ElementNames": [ "light", "darkness" ],
+		"Vision": 8,
+		"Speed": 1.25,
+		"Strength": 6,
+		"MaxHitpoints": 12,
+		"MaxMana": 15,
+		"Difficulty": 8,
+		"FlagNames": [ "unique" ]
+	},
+	{
+		"Name": "Zobleg of Many Names",
+		"Glyph": "Z",
+		"ElementNames": [ "fire", "earth", "air", "water", "light", "darkness" ],
+		"Vision": 4,
+		"Speed": 1.5,
+		"Strength": 8,
+		"MaxHitpoints": 25,
+		"MaxMana": 25,
+		"Difficulty": 10,
+		"FlagNames": [ "unique" ]
 	}
 ]
