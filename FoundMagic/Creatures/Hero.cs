@@ -158,62 +158,62 @@ namespace FoundMagic.Creatures
 		/// </summary>
 		public bool IsCasting { get; set; } = false;
 
-		public IEnumerable<Element> Elements { get; } = new Element[]
-		{
-			new Fire(),
-			new Earth(),
-			new Air(),
-			new Water(),
-			new Light(),
-			new Darkness(),
-		};
-
-		/// <summary>
-		/// The magic word currently being typed/cast.
-		/// </summary>
-		public string SpellWord { get; set; } = "";
-
-		/// <summary>
-		/// The spell that the hero is casting.
-		/// </summary>
-		public Spell? Spell { get; set; }
-
-		/// <summary>
-		/// How long did it take the player to type the magic words to cast a spell?
-		/// </summary>
-		public TimeSpan? SpellDuration
-			=> DateTime.Now - SpellTimestamp;
-
-		/// <summary>
-		/// When did the player start typing the magic words to cast a spell?
-		/// </summary>
-		public DateTime? SpellTimestamp { get; set; }
-
-		public IDictionary<StatusEffect, double> StatusEffects { get; } = new Dictionary<StatusEffect, double>();
-
-		/// <summary>
-		/// Attempts to climb stairs, if present.
-		/// </summary>
-		/// <returns>true if successful, otherwise false.</returns>
-		public bool ClimbStairs()
-		{
-			if (Floor.Current.Find(this).Terrain == Terrain.Stairs)
+		public IEnumerable<Element> Elements { get; }
+			= new[]
 			{
-				// there are stairs here, so let's generate a new floor!
-				World.Instance.GenerateNextFloor();
-				IsClimbing = true;
-				return true;
-			}
-			else
-			{
-				// no stairs here to climb.
-				return false;
-			}
+				// you get one attack spell
+				World.Instance.Rng.Pick(new Element[] {	new Fire(), new Darkness() }),
+
+				// and one utility spell
+				World.Instance.Rng.Pick(new Element[] { new Air(), new Earth(), new Water(), new Light() })
+			};
+
+	/// <summary>
+	/// The magic word currently being typed/cast.
+	/// </summary>
+	public string SpellWord { get; set; } = "";
+
+	/// <summary>
+	/// The spell that the hero is casting.
+	/// </summary>
+	public Spell? Spell { get; set; }
+
+	/// <summary>
+	/// How long did it take the player to type the magic words to cast a spell?
+	/// </summary>
+	public TimeSpan? SpellDuration
+		=> DateTime.Now - SpellTimestamp;
+
+	/// <summary>
+	/// When did the player start typing the magic words to cast a spell?
+	/// </summary>
+	public DateTime? SpellTimestamp { get; set; }
+
+	public IDictionary<StatusEffect, double> StatusEffects { get; } = new Dictionary<StatusEffect, double>();
+
+	/// <summary>
+	/// Attempts to climb stairs, if present.
+	/// </summary>
+	/// <returns>true if successful, otherwise false.</returns>
+	public bool ClimbStairs()
+	{
+		if (Floor.Current.Find(this).Terrain == Terrain.Stairs)
+		{
+			// there are stairs here, so let's generate a new floor!
+			World.Instance.GenerateNextFloor();
+			IsClimbing = true;
+			return true;
 		}
-
-		/// <summary>
-		/// Are we currently climbing stairs? If so, let's not move any monsters on the old floor, that won't work...
-		/// </summary>
-		public bool IsClimbing { get; set; }
+		else
+		{
+			// no stairs here to climb.
+			return false;
+		}
 	}
+
+	/// <summary>
+	/// Are we currently climbing stairs? If so, let's not move any monsters on the old floor, that won't work...
+	/// </summary>
+	public bool IsClimbing { get; set; }
+}
 }
