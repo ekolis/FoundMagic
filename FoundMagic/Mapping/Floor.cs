@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RogueSharp;
 using FoundMagic.Creatures;
+using System.Drawing;
 
 namespace FoundMagic.Mapping
 {
@@ -51,10 +52,10 @@ namespace FoundMagic.Mapping
 
 			// create stairs
 			var places = Tiles.Cast<Tile>().Where(q => q.IsWalkable && q.Creature is null).ToList();
-			var stairsPlace = World.Instance.Rng.Pick(places);
-			stairsPlace.Terrain = Terrain.StairsDown;
-			stairsPlace = World.Instance.Rng.Pick(places.Except(new[] { stairsPlace }));
-			stairsPlace.Terrain = Terrain.StairsUp;
+			var downStairsPlace = World.Instance.Rng.Pick(places);
+			downStairsPlace.Terrain = Terrain.StairsDown;
+			var upStairsPlace = World.Instance.Rng.Pick(places.Except(new[] { downStairsPlace }));
+			upStairsPlace.Terrain = Terrain.StairsUp;
 
 			// create monsters
 			const int monsterRarity = 10;
@@ -68,6 +69,12 @@ namespace FoundMagic.Mapping
 				var place = World.Instance.Rng.Pick(places);
 				var monsterType = World.Instance.Rng.PickWeighted(MonsterType.Spawnable, q => maxMonsterDifficulty / q.Difficulty / CompareDifficulty(q.Difficulty, Difficulty));
 				place.Creature = new Monster(monsterType);
+				if (monsterType.HasFlag(MonsterFlags.FinalBoss))
+				{
+					// we just spawned the final boss! warn the player, and delete the down stairs!
+					Logger.Log("WARNING! Something very dangerous lurks here! You feel you can go no deeper in this dungeon...", Color.Red);
+					downStairsPlace.Terrain = Terrain.Floor;
+				}
 			}
 		}
 
