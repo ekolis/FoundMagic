@@ -32,7 +32,7 @@ namespace FoundMagic.Magic
 		public override void ApplyEffect(ICreature caster, Direction direction, double power, double efficiency, ICreature target)
 		{
 			// drain some HP
-			var drain = (int)Math.Round(2 * power);
+			var drain = (int)Math.Round(GetEffectAmount(caster) * power);
 			drain = caster.DrainHPFrom(target, drain);
 			Logger.LogHPDrain(caster, target, this, drain);
 		}
@@ -41,7 +41,7 @@ namespace FoundMagic.Magic
 
 		public override double BaseManaCost { get; } = 2;
 
-		public override string EffectDescription => $"Drains {EffectAmount} HP from the target.";
+		public override string GetEffectDescription(ICreature caster) => $"Drains {GetEffectAmount(caster)} HP from the target.";
 
 		public override int BaseEffectAmount { get; } = 2;
 	}

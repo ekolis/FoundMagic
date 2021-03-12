@@ -48,7 +48,7 @@ namespace FoundMagic.Magic
 
 		public override double BaseManaCost { get; } = 1;
 
-		public override string EffectDescription => $"Heals the target {EffectAmount} HP. If cast on an enemy, also stuns it for {EffectAmount} turns.";
+		public override string GetEffectDescription(ICreature caster) => $"Heals the target {GetEffectAmount(caster)} HP. If cast on an enemy, also stuns it for {GetEffectAmount(caster)} turns.";
 
 		public override int BaseEffectAmount { get; } = 3;
 	}

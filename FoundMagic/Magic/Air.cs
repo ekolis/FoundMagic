@@ -32,7 +32,7 @@ namespace FoundMagic.Magic
 		public override void ApplyEffect(ICreature caster, Direction direction, double power, double efficiency, ICreature target)
 		{
 			// push target back
-			var dist = (int)Math.Round(EffectAmount * power);
+			var dist = (int)Math.Round(GetEffectAmount(caster) * power);
 			dist = Floor.Current.Move(target, direction, false, dist);
 			Logger.LogKnockback(target, this, direction, dist);
 		}
@@ -41,7 +41,7 @@ namespace FoundMagic.Magic
 
 		public override double BaseManaCost { get; } = 1;
 
-		public override string EffectDescription => $"Pushes the target back {EffectAmount} spaces, unless there's something behind it.";
+		public override string GetEffectDescription(ICreature caster) => $"Pushes the target back {GetEffectAmount(caster)} spaces, unless there's something behind it.";
 
 		public override int BaseEffectAmount { get; } = 2;
 	}

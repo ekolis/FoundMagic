@@ -45,7 +45,15 @@ namespace FoundMagic
 			var num = random.Next(list.Last().CumulativeWeight);
 			var match = list.First(q => q.CumulativeWeight >= num);
 			return match.Item;
-
 		}
+
+		/// <summary>
+		/// Flips a weighted coin.
+		/// </summary>
+		/// <param name="random">The random number generator.</param>
+		/// <param name="chance">Ranges from zero (always fail) to one (always succeed).</param>
+		/// <returns>Success or failure?</returns>
+		public static bool Chance(this IRandom random, double chance)
+			=> random.Next(1_000_000) < chance * 1_000_000;
 	}
 }

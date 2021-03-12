@@ -36,9 +36,30 @@ namespace FoundMagic.UI
 				var brush = new SolidBrush(element.Color);
 				g.DrawString($"{element.GetType().Name} at {Math.Round(element.Attunement * 100)}% attunement", font, brush, 0, line++ * glyphSize);
 				if (element.CanBeCast)
-					g.DrawString($"  {element.Word}: {element.EffectDescription} ({element.BaseManaCost} MP)", font, brush, 0, line++ * glyphSize);
+					g.DrawString($"  {element.Word}: {element.GetEffectDescription(hero)} ({element.BaseManaCost} MP)", font, brush, 0, line++ * glyphSize);
 				else
 					g.DrawString($"  {Element.MinEssencesToCast - element.Essences} more essences required to cast", font, brush, 0, line++ * glyphSize);
+				switch (element)
+				{
+					case Fire:
+						g.DrawString($"  Elemental boost: +{Math.Round(hero.EssenceBoostSpellPower * 100)}% spell power", font, brush, 0, line++ * glyphSize);
+						break;
+					case Earth:
+						g.DrawString($"  Elemental boost: +{hero.EssenceBoostMaxHitpoints} max HP", font, brush, 0, line++ * glyphSize);
+						break;
+					case Air:
+						g.DrawString($"  Elemental boost: +{Math.Round(hero.EssenceBoostSpeed * 100)}% speed", font, brush, 0, line++ * glyphSize);
+						break;
+					case Water:
+						g.DrawString($"  Elemental boost: +{hero.EssenceBoostMaxMana} max MP", font, brush, 0, line++ * glyphSize);
+						break;
+					case Light:
+						g.DrawString($"  Elemental boost: +{hero.EssenceBoostRegeneration} HP/MP regen on stair climb", font, brush, 0, line++ * glyphSize);
+						break;
+					case Darkness:
+						g.DrawString($"  Elemental boost: {Math.Round(hero.EssenceBoostCriticalHits * 100)}% melee/spell crit chance (3x strength)", font, brush, 0, line++ * glyphSize);
+						break;
+				}
 				line++;
 			}
 			line++;

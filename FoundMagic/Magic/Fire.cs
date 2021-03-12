@@ -32,7 +32,7 @@ namespace FoundMagic.Magic
 		public override void ApplyEffect(ICreature caster, Direction direction, double power, double efficiency, ICreature target)
 		{
 			// inflict some damage
-			var dmg = (int)Math.Round(3 * power);
+			var dmg = (int)Math.Round(GetEffectAmount(caster) * power);
 			caster.InflictDamage(target, dmg);
 			Logger.LogSpellDamage(target, this, dmg);
 		}
@@ -41,7 +41,7 @@ namespace FoundMagic.Magic
 
 		public override double BaseManaCost { get; } = 1;
 
-		public override string EffectDescription => $"Inflicts {EffectAmount} points of damage.";
+		public override string GetEffectDescription(ICreature caster) => $"Inflicts {GetEffectAmount(caster)} points of damage.";
 
 		public override int BaseEffectAmount { get; } = 3;
 	}

@@ -135,17 +135,17 @@ namespace FoundMagic.Creatures
 		public int Vision { get; } = 3;
 
 		public double Speed
-			=> 1d / (this.HasStatusEffect(StatusEffect.Slow) ? 2 : 1);
+			=> (1d + EssenceBoostSpeed) / (this.HasStatusEffect(StatusEffect.Slow) ? 2 : 1);
 
 		public double Timer { get; set; }
 
 		public int Strength { get; } = 1;
 
-		public int MaxHitpoints { get; } = 10;
+		public int MaxHitpoints => 10 + EssenceBoostMaxHitpoints;
 
 		public int Hitpoints { get; set; }
 
-		public int MaxMana { get; } = 10;
+		public int MaxMana => 10 + EssenceBoostMaxMana;
 
 		public int Mana { get; set; }
 
@@ -176,15 +176,15 @@ namespace FoundMagic.Creatures
 				if (elements is null)
 				{
 					// you get one attack spell
-					var fire = new Fire(0);
-					var darkness = new Darkness(0);
+					var fire = new Fire(40);
+					var darkness = new Darkness(40);
 					World.Instance.Rng.Pick(new Element[] { fire, darkness }).Essences = Element.EssencesForStandardAttunement;
 
 					// and one utility spell
-					var air = new Air(0);
-					var earth = new Earth(0);
-					var water = new Water(0);
-					var light = new Light(0);
+					var air = new Air(40);
+					var earth = new Earth(40);
+					var water = new Water(40);
+					var light = new Light(40);
 					World.Instance.Rng.Pick(new Element[] { air, earth, water, light }).Essences = Element.EssencesForStandardAttunement;
 
 					// set up elements list
@@ -194,52 +194,102 @@ namespace FoundMagic.Creatures
 			}
 		}
 
-	/// <summary>
-	/// The magic word currently being typed/cast.
-	/// </summary>
-	public string SpellWord { get; set; } = "";
+		/// <summary>
+		/// The magic word currently being typed/cast.
+		/// </summary>
+		public string SpellWord { get; set; } = "";
 
-	/// <summary>
-	/// The spell that the hero is casting.
-	/// </summary>
-	public Spell? Spell { get; set; }
+		/// <summary>
+		/// The spell that the hero is casting.
+		/// </summary>
+		public Spell? Spell { get; set; }
 
-	/// <summary>
-	/// How long did it take the player to type the magic words to cast a spell?
-	/// </summary>
-	public TimeSpan? SpellDuration
-		=> DateTime.Now - SpellTimestamp;
+		/// <summary>
+		/// How long did it take the player to type the magic words to cast a spell?
+		/// </summary>
+		public TimeSpan? SpellDuration
+			=> DateTime.Now - SpellTimestamp;
 
-	/// <summary>
-	/// When did the player start typing the magic words to cast a spell?
-	/// </summary>
-	public DateTime? SpellTimestamp { get; set; }
+		/// <summary>
+		/// When did the player start typing the magic words to cast a spell?
+		/// </summary>
+		public DateTime? SpellTimestamp { get; set; }
 
-	public IDictionary<StatusEffect, double> StatusEffects { get; } = new Dictionary<StatusEffect, double>();
+		public IDictionary<StatusEffect, double> StatusEffects { get; } = new Dictionary<StatusEffect, double>();
 
-	/// <summary>
-	/// Attempts to climb stairs, if present.
-	/// </summary>
-	/// <returns>true if successful, otherwise false.</returns>
-	public bool ClimbStairs()
-	{
-		if (Floor.Current.Find(this).Terrain == Terrain.Stairs)
+		/// <summary>
+		/// Attempts to climb stairs, if present.
+		/// </summary>
+		/// <returns>true if successful, otherwise false.</returns>
+		public bool ClimbStairs()
 		{
-			// there are stairs here, so let's generate a new floor!
-			World.Instance.GenerateNextFloor();
-			IsClimbing = true;
-			return true;
+			if (Floor.Current.Find(this).Terrain == Terrain.Stairs)
+			{
+				// there are stairs here, so let's generate a new floor!
+				World.Instance.GenerateNextFloor();
+				if (EssenceBoostRegeneration > 0)
+				{
+					var healing = this.Heal(EssenceBoostRegeneration);
+					Logger.LogHealing(this, GetElement<Light>(), healing);
+					var manaRestoration = this.RestoreMana(EssenceBoostRegeneration);
+					Logger.LogManaRestoration(this, GetElement<Light>(), manaRestoration);
+				}
+				IsClimbing = true;
+				return true;
+			}
+			else
+			{
+				// no stairs here to climb.
+				return false;
+			}
 		}
-		else
-		{
-			// no stairs here to climb.
-			return false;
-		}
+
+		/// <summary>
+		/// Are we currently climbing stairs? If so, let's not move any monsters on the old floor, that won't work...
+		/// </summary>
+		public bool IsClimbing { get; set; }
+
+		public T GetElement<T>()
+			where T : Element
+			=> Elements.OfType<T>().Single();
+
+		/// <summary>
+		/// Gets the attunement value of an element.
+		/// </summary>
+		/// <typeparam name="T">The element to check.</typeparam>
+		/// <returns>The attunement.</returns>
+		public double GetAttunement<T>()
+			where T : Element
+			=> Elements.OfType<T>().Max(q => q.Attunement);
+
+		/// <summary>
+		/// Fire essences boost your spell power.
+		/// </summary>
+		public double EssenceBoostSpellPower => GetAttunement<Fire>() * 0.20;
+
+		/// <summary>
+		/// Earth essences boost your max HP.
+		/// </summary>
+		public int EssenceBoostMaxHitpoints => (int)Math.Round(GetAttunement<Earth>() * 5);
+
+		/// <summary>
+		/// Air essences boost your speed.
+		/// </summary>
+		public double EssenceBoostSpeed => GetAttunement<Air>() * 0.10;
+
+		/// <summary>
+		/// Water essences boost your max mana.
+		/// </summary>
+		public int EssenceBoostMaxMana => (int)Math.Round(GetAttunement<Water>() * 5);
+
+		/// <summary>
+		/// Light essences let you regenerate some of your HP and mana when you climb stairs.
+		/// </summary>
+		public int EssenceBoostRegeneration => (int)Math.Round(GetAttunement<Light>() * 5);
+
+		/// <summary>
+		/// Darkness essences give you a chance for critical hits from melee attacks and spells.
+		/// </summary>
+		public double EssenceBoostCriticalHits => GetAttunement<Darkness>() * 0.10;
 	}
-
-	/// <summary>
-	/// Are we currently climbing stairs? If so, let's not move any monsters on the old floor, that won't work...
-	/// </summary>
-	public bool IsClimbing { get; set; }
-}
 }

@@ -52,6 +52,22 @@ namespace FoundMagic.Magic
 			if (Attunement <= 0)
 				return Enumerable.Empty<Tile>();
 
+			bool crit = false;
+
+			if (caster is Hero h)
+			{
+				// check for crits from darkness attunement
+				var critChance = h.EssenceBoostCriticalHits;
+				if (World.Instance.Rng.Chance(critChance))
+					crit = true;
+			}
+
+			if (crit)
+			{
+				power *= 3; // crits are triply powerful
+				Logger.LogCriticalSpell(caster, this);
+			}
+
 			if (modifierElement is null)
 			{
 				return CastSingleTargetProjectile(caster, direction, power, efficiency, creature =>
@@ -184,7 +200,7 @@ namespace FoundMagic.Magic
 		/// <summary>
 		/// A brief description of the effect of an element's effect.
 		/// </summary>
-		public abstract string EffectDescription { get; }
+		public abstract string GetEffectDescription(ICreature caster);
 
 		/// <summary>
 		/// A brief description of the effect of an element's modifier effect.
@@ -250,9 +266,15 @@ namespace FoundMagic.Magic
 		public abstract int BaseEffectAmount { get; }
 
 		/// <summary>
-		/// The effect amount of the spell, accounting for attunement (but not spell power).
+		/// The effect amount of the spell, accounting for attunement and essence boost (but not spell power from typing accuracy).
 		/// </summary>
-		public int EffectAmount => (int)Math.Round(BaseEffectAmount * Attunement);
+		public int GetEffectAmount(ICreature caster)
+		{
+			var amt = BaseEffectAmount * Attunement;
+			if (caster is Hero h)
+				amt *= 1.0 + h.EssenceBoostSpellPower;
+			return (int)Math.Round(amt);
+		}
 
 		/// <summary>
 		/// Can this spell be cast yet?

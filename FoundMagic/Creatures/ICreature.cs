@@ -124,8 +124,25 @@ namespace FoundMagic.Creatures
 		/// <returns>The amount of damage inflicted.</returns>
 		public static int Attack(this ICreature attacker, ICreature target)
 		{
-			Logger.LogAttack(attacker, target, attacker.Strength);
-			return attacker.InflictDamage(target, attacker.Strength);
+			var dmg = attacker.Strength;
+
+			bool crit = false;
+
+			if (attacker is Hero h)
+			{
+				// check for crits from darkness attunement
+				var critChance = h.EssenceBoostCriticalHits;
+				if (World.Instance.Rng.Chance(critChance))
+					crit = true;
+			}
+
+			if (crit)
+			{
+				dmg *= 3; // crits are triply powerful
+			}
+
+			Logger.LogAttack(attacker, target, dmg, crit);
+			return attacker.InflictDamage(target, dmg);
 		}
 
 		/// <summary>
@@ -312,6 +329,32 @@ namespace FoundMagic.Creatures
 				}
 			}
 			return totalDrain;
+		}
+
+		/// <summary>
+		/// Gets the number of essences possessed of a particular element.
+		/// Pass in the <see cref="Element"/> base class to add up all elements.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="creature"></param>
+		/// <returns></returns>
+		public static int GetEssences<T>(this ICreature creature)
+			where T : Element
+		{
+			return creature.Elements.OfType<T>().Sum(q => q.Essences);
+		}
+
+		/// <summary>
+		/// Restores a creature's mana.
+		/// </summary>
+		/// <param name="creature">The creature to restore.</param>
+		/// <param name="heal">How many MP to restore.</param>
+		/// <returns>MP restored.</returns>
+		public static int RestoreMana(this ICreature creature, int mana)
+		{
+			var actualMana = Math.Min(mana, creature.MaxMana - creature.Mana);
+			creature.Mana += actualMana;
+			return actualMana;
 		}
 	}
 }

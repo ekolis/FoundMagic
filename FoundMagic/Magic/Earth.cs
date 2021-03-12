@@ -32,7 +32,7 @@ namespace FoundMagic.Magic
 		public override void ApplyEffect(ICreature caster, Direction direction, double power, double efficiency, ICreature target)
 		{
 			// slow the target
-			var duration = Math.Round(8 * power);
+			var duration = Math.Round(GetEffectAmount(caster) * power);
 			duration = target.ApplyStatusEffect(StatusEffect.Slow, duration);
 			Logger.LogStatusEffectStart(target, this, StatusEffect.Slow, duration);
 		}
@@ -41,7 +41,7 @@ namespace FoundMagic.Magic
 
 		public override double BaseManaCost { get; } = 1;
 
-		public override string EffectDescription => $"Slows the target (to half speed) for {EffectAmount} turns.";
+		public override string GetEffectDescription(ICreature caster) => $"Slows the target (to half speed) for {GetEffectAmount(caster)} turns.";
 
 		public override int BaseEffectAmount { get; } = 8;
 	}

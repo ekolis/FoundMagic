@@ -41,7 +41,7 @@ namespace FoundMagic.Magic
 
 		public override double BaseManaCost { get; } = 1;
 
-		public override string EffectDescription => $"Drains {EffectAmount} MP from the target.";
+		public override string GetEffectDescription(ICreature caster) => $"Drains {GetEffectAmount(caster)} MP from the target.";
 
 		public override int BaseEffectAmount { get; } = 3;
 	}

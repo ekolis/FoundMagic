@@ -32,12 +32,14 @@ namespace FoundMagic
 		/// <param name="attacker"></param>
 		/// <param name="target"></param>
 		/// <param name="damage"></param>
-		public static void LogAttack(ICreature attacker, ICreature target, int damage)
+		/// <param name="crit"></param>
+		public static void LogAttack(ICreature attacker, ICreature target, int damage, bool crit)
 		{
+			var critstr = crit ? " CRITICAL! Triple strength!" : "";
 			if (attacker is Hero)
-				Log($"{attacker.Capitalize()} attack {target}. ({damage} dmg, {target.Hitpoints} HP left)", Color.White);
+				Log($"{attacker.Capitalize()} attack {target}.{critstr} ({damage} dmg, {target.Hitpoints} HP left)", Color.White);
 			else // monster
-				Log($"{attacker.Capitalize()} attacks {target}. ({damage} dmg, {target.Hitpoints} HP left)", Color.Yellow);
+				Log($"{attacker.Capitalize()} attacks {target}.{critstr} ({damage} dmg, {target.Hitpoints} HP left)", Color.Yellow);
 		}
 
 		/// <summary>
@@ -174,6 +176,22 @@ namespace FoundMagic
 				// monster on monster action! don't show attunement
 				Log($"{caster.Capitalize()} drains {drain} {targetElement.GetType().Name} essences from {target}!", targetElement.Color);
 			}
+		}
+
+		public static void LogManaRestoration(ICreature creature, Element element, int mana)
+		{
+			if (creature is Hero)
+				Log($"{creature.Capitalize()} have your mana restored ({mana} MP).", element.Color);
+			else
+				Log($"{creature.Capitalize()} has its mana restored ({mana} MP).", element.Color);
+		}
+
+		public static void LogCriticalSpell(ICreature caster, Element element)
+		{
+			if (caster is Hero)
+				Log($"Your spell goes haywire! CRITICAL! Triple spell power!", element.Color);
+			else
+				Log($"{caster}'s spell goes haywire! CRITICAL! Triple spell power!", element.Color);
 		}
 
 		/// <summary>
