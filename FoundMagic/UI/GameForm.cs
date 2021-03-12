@@ -115,5 +115,36 @@ namespace FoundMagic.UI
 		{
 			Invalidate();
 		}
+
+		private void GameForm_MouseMove(object sender, MouseEventArgs e)
+		{
+			// get some globals
+			Floor floor = Floor.Current;
+
+			// find out how big our glyphs are
+			int glyphSize = Math.Min(Width / (floor.Width + 1), Height / (floor.Height + 1));
+
+			// find what tile the mouse is hovering
+			var (x, y) = (e.X / glyphSize, e.Y / glyphSize);
+			var tile = floor.Tiles[x, y];
+
+			// display tooltip
+			if (tile.IsInFov)
+			{
+				if (tile.Creature is not null)
+					toolTip.SetToolTip(this, $"{tile.Creature.Name}: {tile.Creature.Hitpoints} / {tile.Creature.MaxHitpoints} HP");
+				else
+					toolTip.SetToolTip(this, $"{tile.Terrain.Name}");
+			}
+			else if (tile.IsExplored)
+			{
+				toolTip.SetToolTip(this, $"{tile.Terrain.Name}");
+			}
+			else
+			{
+				toolTip.SetToolTip(this, $"(unexplored)");
+			}
+
+		}
 	}
 }

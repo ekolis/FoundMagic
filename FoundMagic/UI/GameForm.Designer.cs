@@ -31,6 +31,7 @@ namespace FoundMagic.UI
 		{
 			this.components = new System.ComponentModel.Container();
 			this.logTimer = new System.Windows.Forms.Timer(this.components);
+			this.toolTip = new System.Windows.Forms.ToolTip(this.components);
 			this.SuspendLayout();
 			// 
 			// logTimer
@@ -53,6 +54,7 @@ namespace FoundMagic.UI
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.GameForm_Paint);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GameForm_KeyDown);
 			this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.GameForm_KeyUp);
+			this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GameForm_MouseMove);
 			this.ResumeLayout(false);
 
 		}
@@ -60,6 +62,7 @@ namespace FoundMagic.UI
 		#endregion
 
 		private System.Windows.Forms.Timer logTimer;
+		private System.Windows.Forms.ToolTip toolTip;
 	}
 }
 
