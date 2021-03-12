@@ -202,36 +202,50 @@ namespace FoundMagic.Mapping
 		/// <summary>
 		/// Processes actions.
 		/// </summary>
-		/// <param name="time">The amount of time to process.</param>
+		/// <param name="timeAllotted">The amount of time to process.</param>
 		/// <param name="waitForHero">Should we stop once it's the hero's turn?</param>
 		/// <returns>The amount of time actually spent.</returns>
-		public double ProcessTime(double time, bool waitForHero)
+		public double ProcessTime(double timeAllotted, bool waitForHero)
 		{
+			// degenerate case
+			if (timeAllotted == 0)
+				return 0;
+
+			// declare some variables
 			double timeSpent = 0;
+			IEnumerable<ICreature> readyCreatures;
 
-			// pass time until at least one creature is ready to act
-			var minTime = Creatures.Min(q => q.Timer);
-			foreach (ICreature creature in Creatures)
-				creature.ProcessTime(minTime);
-			timeSpent += minTime;
-
-			// find any creatures who are ready to act
-			var readyCreatures = Creatures.Where(q => q.Timer <= 0);
-
-			// see if we need to stop early
-			if (waitForHero && Hero.Instance.Timer <= 0)
-				return timeSpent;
-
-			// let them act "simultaneously"
-			foreach (var creature in readyCreatures)
+			// spend our allotted time
+			while (timeSpent < timeAllotted)
 			{
-				// moving monsters when the hero has left the floor is counterproductive...
-				if (Hero.Instance.IsClimbing)
-				{
-					Hero.Instance.IsClimbing = false;
+				// pass time until at least one creature is ready to act, or the allotted time is up
+				var minTime = Math.Min(Creatures.Min(q => q.Timer), timeAllotted);
+				foreach (ICreature creature in Creatures)
+					creature.ProcessTime(minTime);
+				timeSpent += minTime;
+
+				// find any creatures who are ready to act
+				readyCreatures = Creatures.Where(q => q.Timer <= 0);
+
+				// see if we need to stop early
+				if (!readyCreatures.OfType<Monster>().Any())
 					break;
+				if (timeSpent >= timeAllotted)
+					break;
+				if (waitForHero && Hero.Instance.Timer <= 0)
+					break;
+
+				// let them act "simultaneously"
+				foreach (var creature in readyCreatures)
+				{
+					// moving monsters when the hero has left the floor is counterproductive...
+					if (Hero.Instance.IsClimbing)
+					{
+						Hero.Instance.IsClimbing = false;
+						break;
+					}
+					creature.Timer += creature.Act();
 				}
-				creature.Timer += creature.Act();
 			}
 
 			// all done, return time spent
