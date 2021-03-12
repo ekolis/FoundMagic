@@ -20,7 +20,7 @@
 		"MaxHitpoints": 8,
 		"MaxMana": 8,
 		"Difficulty": 1,
-		"FlagNames": [ "unique" ]
+		"FlagNames": [ "unique", "finalboss" ]
 	},
 	{
 		"Name": "skeleton",
