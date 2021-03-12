@@ -124,8 +124,11 @@ namespace FoundMagic.Creatures
 			else
 			{
 				// monster can't see hero
-				// for now let's just sit still
-				// TODO: pursue last known location of hero? wander in a direction until we hit a wall, then turn?
+				// let's just wander about randomly
+				var dir = World.Instance.Rng.Pick(Direction.All.Where(q => q.DX != 0 || q.DY != 0));
+				var nextTile = Floor.Current.GetNeighbor(Floor.Current.Find(this), dir);
+				if (nextTile is not null && nextTile.Creature is not Monster && nextTile.Terrain.IsWalkable)
+					floor.Move(tile, nextTile);
 				return 1.0 / Speed;
 			}
 		}
