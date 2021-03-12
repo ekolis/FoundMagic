@@ -45,6 +45,7 @@ namespace FoundMagic.Mapping
 				for (int y = 0; y < Height; y++)
 				{
 					Tiles[x, y] = new Tile(GetCell(x, y), 0.1);
+					SetCellProperties(x, y, Tiles[x, y].IsTransparent, Tiles[x, y].IsWalkable); // sync up our two sets of tiles
 				}
 			}
 
