@@ -59,7 +59,7 @@ namespace FoundMagic.Creatures
 		private IEnumerable<Tile> VisibleTiles { get; set; }
 
 		/// <summary>
-		/// The monster will attempt to move toward the hero and attack him.
+		/// The monster will attempt to cast spells or pursue the hero and attack him.
 		/// </summary>
 		/// <returns></returns>
 		public double Act()
@@ -70,22 +70,63 @@ namespace FoundMagic.Creatures
 			var heroTile = VisibleTiles.SingleOrDefault(q => q.Creature is Hero);
 			if (heroTile is not null)
 			{
-				// monster can see hero, pursue him
+				// monster can see hero, do stuff!
+
+				// see if we can cast any spells that might be useful
+				var castableElements = Elements.Where(q => q.BaseManaCost <= Mana);
+				if (castableElements.Any())
+				{
+					// monster can cast spells, should we cast them?
+					var attack = castableElements.OfType<Fire>().Concat<Element>(castableElements.OfType<Darkness>());
+					var effect = castableElements.OfType<Earth>().Concat<Element>(castableElements.OfType<Air>());
+					var healing = castableElements.OfType<Light>();
+					var mana = castableElements.OfType<Water>();
+
+					// is the hero in an orthogonal direction? then attack him with a spell!
+					var dir = tile.CheckOrthogonality(heroTile);
+					Element? spellElement = null;
+					if (dir is not null)
+					{
+						// try to attack first, if we can't do that then apply an effect
+						if (attack.Any())
+							spellElement = World.Instance.Rng.Pick(attack);
+						else if (effect.Any())
+							spellElement = World.Instance.Rng.Pick(effect);
+
+						// override: if we're low on mana, try to restore our mana!
+						if (Mana <= MaxMana / 3 && mana.Any())
+							spellElement = World.Instance.Rng.Pick(mana);
+
+						if (spellElement is not null)
+						{
+							// ok, now cast the spell!
+							spellElement.Cast(this, dir, 1, 1);
+							return 1.0 / Speed;
+						}
+					}
+
+					// low on HP? heal ourselves
+					if (Hitpoints <= MaxHitpoints / 3 && healing.Any())
+					{
+						World.Instance.Rng.Pick(healing).Cast(this, Direction.Stationary, 1, 1);
+						return 1.0 / Speed;
+					}
+				}
+
+				// we couldn't cast a spell? then pursue the hero, or attack him if he's next to us!
 				Path path = new PathFinder(floor).ShortestPath(tile, heroTile);
 				var step = path.StepForward();
 				Tile nextTile = floor.Tiles[step.X, step.Y];
-				if (floor.Move(tile, nextTile))
-					return 1.0 / Speed;
+				floor.Move(tile, nextTile);
+				return 1.0 / Speed;
 			}
 			else
 			{
 				// monster can't see hero
 				// for now let's just sit still
 				// TODO: pursue last known location of hero? wander in a direction until we hit a wall, then turn?
+				return 1.0 / Speed;
 			}
-
-			// didn't do anything? just pass a turn
-			return 1.0 / Speed;
 		}
 
 		public int Strength => Type.Strength;

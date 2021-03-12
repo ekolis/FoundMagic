@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RogueSharp;
 using FoundMagic.Creatures;
+using System.Runtime.CompilerServices;
 
 namespace FoundMagic.Mapping
 {
@@ -96,5 +97,34 @@ namespace FoundMagic.Mapping
 		/// <returns></returns>
 		public Tile WithExplored()
 			=> new Tile(this, IsInFov, true);
+		
+		/// <summary>
+		/// Determines if this tile is orthogonally aligned to another tile (in the same row or column).
+		/// </summary>
+		/// <param name="target">The other tile.</param>
+		/// <returns>The direction to the target, or null if not orthogonally aligned.</returns>
+		public Direction? CheckOrthogonality(Tile target)
+		{
+			if (X == target.X)
+			{
+				if (Y == target.Y)
+					return Direction.Stationary;
+				else if (Y < target.Y)
+					return Direction.South;
+				else if (Y > target.Y)
+					return Direction.North;
+			}
+			else if (Y == target.Y)
+			{
+				if (X == target.X)
+					return Direction.Stationary;
+				else if (X < target.X)
+					return Direction.East;
+				else if (X > target.X)
+					return Direction.West;
+			}
+
+			return null;
+		}
 	}
 }
