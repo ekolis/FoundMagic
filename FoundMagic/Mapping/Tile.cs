@@ -35,8 +35,8 @@ namespace FoundMagic.Mapping
 		/// Copies an <see cref="ICell"/> into a tile and picks an appropriate terrain.
 		/// </summary>
 		/// <param name="cell"></param>
-		public Tile(ICell cell, bool isInFov = false, bool isExplored = false)
-			: base(cell.X, cell.Y, cell.IsTransparent, cell.IsWalkable, isInFov, isExplored)
+		public Tile(ICell cell, double flipOpacityChance, bool isInFov = false, bool isExplored = false)
+			: base(cell.X, cell.Y, World.Instance.Rng.Chance(flipOpacityChance) ? !cell.IsTransparent : cell.IsTransparent, cell.IsWalkable, isInFov, isExplored)
 		{
 			Terrain = World.Instance.Rng.Pick(Terrain.Basic.Where(q => q.IsTransparent == IsTransparent && q.IsWalkable == IsWalkable));
 			Creature = null;

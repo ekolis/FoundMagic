@@ -44,7 +44,7 @@ namespace FoundMagic.Mapping
 			{
 				for (int y = 0; y < Height; y++)
 				{
-					Tiles[x, y] = new Tile(GetCell(x, y));
+					Tiles[x, y] = new Tile(GetCell(x, y), 0.1);
 				}
 			}
 

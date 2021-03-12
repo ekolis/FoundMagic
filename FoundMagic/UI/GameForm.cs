@@ -126,7 +126,15 @@ namespace FoundMagic.UI
 
 			// find what tile the mouse is hovering
 			var (x, y) = (e.X / glyphSize, e.Y / glyphSize);
-			var tile = floor.Tiles[x, y];
+			Tile tile;
+			try
+			{
+				tile = floor.Tiles[x, y];
+			}
+			catch
+			{
+				return; // out of range
+			}
 
 			// display tooltip
 			if (tile.IsInFov)
