@@ -176,15 +176,15 @@ namespace FoundMagic.Creatures
 				if (elements is null)
 				{
 					// you get one attack spell
-					var fire = new Fire(40);
-					var darkness = new Darkness(40);
+					var fire = new Fire(0);
+					var darkness = new Darkness(0);
 					World.Instance.Rng.Pick(new Element[] { fire, darkness }).Essences = Element.EssencesForStandardAttunement;
 
 					// and one utility spell
-					var air = new Air(40);
-					var earth = new Earth(40);
-					var water = new Water(40);
-					var light = new Light(40);
+					var air = new Air(0);
+					var earth = new Earth(0);
+					var water = new Water(0);
+					var light = new Light(0);
 					World.Instance.Rng.Pick(new Element[] { air, earth, water, light }).Essences = Element.EssencesForStandardAttunement;
 
 					// set up elements list
