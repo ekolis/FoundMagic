@@ -117,7 +117,8 @@ namespace FoundMagic.Creatures
 				Path path = new PathFinder(floor).ShortestPath(tile, heroTile);
 				var step = path.StepForward();
 				Tile nextTile = floor.Tiles[step.X, step.Y];
-				floor.Move(tile, nextTile);
+				if (nextTile.Creature is not Monster)
+					floor.Move(tile, nextTile);
 				return 1.0 / Speed;
 			}
 			else
