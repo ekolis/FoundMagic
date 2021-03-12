@@ -58,7 +58,7 @@ namespace FoundMagic.Mapping
 			upStairsPlace.Terrain = Terrain.StairsUp;
 
 			// create monsters
-			const int monsterRarity = 10;
+			const int monsterRarity = 25;
 			var numMonsters = places.Count() / monsterRarity;
 			var maxMonsterDifficulty = MonsterType.All.Max(q => q.Difficulty);
 			for (int i = 0; i < numMonsters; i++)
