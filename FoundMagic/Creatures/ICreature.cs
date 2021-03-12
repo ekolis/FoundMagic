@@ -141,8 +141,15 @@ namespace FoundMagic.Creatures
 				dmg *= 3; // crits are triply powerful
 			}
 
+			// inflict damage
+			dmg = attacker.InflictDamage(target, dmg);
 			Logger.LogAttack(attacker, target, dmg, crit);
-			return attacker.InflictDamage(target, dmg);
+
+			// melee attacks will restore a little mana, so creatures can go casting lots of spells!
+			var mana = attacker.RestoreMana(1);
+			Logger.LogManaRestoration(attacker, World.Instance.Rng.Pick(attacker.Elements.Where(q => q.Essences == attacker.Elements.Max(w => w.Essences))), mana);
+
+			return dmg;
 		}
 
 		/// <summary>
