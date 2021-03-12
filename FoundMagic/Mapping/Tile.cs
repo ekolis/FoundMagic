@@ -66,16 +66,16 @@ namespace FoundMagic.Mapping
 		public ICreature? Creature { get; set; }
 
 		/// <summary>
-		/// If there is a creature here, its glyph will be used; otherwise the terrain's glyph will be used.
+		/// If there is a creature here and the player can see it, its glyph will be used; otherwise the terrain's glyph will be used.
 		/// </summary>
 		public char Glyph
-			=> Creature?.Glyph ?? Terrain.Glyph;
+			=> IsInFov ? Creature?.Glyph ?? Terrain.Glyph : Terrain.Glyph;
 
 		/// <summary>
-		/// If there is a creature here, its color will be used; otherwise the terrain's color will be used.
+		/// If there is a creature here and the player can see it, its color will be used; otherwise the terrain's color will be used.
 		/// </summary>
 		public Color Color
-			=> Creature?.Color ?? Terrain.Color;
+			=> IsInFov ? Creature?.Color ?? Terrain.Color : Terrain.Color;
 
 		/// <summary>
 		/// Creates a tile like this one but it is in FOV and explored.
