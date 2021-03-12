@@ -17,5 +17,9 @@ namespace FoundMagic.Creatures
 		/// The monster is unique, and will only be spawned once.
 		/// </summary>
 		Unique = 0x1,
+		/// <summary>
+		/// The monster is the final boss. When it is defeated, the endgame scenario will start!
+		/// </summary>
+		FinalBoss = 0x2,
 	}
 }

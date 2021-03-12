@@ -223,19 +223,48 @@ namespace FoundMagic.Creatures
 		/// <returns>true if successful, otherwise false.</returns>
 		public bool ClimbStairs()
 		{
-			if (Floor.Current.Find(this).Terrain == Terrain.Stairs)
+			if (Floor.Current.Find(this).Terrain == Terrain.StairsDown)
 			{
-				// there are stairs here, so let's generate a new floor!
-				World.Instance.GenerateNextFloor();
-				if (EssenceBoostRegeneration > 0)
+				if (!World.Instance.IsEndgame)
 				{
-					var healing = this.Heal(EssenceBoostRegeneration);
-					Logger.LogHealing(this, GetElement<Light>(), healing);
-					var manaRestoration = this.RestoreMana(EssenceBoostRegeneration);
-					Logger.LogManaRestoration(this, GetElement<Light>(), manaRestoration);
+					// there are down stairs here, so let's generate a new floor!
+					World.Instance.ClimbDown();
+					if (EssenceBoostRegeneration > 0)
+					{
+						var healing = this.Heal(EssenceBoostRegeneration);
+						Logger.LogHealing(this, GetElement<Light>(), healing);
+						var manaRestoration = this.RestoreMana(EssenceBoostRegeneration);
+						Logger.LogManaRestoration(this, GetElement<Light>(), manaRestoration);
+					}
+					IsClimbing = true;
+					return true;
 				}
-				IsClimbing = true;
-				return true;
+				else
+				{
+					Logger.Log("It's too dangerous down there! Flee upward!", Color.White);
+					return false;
+				}
+			}
+			else if (Floor.Current.Find(this).Terrain == Terrain.StairsUp)
+			{
+				if (World.Instance.IsEndgame)
+				{
+					World.Instance.ClimbUp();
+					if (EssenceBoostRegeneration > 0)
+					{
+						var healing = this.Heal(EssenceBoostRegeneration);
+						Logger.LogHealing(this, GetElement<Light>(), healing);
+						var manaRestoration = this.RestoreMana(EssenceBoostRegeneration);
+						Logger.LogManaRestoration(this, GetElement<Light>(), manaRestoration);
+					}
+					IsClimbing = true;
+					return true;
+				}
+				else
+				{
+					Logger.Log("You cannot return to the surface in shame! Downward, to your destiny!", Color.White);
+					return false;
+				}
 			}
 			else
 			{

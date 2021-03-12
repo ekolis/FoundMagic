@@ -52,7 +52,9 @@ namespace FoundMagic.Mapping
 			// create stairs
 			var places = Tiles.Cast<Tile>().Where(q => q.IsWalkable && q.Creature is null).ToList();
 			var stairsPlace = World.Instance.Rng.Pick(places);
-			stairsPlace.Terrain = Terrain.Stairs;
+			stairsPlace.Terrain = Terrain.StairsDown;
+			stairsPlace = World.Instance.Rng.Pick(places.Except(new[] { stairsPlace }));
+			stairsPlace.Terrain = Terrain.StairsUp;
 
 			// create monsters
 			const int monsterRarity = 10;

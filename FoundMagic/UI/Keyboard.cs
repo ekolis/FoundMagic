@@ -74,8 +74,8 @@ namespace FoundMagic.UI
 					return Direction.West;
 				else if (IsAnyKeyPressed(Keys.Right, Keys.D6, Keys.D))
 					return Direction.East;
-				else if (IsAnyKeyPressed(Keys.OemPeriod, Keys.D5, Keys.LShiftKey))
-					return Direction .Stationary;
+				else if (IsAnyKeyPressed(Keys.OemPeriod, Keys.Oemcomma, Keys.D5, Keys.LShiftKey))
+					return Direction.Stationary;
 				return null;
 			}
 		}

@@ -14,7 +14,8 @@ namespace FoundMagic.Mapping
 		public static readonly Terrain Tree = new("tree", '+', Color.Green, false, true);
 		public static readonly Terrain Wall = new("wall", '#', Color.White, false, false);
 
-		public static readonly Terrain Stairs = new("stairs", '>', Color.White, true, true);
+		public static readonly Terrain StairsDown = new("stairs down", '>', Color.White, true, true);
+		public static readonly Terrain StairsUp = new("stairs up", '<', Color.White, true, true);
 
 		/// <summary>
 		/// Basic terrains used in floor generation.
@@ -24,7 +25,7 @@ namespace FoundMagic.Mapping
 		/// <summary>
 		/// Special terrains with distinct purposes.
 		/// </summary>
-		public static IEnumerable<Terrain> Special { get; } = new Terrain[] { Stairs };
+		public static IEnumerable<Terrain> Special { get; } = new Terrain[] { StairsDown, StairsUp };
 
 		/// <summary>
 		/// All terrains.

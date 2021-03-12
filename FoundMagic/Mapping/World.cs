@@ -42,19 +42,45 @@ namespace FoundMagic.Mapping
 		}
 
 		/// <summary>
+		/// The floors that exist in the world.
+		/// A new one will be created when you go down from the last one that exists.
+		/// </summary>
+		public IList<Floor> Floors { get; } = new List<Floor>();
+
+		/// <summary>
 		/// Generates the next floor in the world.
 		/// </summary>
-		public void GenerateNextFloor()
+		public Floor GenerateNextFloor()
 		{
 			var mapper = new RandomRoomsMapCreationStrategy<Floor>(80, 45, 32, 12, 4, Rng);
-			CurrentFloor = mapper.CreateMap();
-			CurrentFloor.Setup();
-			var emptyTiles = CurrentFloor.Tiles.Cast<Tile>().Where(q => q.IsWalkable && q.Creature is null);
-			var startTile = Rng.Pick(emptyTiles);
+			var floor = mapper.CreateMap();
+			Floors.Add(floor);
+			floor.Setup();
+			return floor;
+		}
+
+		public void ClimbDown()
+		{
+			var floor = GenerateNextFloor();
+			CurrentDepth++;
+			var upStairs = floor.Tiles.Cast<Tile>().Where(q => q.Terrain == Terrain.StairsUp);
+			var startTile = Rng.Pick(upStairs);
 			startTile.Creature = Hero.Instance;
 			Hero.Instance.ResetFov();
 			Hero.Instance.UpdateFov();
-			Logger.Log($"Welcome to floor {CurrentFloor.Difficulty}!", Color.White);
+			Logger.Log($"Welcome to floor {CurrentDepth + 1}!", Color.White);
+		}
+
+		public void ClimbUp()
+		{
+			CurrentDepth--;
+			var floor = CurrentFloor;
+			var downStairs = floor.Tiles.Cast<Tile>().Where(q => q.Terrain == Terrain.StairsDown);
+			var startTile = Rng.Pick(downStairs);
+			startTile.Creature = Hero.Instance;
+			Hero.Instance.ResetFov();
+			Hero.Instance.UpdateFov();
+			Logger.Log($"Welcome back to floor {CurrentDepth + 1}!", Color.White);
 		}
 
 		/// <summary>
@@ -63,8 +89,27 @@ namespace FoundMagic.Mapping
 		public IRandom Rng { get; private set; }
 
 		/// <summary>
+		/// The index of the floor that the hero is currently located on.
+		/// </summary>
+		public int CurrentDepth { get; private set; } = -1;
+
+		/// <summary>
 		/// The floor that the hero is currently located on.
 		/// </summary>
-		public Floor? CurrentFloor { get; private set; }
+		public Floor? CurrentFloor => Floors[CurrentDepth];
+
+		/// <summary>
+		/// Are we in the endgame scenario?
+		/// During the endgame, monsters will be buffed and up stairs rather than down stairs will be enabled.
+		/// Also there will be a timer; when the timer runs out, the hero will start to take damage over time!
+		/// </summary>
+		public bool IsEndgame { get; private set; }
+
+		/// <summary>
+		/// The endgame timer.
+		/// You will have this many turns to escape the dungeon, starting from the time you defeat the final boss.
+		/// If you don't, you'll take damage over time.
+		/// </summary>
+		public double EndgameTimer { get; private set; } = 5000;
 	}
 }

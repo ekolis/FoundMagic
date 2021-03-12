@@ -29,7 +29,7 @@ namespace FoundMagic
 			else
 				seed = when;
 			World.Setup(seed);
-			World.Instance.GenerateNextFloor();
+			World.Instance.ClimbDown();
 			Application.Run(new GameForm());
 		}
 	}

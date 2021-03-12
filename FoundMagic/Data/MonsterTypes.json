@@ -147,6 +147,6 @@
 		"MaxHitpoints": 25,
 		"MaxMana": 25,
 		"Difficulty": 10,
-		"FlagNames": [ "unique" ]
+		"FlagNames": [ "unique", "finalboss" ]
 	}
 ]
