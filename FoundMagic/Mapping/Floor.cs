@@ -214,6 +214,7 @@ namespace FoundMagic.Mapping
 			// declare some variables
 			double timeSpent = 0;
 			IEnumerable<ICreature> readyCreatures;
+			bool heroHasActed = false;
 
 			// spend our allotted time
 			while (timeSpent < timeAllotted)
@@ -228,7 +229,7 @@ namespace FoundMagic.Mapping
 				readyCreatures = Creatures.Where(q => q.Timer <= 0);
 
 				// see if we need to stop early
-				if (!readyCreatures.OfType<Monster>().Any())
+				if (heroHasActed && !readyCreatures.OfType<Monster>().Any())
 					break;
 				if (timeSpent >= timeAllotted)
 					break;
@@ -245,6 +246,8 @@ namespace FoundMagic.Mapping
 						break;
 					}
 					creature.Timer += creature.Act();
+					if (creature is Hero)
+						heroHasActed = true;
 				}
 			}
 
