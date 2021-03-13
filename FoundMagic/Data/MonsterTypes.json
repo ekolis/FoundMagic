@@ -20,8 +20,7 @@
 		"Strength": 2,
 		"MaxHitpoints": 8,
 		"MaxMana": 8,
-		"Difficulty": 1,
-		"FlagNames": [ "unique" ]
+		"Difficulty": 1
 	},
 	{
 		"Name": "skeleton",

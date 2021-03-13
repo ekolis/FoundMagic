@@ -50,6 +50,7 @@ namespace FoundMagic.UI
 				g.DrawBars(hero, font, glyphSize);
 				// TODO: render current status effects and their durations?
 				g.DrawDeath(Width, Height);
+				g.DrawVictory(Width, Height, font, glyphSize);
 			}			
 		}
 		private void GameForm_SizeChanged(object sender, EventArgs e)
@@ -60,6 +61,9 @@ namespace FoundMagic.UI
 
 		private void GameForm_KeyDown(object sender, KeyEventArgs e)
 		{
+			if (World.Instance.IsGameOver)
+				return; // do not respond to input after the game's over
+
 			// find hero
 			var h = Hero.Instance;
 

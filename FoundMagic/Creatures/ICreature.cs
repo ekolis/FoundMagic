@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using FoundMagic.Magic;
 using RogueSharp;
 using FoundMagic.Mapping;
+using Microsoft.VisualBasic.Logging;
 
 namespace FoundMagic.Creatures
 {
@@ -183,6 +184,13 @@ namespace FoundMagic.Creatures
 			Logger.LogDeath(victim);
 			if (victim is Hero h)
 				h.DeathTimestamp = DateTime.Now;
+			else if (victim is Monster m && m.HasFlag(MonsterFlags.FinalBoss))
+			{
+				// defeated the final boss? then let's start the endgame!
+				Logger.Log($"DANGER! The defeat of {m} triggered the collapse of the dungeon!", Color.Red);
+				Logger.Log($"You must escape in {World.Instance.EndgameTimer} turns, or bad things will happen!", Color.Red);
+				World.Instance.IsEndgame = true;
+			}
 		}
 
 		/// <summary>

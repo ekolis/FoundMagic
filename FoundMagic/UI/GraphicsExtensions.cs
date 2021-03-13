@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using FoundMagic.Mapping;
 using FoundMagic.Creatures;
 using FoundMagic.Magic;
+using System.Collections.Immutable;
 
 namespace FoundMagic.UI
 {
@@ -118,18 +119,26 @@ namespace FoundMagic.UI
 
 		public static void DrawBars(this Graphics g, Hero hero, Font font, int glyphSize)
 		{
+			var height = World.Instance.IsEndgame ? 5 : 4;
+
 			// draw the HP/MP
-			g.FillRectangle(Brushes.Black, 0, 0, 10 * glyphSize, 4 * glyphSize);
+			g.FillRectangle(Brushes.Black, 0, 0, 10 * glyphSize, height * glyphSize);
 			g.DrawString($"H: {hero.Hitpoints} / {hero.MaxHitpoints}", font, Brushes.Red, 0, 0 * glyphSize);
 			g.DrawLogarithmicBar(hero.Hitpoints, hero.MaxHitpoints, Brushes.Red, 0, 1 * glyphSize, glyphSize);
 			g.DrawString($"M: {hero.Mana} / {hero.MaxMana}", font, Brushes.Blue, 0, 2 * glyphSize);
 			g.DrawLogarithmicBar(hero.Mana, hero.MaxMana, Brushes.Blue, 0, 3 * glyphSize, glyphSize);
+
+			if (World.Instance.IsEndgame)
+			{
+				g.DrawString($"T: {World.Instance.EndgameTimer}", font, Brushes.Magenta, 0, 4 * glyphSize);
+			}
 		}
 
 		public static void DrawDeath(this Graphics g, int gfxWidth, int gfxHeight)
 		{
 			if (Hero.Instance.DeathTimestamp != null)
 			{
+				// color fade
 				var howLongAgo = DateTime.Now - Hero.Instance.DeathTimestamp.Value;
 				Color deathColor;
 				var ageRatio = (double)howLongAgo.Ticks / (double)Hero.Instance.DeathFadeTime.Ticks;
@@ -149,6 +158,63 @@ namespace FoundMagic.UI
 				}
 				g.FillRectangle(new SolidBrush(deathColor), 0, 0, gfxWidth, gfxHeight);
 			}
+		}
+
+		public static void DrawVictory(this Graphics g, int gfxWidth, int gfxHeight, Font font, int glyphSize)
+		{
+			if (World.Instance.IsWinner)
+			{
+				// color fade
+				var howLongAgo = DateTime.Now - World.Instance.VictoryTimestamp.Value;
+				Color winColor;
+				var ageRatio = (double)howLongAgo.Ticks / (double)Hero.Instance.DeathFadeTime.Ticks; // TODO: make a separate variable for this
+				int alphaWhite = (int)(255 * ageRatio);
+				int alphaBlack = (int)(255 * (ageRatio - 1));
+				if (ageRatio < 1)
+				{
+					winColor = Color.FromArgb(alphaWhite, Color.White);
+				}
+				else if (ageRatio < 2)
+				{
+					winColor = Color.FromArgb(255, 255 - alphaBlack, 255 - alphaBlack, 255 - alphaBlack);
+				}
+				else
+				{
+					winColor = Color.Black;
+				}
+				g.FillRectangle(new SolidBrush(winColor), 0, 0, gfxWidth, gfxHeight);
+
+				// draw some text in a pretty pattern
+				double angle = 0;
+				var stringFormat = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
+				var gfxSize = Math.Min(gfxWidth, gfxHeight);
+				var maxTicks = Hero.Instance.DeathFadeTime.Ticks;
+				var ticks = Math.Min(howLongAgo.Ticks, maxTicks);
+				var lerp = ((float)ticks / (float)maxTicks);
+				var derp = 1f - lerp;
+				font = new Font(font.FontFamily, font.Size * (5 - derp * 4));
+				foreach (var element in Hero.Instance.Elements.OrderBy(q => World.Instance.Rng.Next(10) + AntiSeizureMagic(q, Hero.Instance.Elements, lerp)))
+				{
+					float x = (float)Math.Cos(angle) * derp * gfxSize + gfxWidth / 2;
+					float y = (float)Math.Sin(angle) * derp * gfxSize + gfxHeight / 2;
+					g.DrawString("*YOU WIN*", font, new SolidBrush(element.Color), x, y, stringFormat);
+					angle += Math.PI / 3;
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Make the victory screen less seizure inducing by slowing down the color shuffling as the text gets larger over time.
+		/// </summary>
+		/// <param name="element"></param>
+		/// <param name="elements"></param>
+		/// <param name="lerp"></param>
+		/// <returns></returns>
+		private static float AntiSeizureMagic(Element element, IEnumerable<Element> elements, float lerp)
+		{
+			var idx = elements.ToImmutableList().IndexOf(element);
+			var factor = Math.Sqrt(lerp) * 10f;
+			return (float)(idx * factor);
 		}
 
 		public static Color Average(this IEnumerable<Color> colors)

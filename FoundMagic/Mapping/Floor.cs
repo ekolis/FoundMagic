@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using RogueSharp;
 using FoundMagic.Creatures;
 using System.Drawing;
+using FoundMagic.Magic;
 
 namespace FoundMagic.Mapping
 {
@@ -258,6 +259,33 @@ namespace FoundMagic.Mapping
 					creature.Timer += creature.Act();
 					if (creature is Hero)
 						heroHasActed = true;
+				}
+			}
+
+			// deal with endgame stuff
+			if (World.Instance.IsEndgame)
+			{
+				World.Instance.EndgameTimer -= timeSpent;
+				if (World.Instance.EndgameTimer < 0)
+				{
+					// find out how many HP to drain (for now, 1 HP per 10 turns)
+					// TODO: logarithmic rate of damage?
+					var drain = -World.Instance.EndgameTimer * 0.1;
+					World.Instance.EndgameDamage += drain;
+
+					// did we save enough for at least one HP to be drained?
+					var dmg = (int)World.Instance.EndgameDamage;
+
+					if (dmg > 0)
+					{
+						// if so, inflict the damage
+						Hero.Instance.InflictDamage(Hero.Instance, dmg);
+						Logger.LogHPDrain(Hero.Instance, Hero.Instance, Hero.Instance.GetElement<Fire>(), dmg);
+						World.Instance.EndgameDamage -= dmg;
+					}
+
+					// don't let the timer be negative
+					World.Instance.EndgameTimer = 0;
 				}
 			}
 

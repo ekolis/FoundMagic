@@ -7,6 +7,7 @@ using RogueSharp.MapCreation;
 using RogueSharp.Random;
 using FoundMagic.Creatures;
 using System.Drawing;
+using System.ComponentModel;
 
 namespace FoundMagic.Mapping
 {
@@ -74,13 +75,22 @@ namespace FoundMagic.Mapping
 		public void ClimbUp()
 		{
 			CurrentDepth--;
-			var floor = CurrentFloor;
-			var downStairs = floor.Tiles.Cast<Tile>().Where(q => q.Terrain == Terrain.StairsDown);
-			var startTile = Rng.Pick(downStairs);
-			startTile.Creature = Hero.Instance;
-			Hero.Instance.ResetFov();
-			Hero.Instance.UpdateFov();
-			Logger.Log($"Welcome back to floor {CurrentDepth + 1}!", Color.White);
+			if (CurrentDepth < 0)
+			{
+				// you made it to the surface! you win!
+				IsEndgame = false;
+				Win();
+			}
+			else
+			{
+				var floor = CurrentFloor;
+				var downStairs = floor.Tiles.Cast<Tile>().Where(q => q.Terrain == Terrain.StairsDown);
+				var startTile = Rng.Pick(downStairs);
+				startTile.Creature = Hero.Instance;
+				Hero.Instance.ResetFov();
+				Hero.Instance.UpdateFov();
+				Logger.Log($"Welcome back to floor {CurrentDepth + 1}!", Color.White);
+			}
 		}
 
 		/// <summary>
@@ -103,13 +113,38 @@ namespace FoundMagic.Mapping
 		/// During the endgame, monsters will be buffed and up stairs rather than down stairs will be enabled.
 		/// Also there will be a timer; when the timer runs out, the hero will start to take damage over time!
 		/// </summary>
-		public bool IsEndgame { get; private set; }
+		public bool IsEndgame { get; set; }
 
 		/// <summary>
 		/// The endgame timer.
 		/// You will have this many turns to escape the dungeon, starting from the time you defeat the final boss.
 		/// If you don't, you'll take damage over time.
 		/// </summary>
-		public double EndgameTimer { get; private set; } = 5000;
+		public double EndgameTimer { get; set; } = 5000;
+
+		/// <summary>
+		/// Built-up damage to apply to the hero once the endgame timer runs out.
+		/// </summary>
+		public double EndgameDamage { get; set; }
+
+		/// <summary>
+		/// When did the player win the game? Or null if not yet.
+		/// </summary>
+		public DateTime? VictoryTimestamp { get; set; }
+
+		/// <summary>
+		/// Did the player win the game?
+		/// </summary>
+		public bool IsWinner => VictoryTimestamp is not null;
+
+		/// <summary>
+		/// Is the game over (either victory or defeat)?
+		/// </summary>
+		public bool IsGameOver => IsWinner || Hero.Instance.DeathTimestamp is not null;
+
+		/// <summary>
+		/// Declares victory for the player.
+		/// </summary>
+		public void Win() => VictoryTimestamp = DateTime.Now;
 	}
 }
