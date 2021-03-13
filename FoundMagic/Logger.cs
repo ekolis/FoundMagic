@@ -205,7 +205,7 @@ namespace FoundMagic
 			return Entries;
 		}
 
-		public static TimeSpan Duration { get; } = new(0, 0, 5);
+		public static TimeSpan Duration { get; } = new(0, 0, 15);
 
 		private static IList<Entry> Entries { get; set; } = new List<Entry>();
 
