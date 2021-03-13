@@ -130,7 +130,7 @@ namespace FoundMagic.UI
 
 			if (World.Instance.IsEndgame)
 			{
-				g.DrawString($"T: {World.Instance.EndgameTimer}", font, Brushes.Magenta, 0, 4 * glyphSize);
+				g.DrawString($"T: {Math.Round(World.Instance.EndgameTimer)}", font, Brushes.Magenta, 0, 4 * glyphSize);
 			}
 		}
 
