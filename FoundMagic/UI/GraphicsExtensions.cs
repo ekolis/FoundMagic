@@ -16,7 +16,7 @@ namespace FoundMagic.UI
 	/// </summary>
 	public static class GraphicsExtensions
 	{
-		public static void DrawLogarithmicBar(this Graphics g, double value, double max, Brush brush, int x, int y, int scale)
+		public static double DrawLogarithmicBar(this Graphics g, double value, double max, Brush brush, int x, int y, int scale)
 		{
 			// draw skinny bar to show max
 			var widthMax = Math.Log2(max);
@@ -26,6 +26,8 @@ namespace FoundMagic.UI
 			// this bar is not logarithmic, that would look weird, rather it's proportional to the full size bar
 			var widthValue = widthMax * value / max;
 			g.FillRectangle(brush, x, y + scale / 4, (int)(widthValue * scale) + 1, scale / 2);
+
+			return widthMax;
 		}
 
 		public static void DrawSpellcastingInterface(this Graphics g, Floor floor, Hero hero, Font font, int glyphSize)
@@ -75,7 +77,7 @@ namespace FoundMagic.UI
 			{
 				for (int y = 0; y < floor.Height; y++)
 				{
-					Point p = new(x * glyphSize, y * glyphSize);
+					Point p = new(x * glyphSize, (y + BarsRows) * glyphSize);
 					Tile tile = floor.Tiles[x, y];
 					if (tile.IsExplored)
 					{
@@ -117,20 +119,25 @@ namespace FoundMagic.UI
 			}
 		}
 
+		public const int BarsRows = 2;
+
 		public static void DrawBars(this Graphics g, Hero hero, Font font, int glyphSize)
 		{
-			var height = World.Instance.IsEndgame ? 5 : 4;
+			// draw the HP
+			var hpStr = $"H: {hero.Hitpoints} / {hero.MaxHitpoints}";
+			g.DrawString(hpStr, font, Brushes.Red, 0, 0 * glyphSize);
+			var hpBarWidth = g.DrawLogarithmicBar(hero.Hitpoints, hero.MaxHitpoints, Brushes.Red, 0, 1 * glyphSize, glyphSize);
+			hpBarWidth = Math.Max(hpBarWidth, hpStr.Length * glyphSize);
 
-			// draw the HP/MP
-			g.FillRectangle(Brushes.Black, 0, 0, 10 * glyphSize, height * glyphSize);
-			g.DrawString($"H: {hero.Hitpoints} / {hero.MaxHitpoints}", font, Brushes.Red, 0, 0 * glyphSize);
-			g.DrawLogarithmicBar(hero.Hitpoints, hero.MaxHitpoints, Brushes.Red, 0, 1 * glyphSize, glyphSize);
-			g.DrawString($"M: {hero.Mana} / {hero.MaxMana}", font, Brushes.Blue, 0, 2 * glyphSize);
-			g.DrawLogarithmicBar(hero.Mana, hero.MaxMana, Brushes.Blue, 0, 3 * glyphSize, glyphSize);
+			// draw the MP
+			var mpStr = $"M: {hero.Mana} / {hero.MaxMana}";
+			g.DrawString(mpStr, font, Brushes.Blue, (int)Math.Ceiling(hpBarWidth) + glyphSize, 0 * glyphSize);
+			var mpBarWidth = g.DrawLogarithmicBar(hero.Mana, hero.MaxMana, Brushes.Blue, (int)Math.Ceiling(hpBarWidth) + glyphSize, 1 * glyphSize, glyphSize);
+			mpBarWidth = Math.Max(mpBarWidth, mpStr.Length * glyphSize);
 
 			if (World.Instance.IsEndgame)
 			{
-				g.DrawString($"T: {Math.Round(World.Instance.EndgameTimer)}", font, Brushes.Magenta, 0, 4 * glyphSize);
+				g.DrawString($"T: {Math.Round(World.Instance.EndgameTimer)}", font, Brushes.Magenta, (int)Math.Ceiling(hpBarWidth) + (int)Math.Ceiling(mpBarWidth) + glyphSize, 0 * glyphSize);
 			}
 		}
 

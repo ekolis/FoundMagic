@@ -33,7 +33,7 @@ namespace FoundMagic.UI
 			Hero hero = Hero.Instance;
 
 			// find out how big our glyphs are going to be
-			int glyphSize = Math.Min(Width / (floor.Width + 1), Height / (floor.Height + 1));
+			int glyphSize = Math.Min(Width / (floor.Width + 1), Height / (floor.Height + 1 + GraphicsExtensions.BarsRows));
 
 			// get our graphics context etc
 			Graphics g = e.Graphics;
@@ -132,10 +132,10 @@ namespace FoundMagic.UI
 			Floor floor = Floor.Current;
 
 			// find out how big our glyphs are
-			int glyphSize = Math.Min(Width / (floor.Width + 1), Height / (floor.Height + 1));
+			int glyphSize = Math.Min(Width / (floor.Width + 1), Height / (floor.Height + 1 + GraphicsExtensions.BarsRows));
 
 			// find what tile the mouse is hovering
-			var (x, y) = (e.X / glyphSize, e.Y / glyphSize);
+			var (x, y) = (e.X / glyphSize, e.Y / glyphSize - GraphicsExtensions.BarsRows);
 			Tile tile;
 			try
 			{
@@ -143,7 +143,8 @@ namespace FoundMagic.UI
 			}
 			catch
 			{
-				return; // out of range
+				toolTip.SetToolTip(this, ""); // out of range
+				return;
 			}
 
 			// display tooltip
