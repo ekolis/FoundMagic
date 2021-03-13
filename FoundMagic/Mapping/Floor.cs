@@ -254,13 +254,15 @@ namespace FoundMagic.Mapping
 					if (Hero.Instance.IsClimbing)
 					{
 						Hero.Instance.IsClimbing = false;
-						break;
+						goto done; // gotos are evil, yeah, but I need to break out of two loops at once! so there! 😛
 					}
 					creature.Timer += creature.Act();
 					if (creature is Hero)
 						heroHasActed = true;
 				}
 			}
+
+			done:
 
 			// deal with endgame stuff
 			if (World.Instance.IsEndgame)
