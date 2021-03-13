@@ -11,7 +11,7 @@ using FoundMagic.Creatures;
 namespace FoundMagic.Magic
 {
 	/// <summary>
-	/// Casting a fire spell costs 1 mana and causes a single target to lose 3 hit points.
+	/// Casting a fire spell costs 2 mana and causes a single target to lose 3 hit points.
 	/// </summary>
 	public class Fire
 		: Element
@@ -39,7 +39,7 @@ namespace FoundMagic.Magic
 
 		public override Color Color => Color.Orange;
 
-		public override double BaseManaCost { get; } = 1;
+		public override double BaseManaCost { get; } = 2;
 
 		public override string GetEffectDescription(ICreature caster) => $"Inflicts {GetEffectAmount(caster)} points of damage.";
 

@@ -11,7 +11,7 @@ using FoundMagic.Creatures;
 namespace FoundMagic.Magic
 {
 	/// <summary>
-	/// Casting a light spell costs 1 mana and heals 3 HP. If cast on an enemy, it also stuns the enemy for 3 turns.
+	/// Casting a light spell costs 2 mana and heals 3 HP. If cast on an enemy, it also stuns the enemy for 3 turns.
 	/// </summary>
 	public class Light
 		: Element
@@ -46,7 +46,7 @@ namespace FoundMagic.Magic
 
 		public override Color Color => Color.Pink;
 
-		public override double BaseManaCost { get; } = 1;
+		public override double BaseManaCost { get; } = 2;
 
 		public override string GetEffectDescription(ICreature caster) => $"Heals the target {GetEffectAmount(caster)} HP. If cast on an enemy, also stuns it for {GetEffectAmount(caster)} turns.";
 

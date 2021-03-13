@@ -11,7 +11,7 @@ using FoundMagic.Creatures;
 namespace FoundMagic.Magic
 {
 	/// <summary>
-	/// Casting an earth spell costs 1 mana and causes a single target to be reduced to half speed for 8 turns.
+	/// Casting an earth spell costs 2 mana and causes a single target to be reduced to half speed for 8 turns.
 	/// </summary>
 	public class Earth
 		: Element
@@ -39,7 +39,7 @@ namespace FoundMagic.Magic
 
 		public override Color Color => Color.Brown;
 
-		public override double BaseManaCost { get; } = 1;
+		public override double BaseManaCost { get; } = 2;
 
 		public override string GetEffectDescription(ICreature caster) => $"Slows the target (to half speed) for {GetEffectAmount(caster)} turns.";
 

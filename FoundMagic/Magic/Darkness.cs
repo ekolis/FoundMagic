@@ -11,7 +11,7 @@ using FoundMagic.Creatures;
 namespace FoundMagic.Magic
 {
 	/// <summary>
-	/// Casting a darkness spell costs 2 mana and drains 2 HP from the target.
+	/// Casting a darkness spell costs 4 mana and drains 2 HP from the target.
 	/// </summary>
 	public class Darkness
 		: Element
@@ -39,7 +39,7 @@ namespace FoundMagic.Magic
 
 		public override Color Color => Color.Purple;
 
-		public override double BaseManaCost { get; } = 2;
+		public override double BaseManaCost { get; } = 4;
 
 		public override string GetEffectDescription(ICreature caster) => $"Drains {GetEffectAmount(caster)} HP from the target.";
 

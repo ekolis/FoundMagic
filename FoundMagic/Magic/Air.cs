@@ -11,7 +11,7 @@ using FoundMagic.Creatures;
 namespace FoundMagic.Magic
 {
 	/// <summary>
-	/// Casting an air spell costs 1 mana and pushes a single target back 2 spaces, unless there's something behind it.
+	/// Casting an air spell costs 2 mana and pushes a single target back 2 spaces, unless there's something behind it.
 	/// </summary>
 	public class Air
 		: Element
@@ -39,7 +39,7 @@ namespace FoundMagic.Magic
 
 		public override Color Color => Color.Cyan;
 
-		public override double BaseManaCost { get; } = 1;
+		public override double BaseManaCost { get; } = 2;
 
 		public override string GetEffectDescription(ICreature caster) => $"Pushes the target back {GetEffectAmount(caster)} spaces, unless there's something behind it.";
 
