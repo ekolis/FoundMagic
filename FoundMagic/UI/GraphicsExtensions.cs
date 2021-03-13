@@ -134,7 +134,7 @@ namespace FoundMagic.UI
 			}
 		}
 
-		public static void DrawDeath(this Graphics g, int gfxWidth, int gfxHeight)
+		public static void DrawDeath(this Graphics g, int gfxWidth, int gfxHeight, Font font)
 		{
 			if (Hero.Instance.DeathTimestamp != null)
 			{
@@ -157,10 +157,20 @@ namespace FoundMagic.UI
 					deathColor = Color.Black;
 				}
 				g.FillRectangle(new SolidBrush(deathColor), 0, 0, gfxWidth, gfxHeight);
+
+				// draw GAME OVER
+				float x = gfxWidth / 2;
+				float y = gfxHeight / 2;
+				var stringFormat = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
+				var maxTicks = Hero.Instance.DeathFadeTime.Ticks;
+				var ticks = Math.Min(howLongAgo.Ticks, maxTicks);
+				var lerp = ((float)ticks / (float)maxTicks);
+				font = new Font(font.FontFamily, font.Size * 10 * lerp);
+				g.DrawString("*GAME OVER*", font, new SolidBrush(Color.Magenta), x, y, stringFormat);
 			}
 		}
 
-		public static void DrawVictory(this Graphics g, int gfxWidth, int gfxHeight, Font font, int glyphSize)
+		public static void DrawVictory(this Graphics g, int gfxWidth, int gfxHeight, Font font)
 		{
 			if (World.Instance.IsWinner)
 			{

@@ -49,8 +49,8 @@ namespace FoundMagic.UI
 				g.DrawLog(font, glyphSize, Height);
 				g.DrawBars(hero, font, glyphSize);
 				// TODO: render current status effects and their durations?
-				g.DrawDeath(Width, Height);
-				g.DrawVictory(Width, Height, font, glyphSize);
+				g.DrawDeath(Width, Height, font);
+				g.DrawVictory(Width, Height, font);
 			}			
 		}
 		private void GameForm_SizeChanged(object sender, EventArgs e)
