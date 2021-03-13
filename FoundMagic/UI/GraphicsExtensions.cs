@@ -110,7 +110,7 @@ namespace FoundMagic.UI
 				lastHowHigh = howHigh;
 
 				// also need an alpha value
-				int alpha = 255 - (int)(255 * ageRatio);
+				int alpha = 255 - (int)(255 * Math.Pow(ageRatio, 0.25));
 
 				// draw it
 				g.DrawString(entry.Message, font, new SolidBrush(Color.FromArgb(alpha, entry.Color)), 0f, (float)howHigh);
