@@ -8,7 +8,8 @@
 		"Strength": 1,
 		"MaxHitpoints": 3,
 		"MaxMana": 3,
-		"Difficulty": 1
+		"Difficulty": 1,
+		"FlagNames": [ "finalboss" ]
 	},
 	{
 		"Name": "El Slimador, the super slime",
@@ -20,7 +21,7 @@
 		"MaxHitpoints": 8,
 		"MaxMana": 8,
 		"Difficulty": 1,
-		"FlagNames": [ "unique", "finalboss" ]
+		"FlagNames": [ "unique" ]
 	},
 	{
 		"Name": "skeleton",
