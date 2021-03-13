@@ -69,6 +69,8 @@ namespace FoundMagic.Mapping
 			startTile.Creature = Hero.Instance;
 			Hero.Instance.ResetFov();
 			Hero.Instance.UpdateFov();
+			if (CurrentDepth == 0)
+				Logger.Log("Welcome to Found Magic! Press H or ? for help.", Color.White);
 			Logger.Log($"Welcome to floor {CurrentDepth + 1}!", Color.White);
 		}
 

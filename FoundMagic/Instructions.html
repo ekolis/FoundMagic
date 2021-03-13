@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+	<title>🧙🏻‍ Found Magic: a 2021 7DRL by Ed Kolis</title>
+</head>
+<body style="background: black; color: white; font-family: Consolas; width: 800px">
+	<h1>What is Found Magic?</h1>
+	<p>
+		Found Magic is a <a href="https://itch.io/jam/7drl-challenge-2021">2021 Seven Day Roguelike Challenge</a> entry by <a href="http://edkolis.com">Ed Kolis</a>.
+		It is inspired by the Nintendo DS game Lost Magic.
+		In Lost Magic, you played as a wizard who could cast spells by drawing runes on the DS' touchscreen.
+		Since this is a PC game and not a mobile game, that mechanic has been replaced by typing magic words.
+	</p>
+
+	<h1>The goal of the game</h1>
+	<p>
+		In Found Magic, you'll need to delve deep into a dark, dangerous dungeon, as is traditional in classic roguelikes.
+		There is an evil wizard named Zobleg. Yes, very original name there. 😛
+		You will need to build up an arsenal of magic spells and use them to defeat Zobleg.
+		Once you defeat him (her? it? them?!), you will have a limited amount of time to exit the dungeon!
+		Be warned that monsters will be strengthened at this time; it won't be a walk in the park!
+	</p>
+
+	<h1>Controls</h1>
+	<ul>
+		<li>Move (four cardinal directions only): arrow keys, or numpad, or WSAD.</li>
+		<li>Pass your turn: period (.), or comma (,), or 5 on the numpad.</li>
+		<li>Go up or down stairs (four cardinal directions only): left shift plus the key to pass your turn.</li>
+		<li>Cast a spell: left ctrl plus the direction to cast the spell (either a movement direction, or the pass your turn key to cast at yourself).</li>
+		<li>Display this help file: ? or H.</li>
+	</ul>
+
+	<h1>Elements and essences</h1>
+	<p>
+		There are six magical elements in the game:
+		<span style="color: orange">fire</span>, <span style="color: brown">earth</span>, <span style="color: cyan">air</span>,
+		<span style="color: blue">water</span>, <span style="color: pink">light</span>, and <span style="color: purple">darkness</span>.
+		Elements are made of essences, and the more essences you have, the more attuned you are to that element.
+		You start with attunement to two elements; you can gain essences for the rest by defeating monsters of those elements.
+	</p>
+
+	<h1>Magical spells</h1>
+	<p>
+		Each element is associated with a spell.
+		You can cast a spell if you have enough essences of the appropriate element. The same applies to monsters!
+	</p>
+	<p>
+		Each spell has a magic word, but that word is different each time you play, so your muscle memory might not be all that helpful...
+		To cast a spell, hold the left ctrl key and press the direction you want to cast it.
+		In place of a direction, you can also press the key to pass your turn (period, comma, or numpad 5) to cast at yourself.
+		This is useful for the healing spell!
+	</p>
+	<p>
+		Once you have targeted the spell, you then need to type the magic word, and finally press enter to release the spell.
+		All the magic words you know will be listed when you've targeted your spell.
+		Type it as quickly and accurately as possible, then press enter! KAZAM! 😁
+		If you type the word accurately, the spell will be stronger, but if you type it more quickly, the spell will cost less mana.
+	</p>
+
+	<h1>Elemental boosts</h1>
+	<p>
+		In addition to spells, elemental essences also boost your stats!
+		Each element has a different effect.
+		The more essences you collect, the stronger the effect gets!
+		The effects of your boosts are displayed on the spellcasting screen.
+		Boosts don't apply to monsters.
+	</p>
+
+	<h1>Winning the game</h1>
+	<p>
+		If you're able to find and defeat Zobleg, you will have a certain amount of time to flee the dungeon.
+		If you are able to do so, you win the game!
+		If not... well, good luck! You'll take damage over time and it won't be easy!
+	</p>
+
+	<h1>Losing the game</h1>
+	<p>
+		If your hitpoints ever reach zero, it's game over - simple as that!
+	</p>
+
+	<h1>Modding the game</h1>
+	<p>
+		You can modify the monsters that appear in the game - yeah, if one's too hard to beat, you can nerf it!
+		Or if the game is too easy, you can make all the monsters tougher.
+		Or just add your favorite geeky references so you can fight Khan Noonien Singh instead of Zobleg! 🖖
+	</p>
+	<p>
+		To do so, edit the MonsterTypes.json file in the Data folder.
+		Be warned that there's not much error checking in the monster loading code, so make frequent backups in case you break something!
+		Monsters will tend to appear mainly around the dungeon depth equal to their difficulty level.
+		But there's always a chance for out of depth monsters! Be careful!
+	</p>
+</body>
+</html>

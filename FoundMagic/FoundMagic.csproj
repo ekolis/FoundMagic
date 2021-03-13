@@ -9,6 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Instructions.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Instructions.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="RogueSharp" Version="4.2.0" />
   </ItemGroup>
 
