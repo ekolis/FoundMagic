@@ -104,7 +104,7 @@ namespace FoundMagic.UI
 				Floor.Current.ProcessTime(h.Timer, true);
 			}
 
-			if (Keyboard.IsKeyPressed(Keys.OemQuestion) || Keyboard.IsKeyPressed(Keys.H))
+			if (Keyboard.IsKeyPressed(Keys.OemQuestion) || Keyboard.IsKeyPressed(Keys.H) && !Hero.Instance.IsCasting)
 			{
 				// show help
 				Process.Start(new ProcessStartInfo { FileName = "Instructions.html", UseShellExecute = true });
