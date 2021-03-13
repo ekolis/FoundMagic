@@ -62,6 +62,14 @@ namespace FoundMagic.Magic
 					crit = true;
 			}
 
+			if (caster is Monster m && World.Instance.IsEndgame)
+			{
+				// check for crits from endgame
+				var critChance = World.Instance.EndgameMonsterCritChance;
+				if (World.Instance.Rng.Chance(critChance))
+					crit = true;
+			}
+
 			if (crit)
 			{
 				power *= 3; // crits are triply powerful

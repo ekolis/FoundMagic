@@ -118,11 +118,16 @@ namespace FoundMagic.Mapping
 		public bool IsEndgame { get; set; }
 
 		/// <summary>
+		/// The starting value of the endgame timer.
+		/// </summary>
+		public const double StartingEndgameTimer = 5000;
+
+		/// <summary>
 		/// The endgame timer.
 		/// You will have this many turns to escape the dungeon, starting from the time you defeat the final boss.
 		/// If you don't, you'll take damage over time.
 		/// </summary>
-		public double EndgameTimer { get; set; } = 5000;
+		public double EndgameTimer { get; set; } = StartingEndgameTimer;
 
 		/// <summary>
 		/// Built-up damage to apply to the hero once the endgame timer runs out.
@@ -148,5 +153,12 @@ namespace FoundMagic.Mapping
 		/// Declares victory for the player.
 		/// </summary>
 		public void Win() => VictoryTimestamp = DateTime.Now;
+
+		/// <summary>
+		/// During the endgame, the monsters will have an increasing chance of critical hits as time progresses.
+		/// This applies to both melee attacks and spells.
+		/// </summary>
+		public double EndgameMonsterCritChance
+			=> Math.Min(1d, (StartingEndgameTimer - EndgameTimer) / StartingEndgameTimer);
 	}
 }
